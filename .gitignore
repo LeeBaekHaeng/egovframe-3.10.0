@@ -26,3 +26,7 @@ god.codegen-web/.project
 god.codegen-web/.settings/
 god.codegen-web/EGOVFRAME-3.10.0/
 god.codegen-web/target/
+god.codegen-core/.classpath
+god.codegen-core/.project
+god.codegen-core/.settings/
+god.codegen-core/target/
