@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- Mybatis setup for Mybatis Database Layer -->
+	<bean id="egov.sqlSession.oracle"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="egov.dataSource" />
+		<property name="configLocation"
+			value="classpath:/egovframework/mapper/config/mapper-config.xml" />
+
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/god/mapper/codegen/oracle/**/*_oracle.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Mybatis Session Template -->
+	<bean id="egov.sqlSessionTemplate.oracle"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="egov.sqlSession.oracle" />
+	</bean>
+
+</beans>

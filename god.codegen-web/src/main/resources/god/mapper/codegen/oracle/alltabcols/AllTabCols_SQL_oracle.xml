@@ -5,7 +5,7 @@
 <mapper namespace="AllTabColsDAO">
 
 	<select id="selectList"
-		parameterType="egovframework.com.god.codegen.oracle.alltabcols.service.AllTabColsVO"
+		parameterType="god.codegen.oracle.alltabcols.service.AllTabColsVO"
 		resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
 
 <![CDATA[

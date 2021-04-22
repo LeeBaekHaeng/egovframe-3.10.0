@@ -18,8 +18,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import egovframework.com.god.codegen.oracle.alltabcols.service.AllTabColsVO;
+import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.service.CmmnDetailCode;
+import egovframework.com.cmm.service.impl.CmmUseDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
+import god.codegen.oracle.alltabcols.service.AllTabColsVO;
+import god.codegen.oracle.alltabcols.service.impl.AllTabColsDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,10 +32,17 @@ import lombok.extern.slf4j.Slf4j;
 @ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
-@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.god.codegen.oracle.alltabcols.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTabColsDAO.class }) })
+
+//@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })
+@ImportResource({ "classpath*:/egovframework/spring/com/context-crypto.xml",
+		"classpath*:/egovframework/spring/com/context-datasource.xml",
+		"classpath*:/egovframework/spring/com/context-mapper.xml",
+		"classpath*:/egovframework/spring/com/context-mapper-god-oracle.xml",
+		"classpath*:/egovframework/spring/com/test-context-common.xml" })
+
+@ComponentScan(useDefaultFilters = false, basePackages = { "god.codegen.oracle.alltabcols.service.impl",
+		"egovframework.com.cmm.service.impl" }, includeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTabColsDAO.class, CmmUseDAO.class }) })
 public class AllTabColsDAOTest_selectList {
 
 	@Autowired
@@ -39,6 +50,9 @@ public class AllTabColsDAOTest_selectList {
 
 	@Autowired
 	AllTabColsDAO dao;
+
+	@Autowired
+	CmmUseDAO cmmUseDAO;
 
 	@Before
 	public void setUp() throws Exception {
@@ -78,6 +92,31 @@ public class AllTabColsDAOTest_selectList {
 			log.debug("columnId={}", result.get("columnId"));
 			log.debug("dataDefault={}", result.get("dataDefault"));
 			log.debug("columnComments={}", result.get("columnComments"));
+		});
+	}
+
+	@Test
+	public void test2() throws Exception {
+		log.debug("test2");
+
+		// given
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("COM001");
+
+		// when
+		List<CmmnDetailCode> results = cmmUseDAO.selectCmmCodeDetail(vo);
+
+		// then
+		assertEquals(results.get(0).getCodeId(), vo.getCodeId());
+
+		log.debug("results={}", results);
+
+		results.forEach(result -> {
+			log.debug("result={}", result);
+			log.debug("getCodeId={}", result.getCodeId());
+			log.debug("getCode={}", result.getCode());
+			log.debug("getCodeNm={}", result.getCodeNm());
+			log.debug("getCodeDc={}", result.getCodeDc());
 		});
 	}
 

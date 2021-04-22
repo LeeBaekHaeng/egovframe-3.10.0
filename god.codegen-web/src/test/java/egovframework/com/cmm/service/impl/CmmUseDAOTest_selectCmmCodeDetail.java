@@ -25,7 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { CmmUseDAOTest_selectCmmCodeDetail.class })
-@ActiveProfiles({ "oracle", "dummy" })
+@ActiveProfiles({ "mysql", "dummy" })
+//@ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
 @ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })

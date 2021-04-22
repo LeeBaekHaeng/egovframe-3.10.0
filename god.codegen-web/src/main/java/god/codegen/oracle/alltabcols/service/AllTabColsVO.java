@@ -1,4 +1,4 @@
-package egovframework.com.god.codegen.oracle.alltabcols.service;
+package god.codegen.oracle.alltabcols.service;
 
 import java.util.List;
 
