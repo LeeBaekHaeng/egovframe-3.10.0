@@ -164,8 +164,7 @@ public class CrudCodeGenTest_A1_sql {
 		CrudCodeGen crudCodeGen = new CrudCodeGen();
 
 		for (DataModelContext dataModel : dataModels) {
-			String data = crudCodeGen.generate(dataModel,
-					"god/templates/crud/src/main/resources/pkg/EgovSample_Sample2_SQL.vm");
+			String data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/resources/pkg/sql.vm");
 			writeStringToFile(dataModel, data);
 		}
 	}
