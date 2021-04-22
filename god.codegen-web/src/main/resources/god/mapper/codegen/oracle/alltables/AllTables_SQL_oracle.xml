@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="god.codegen.oracle.alltables.service.impl.AllTablesMapper">
+
+	<select id="selectList"
+		parameterType="god.codegen.oracle.alltables.service.AllTablesVO"
+		resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
+
+<![CDATA[
+SELECT /* select */
+       A.OWNER
+       , A.TABLE_NAME
+       , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) TABLE_COMMENTS
+  FROM ALL_TABLES A
+ WHERE 1 = 1
+]]>
+
+		<if test="owners != null">
+			<foreach collection="owners" item="item"
+				open="   AND A.OWNER IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+		<if test="owner != null">
+<![CDATA[
+   AND A.OWNER = #{owner}
+]]>
+		</if>
+
+		<if test="tableName != null">
+<![CDATA[
+   AND A.TABLE_NAME = #{tableName}
+]]>
+		</if>
+
+
+<![CDATA[
+ ORDER BY A.OWNER, A.TABLE_NAME
+]]>
+
+	</select>
+
+</mapper>
