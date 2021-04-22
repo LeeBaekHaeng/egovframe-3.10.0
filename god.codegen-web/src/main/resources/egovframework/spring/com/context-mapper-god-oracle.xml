@@ -24,4 +24,12 @@
 		<constructor-arg ref="egov.sqlSession.oracle" />
 	</bean>
 
+	<bean
+		class="egovframework.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage"
+			value="god.codegen.oracle.**.service.impl" />
+		<property name="sqlSessionFactoryBeanName"
+			value="egov.sqlSession.oracle" />
+	</bean>
+
 </beans>
