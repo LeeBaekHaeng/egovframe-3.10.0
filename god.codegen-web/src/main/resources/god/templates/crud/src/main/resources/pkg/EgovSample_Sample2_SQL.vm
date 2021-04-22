@@ -20,18 +20,19 @@
 #set($selectListTotCntQueryId="${daoInstanceName}.select${entity.pcName}ListTotCnt_S")
 ##
 ##
-
+##
 ## ##################################################################################################
-
-package=${package}
-
-entity.name=${entity.name}
-entity.ucName=${entity.ucName}
-entity.lcName=${entity.lcName}
-entity.ccName=${entity.ccName}
-entity.pcName=${entity.pcName}
-
-/* ${insertQueryId} */
+##
+##package=${package}
+##
+##entity.name=${entity.name}
+##entity.ucName=${entity.ucName}
+##entity.lcName=${entity.lcName}
+##entity.ccName=${entity.ccName}
+##entity.pcName=${entity.pcName}
+##
+##/* ${insertQueryId} */
+/* insert${entity.pcName} */
 INSERT INTO ${entity.name} ( /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $attributes)
@@ -59,33 +60,33 @@ VALUES (
 #set($i=$i+1)
 #end
 )
+;
 
 ## ##################################################################################################	
-	<update id="${updateQueryId}">
-		<![CDATA[
-			UPDATE ${entity.name}
+/* update${entity.pcName} */
+UPDATE ${entity.name} SET /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-			SET ${attribute.name}=#${attribute.ccName}#
+       ${attribute.name} = ${attribute.values} /* ${attribute.columnComments} */
 #else
-				, ${attribute.name}=#${attribute.ccName}#
+     , ${attribute.name} = ${attribute.values} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end	
-##		
+##
+ WHERE 1 = 1
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
-			WHERE ${attribute.name}=#${attribute.ccName}#
+   AND ${attribute.name} = ${attribute.values} /* ${attribute.columnComments} */
 #else
-				AND ${attribute.name}=#${attribute.ccName}#
+   AND ${attribute.name} = ${attribute.values} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
-		]]>
-	</update>
-	
+;
+
 ## ##################################################################################################
 	<delete id="${deleteQueryId}">
 		<![CDATA[

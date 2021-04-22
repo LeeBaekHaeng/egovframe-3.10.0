@@ -57,13 +57,13 @@ import operation.CrudCodeGen;
 public class CrudCodeGenTest_A1_sql {
 
 	@Autowired
-	ApplicationContext context;
+	private ApplicationContext context;
 
 	@Autowired
-	AllTablesMapper allTablesMapper;
+	private AllTablesMapper allTablesMapper;
 
 	@Autowired
-	AllTabColsMapper allTabColsMapper;
+	private AllTabColsMapper allTabColsMapper;
 
 	@Before
 	public void setUp() throws Exception {
@@ -185,15 +185,10 @@ public class CrudCodeGenTest_A1_sql {
 	private File getFile(DataModelContext dataModel) {
 		String pathname = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop" + SystemUtils.FILE_SEPARATOR
 				+ "god.codegen";
-//		try {
-//			FileUtils.forceDelete(new File(pathname));
-//		} catch (IOException e) {
-//			log.error(e.getMessage());
-//		}
 
 		String pathname2 = pathname + SystemUtils.FILE_SEPARATOR + dataModel.getEntity().getOwner()
 				+ SystemUtils.FILE_SEPARATOR + dataModel.getEntity().getName() + SystemUtils.FILE_SEPARATOR
-				+ dataModel.getEntity().getName() + ".sql";
+				+ dataModel.getEntity().getName() + " " + dataModel.getEntity().getTableComments() + ".sql";
 
 		log.debug("pathname: {}", pathname);
 		log.debug("pathname2: {}", pathname2);
