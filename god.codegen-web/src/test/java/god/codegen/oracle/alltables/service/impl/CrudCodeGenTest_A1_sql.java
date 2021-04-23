@@ -24,6 +24,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StopWatch;
 
 import egovframework.rte.fdl.string.EgovDateUtil;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
@@ -65,6 +66,9 @@ public class CrudCodeGenTest_A1_sql {
 	@Autowired
 	private AllTabColsMapper allTabColsMapper;
 
+	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
+			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "sql";
+
 	@Before
 	public void setUp() throws Exception {
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
@@ -73,10 +77,8 @@ public class CrudCodeGenTest_A1_sql {
 			log.debug("beanDefinitionName={}", beanDefinitionName);
 		}
 
-		String pathname = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop" + SystemUtils.FILE_SEPARATOR
-				+ "god.codegen";
 		try {
-			FileUtils.forceDelete(new File(pathname));
+			FileUtils.forceDelete(new File(FILE_PATHNAME));
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
@@ -84,19 +86,23 @@ public class CrudCodeGenTest_A1_sql {
 
 	@Test
 	public void test() throws Exception {
-		log.debug("test");
+		log.info("start");
+		log.info("select");
+
+		StopWatch watch = new StopWatch();
+		watch.start();
 
 		// given
 		AllTablesVO allTablesVO = new AllTablesVO();
 
-//		List<String> owners = new ArrayList<>();
-//		owners.add("COM");
-//		owners.add("COM320");
-//		allTablesVO.setOwners(owners);
+		List<String> owners = new ArrayList<>();
+		owners.add("COM");
+		owners.add("COM320");
+		allTablesVO.setOwners(owners);
 
-		allTablesVO.setOwner("COM");
-//		allTablesVO.setTableName("COMTCADMINISTCODE");
-		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
+//		allTablesVO.setOwner("COM");
+////		allTablesVO.setTableName("COMTCADMINISTCODE");
+//		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
 
 		AllTabColsVO allTabColsVO = new AllTabColsVO();
 		allTabColsVO.setOwner(allTablesVO.getOwner());
@@ -112,6 +118,8 @@ public class CrudCodeGenTest_A1_sql {
 		List<DataModelContext> dataModels = new ArrayList<>();
 
 		String createDate = EgovDateUtil.toString(new Date(), "", null);
+
+		int i = 1;
 
 		for (EgovMap allTable : allTables) {
 			String allTableOwner = (String) allTable.get("owner");
@@ -159,20 +167,39 @@ public class CrudCodeGenTest_A1_sql {
 			dataModel.setPrimaryKeys(primaryKeys);
 
 			dataModels.add(dataModel);
+
+			log.info("i={}, {}, {}, {}", i, dataModel.getEntity().getOwner(), dataModel.getEntity().getName(),
+					dataModel.getEntity().getTableComments());
+
+			i++;
 		}
 
 		CrudCodeGen crudCodeGen = new CrudCodeGen();
 
+		log.info("writeStringToFile");
+
+		int j = 1;
+
 		for (DataModelContext dataModel : dataModels) {
 			String data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/resources/pkg/sql.vm");
 			writeStringToFile(dataModel, data);
+
+			log.info("j={}, {}, {}, {}", j, dataModel.getEntity().getOwner(), dataModel.getEntity().getName(),
+					dataModel.getEntity().getTableComments());
+
+			j++;
 		}
+
+		watch.stop();
+
+		log.info("getTotalTimeMillis={}", watch.getTotalTimeMillis());
+		log.info("getTotalTimeSeconds={}", watch.getTotalTimeSeconds());
 	}
 
 	private void writeStringToFile(DataModelContext dataModel, String data) {
 		File file = getFile(dataModel);
 		Charset encoding = StandardCharsets.UTF_8;
-		log.debug("name: {}", encoding.name());
+		log.debug("name={}", encoding.name());
 
 		try {
 			FileUtils.writeStringToFile(file, data, encoding);
@@ -182,17 +209,24 @@ public class CrudCodeGenTest_A1_sql {
 	}
 
 	private File getFile(DataModelContext dataModel) {
-		String pathname = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop" + SystemUtils.FILE_SEPARATOR
-				+ "god.codegen";
+		StringBuffer sb = new StringBuffer();
+		sb.append(FILE_PATHNAME);
+		sb.append(SystemUtils.FILE_SEPARATOR);
+		sb.append(dataModel.getEntity().getOwner());
+		sb.append(SystemUtils.FILE_SEPARATOR);
+		sb.append(dataModel.getEntity().getName());
+		sb.append(SystemUtils.FILE_SEPARATOR);
+		sb.append(dataModel.getEntity().getName());
+		if (dataModel.getEntity().getTableComments() != null) {
+			sb.append(" ");
+			sb.append(dataModel.getEntity().getTableComments());
+		}
+		sb.append(".sql");
 
-		String pathname2 = pathname + SystemUtils.FILE_SEPARATOR + dataModel.getEntity().getOwner()
-				+ SystemUtils.FILE_SEPARATOR + dataModel.getEntity().getName() + SystemUtils.FILE_SEPARATOR
-				+ dataModel.getEntity().getName() + " " + dataModel.getEntity().getTableComments() + ".sql";
+		log.debug("pathname1={}", FILE_PATHNAME);
+		log.debug("pathname={}", sb);
 
-		log.debug("pathname: {}", pathname);
-		log.debug("pathname2: {}", pathname2);
-
-		return new File(pathname2);
+		return new File(sb.toString());
 	}
 
 }
