@@ -7,6 +7,7 @@ public class Entity extends NameCasing {
 	}
 
 	private String owner;
+	private String tableName;
 	private String tableComments;
 
 	public String getOwner() {
@@ -15,6 +16,14 @@ public class Entity extends NameCasing {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 	public String getTableComments() {

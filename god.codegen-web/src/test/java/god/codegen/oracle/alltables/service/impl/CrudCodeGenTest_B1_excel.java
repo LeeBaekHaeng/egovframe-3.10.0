@@ -63,7 +63,8 @@ import model.Entity;
 public class CrudCodeGenTest_B1_excel {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
-			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel";
+			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
+			+ SystemUtils.FILE_SEPARATOR + "테이블.xlsx";
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
 
@@ -128,12 +129,29 @@ public class CrudCodeGenTest_B1_excel {
 
 		List<String> owners = new ArrayList<>();
 		owners.add("COM");
-		owners.add("COM320");
+//		owners.add("COM320");
 		allTablesVO.setOwners(owners);
+
+//		List<String> tableNames = new ArrayList<>();
+//		tableNames.add("DEPARTMENT");
+//		tableNames.add("EMPLOYEE");
+//		tableNames.add("IDS");
+//		tableNames.add("IMGTEMP");
+//		tableNames.add("J_ATTACHFILE");
+//		tableNames.add("RTETNGOODS");
+//		tableNames.add("TEST_CHILD");
+//		tableNames.add("TEST_PARENT");
+//		tableNames.add("TEST_RECURSIVE");
+//		tableNames.add("TOAD_PLAN_TABLE");
+//		// COM320
+//		tableNames.add("IDS");
+//		tableNames.add("IMGTEMP");
+//		tableNames.add("J_ATTACHFILE");
+//		allTablesVO.setTableNames(tableNames);
 
 //		allTablesVO.setOwner("COM");
 ////		allTablesVO.setTableName("COMTCADMINISTCODE");
-//		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
+		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
 
 		AllTabColsVO allTabColsVO = new AllTabColsVO();
 		allTabColsVO.setOwner(allTablesVO.getOwner());
@@ -170,6 +188,9 @@ public class CrudCodeGenTest_B1_excel {
 		cell.setCellValue("TABLE_COMMENTS");
 
 		cell = row.createCell(column++);
+		cell.setCellValue("class");
+
+		cell = row.createCell(column++);
 		cell.setCellValue("package1");
 
 		cell = row.createCell(column++);
@@ -177,9 +198,6 @@ public class CrudCodeGenTest_B1_excel {
 
 		cell = row.createCell(column++);
 		cell.setCellValue("package3");
-
-		cell = row.createCell(column++);
-		cell.setCellValue("class");
 
 		for (EgovMap allTable : allTables) {
 			String allTableOwner = (String) allTable.get("owner");
@@ -239,6 +257,9 @@ public class CrudCodeGenTest_B1_excel {
 			cell = row.createCell(column++);
 			cell.setCellValue(allTableTableComments);
 
+			cell = row.createCell(column++);
+			cell.setCellValue(entity.getPcName());
+
 			if (allTableTableName.startsWith("COM")) {
 				cell = row.createCell(column++);
 				cell.setCellValue(entity.getLcName().substring(0, 3));
@@ -250,11 +271,8 @@ public class CrudCodeGenTest_B1_excel {
 				cell.setCellValue(entity.getLcName().substring(5));
 			} else {
 				cell = row.createCell(column++);
-				cell.setCellValue(entity.getLcName());
+				cell.setCellValue(entity.getLcName().replaceAll("_", ""));
 			}
-
-			cell = row.createCell(column++);
-			cell.setCellValue(entity.getPcName());
 
 			rownum++;
 
@@ -264,7 +282,7 @@ public class CrudCodeGenTest_B1_excel {
 			i++;
 		}
 
-		String filepath = FILE_PATHNAME + SystemUtils.FILE_SEPARATOR + "테이블.xlsx";
+		String filepath = FILE_PATHNAME;
 		egovExcelService.createWorkbook(wb, filepath);
 	}
 

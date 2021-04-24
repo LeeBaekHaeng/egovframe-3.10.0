@@ -26,6 +26,15 @@ SELECT /* select */
 			</foreach>
 		</if>
 
+		<if test="tableNames != null">
+			<foreach collection="tableNames" item="item"
+				open="   AND A.TABLE_NAME IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
 		<if test="owner != null">
 <![CDATA[
    AND A.OWNER = #{owner}

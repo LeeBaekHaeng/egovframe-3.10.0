@@ -13,7 +13,7 @@
 		<Logger name="egovframework" level="ERROR " additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="god" level="INFO " additivity="false">
+		<Logger name="god" level="DEBUG " additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 

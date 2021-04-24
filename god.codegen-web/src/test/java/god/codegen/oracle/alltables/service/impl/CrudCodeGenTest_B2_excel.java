@@ -65,7 +65,8 @@ import model.Entity;
 public class CrudCodeGenTest_B2_excel {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
-			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel";
+			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
+			+ SystemUtils.FILE_SEPARATOR + "컬럼.xlsx";
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
 
@@ -130,7 +131,7 @@ public class CrudCodeGenTest_B2_excel {
 
 		List<String> owners = new ArrayList<>();
 		owners.add("COM");
-		owners.add("COM320");
+//		owners.add("COM320");
 		allTablesVO.setOwners(owners);
 
 //		allTablesVO.setOwner("COM");
@@ -283,7 +284,7 @@ public class CrudCodeGenTest_B2_excel {
 			i++;
 		}
 
-		String filepath = FILE_PATHNAME + SystemUtils.FILE_SEPARATOR + "컬럼.xlsx";
+		String filepath = FILE_PATHNAME;
 		egovExcelService.createWorkbook(wb, filepath);
 	}
 
