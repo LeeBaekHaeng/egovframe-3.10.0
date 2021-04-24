@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,7 +39,6 @@ import god.codegen.oracle.alltabcols.service.AllTabColsVO;
 import god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper;
 import god.codegen.oracle.alltables.service.AllTablesVO;
 import lombok.extern.slf4j.Slf4j;
-import model.Attribute;
 import model.DataModelContext;
 import model.Entity;
 
@@ -75,8 +73,8 @@ public class CrudCodeGenTest_B1_excel {
 	@Autowired
 	private AllTablesMapper allTablesMapper;
 
-	@Autowired
-	private AllTabColsMapper allTabColsMapper;
+//	@Autowired
+//	private AllTabColsMapper allTabColsMapper;
 
 	private EgovExcelService egovExcelService = new EgovExcelServiceImpl();
 
@@ -135,7 +133,7 @@ public class CrudCodeGenTest_B1_excel {
 
 //		allTablesVO.setOwner("COM");
 ////		allTablesVO.setTableName("COMTCADMINISTCODE");
-		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
+//		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
 
 		AllTabColsVO allTabColsVO = new AllTabColsVO();
 		allTabColsVO.setOwner(allTablesVO.getOwner());
@@ -143,7 +141,7 @@ public class CrudCodeGenTest_B1_excel {
 
 		// when
 		List<EgovMap> allTables = allTablesMapper.selectList(allTablesVO);
-		List<EgovMap> allTabCols = allTabColsMapper.selectList(allTabColsVO);
+//		List<EgovMap> allTabCols = allTabColsMapper.selectList(allTabColsVO);
 
 		// then
 //		assertEquals(results.get(0).get("owner"), vo.getOwner());
@@ -171,6 +169,18 @@ public class CrudCodeGenTest_B1_excel {
 		cell = row.createCell(column++);
 		cell.setCellValue("TABLE_COMMENTS");
 
+		cell = row.createCell(column++);
+		cell.setCellValue("package1");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("package2");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("package3");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("class");
+
 		for (EgovMap allTable : allTables) {
 			String allTableOwner = (String) allTable.get("owner");
 			String allTableTableName = (String) allTable.get("tableName");
@@ -188,33 +198,33 @@ public class CrudCodeGenTest_B1_excel {
 			dataModel.setTeam("갓팀");
 			dataModel.setCreateDate(createDate);
 
-			List<Attribute> attributes = new ArrayList<Attribute>();
-			List<Attribute> primaryKeys = new ArrayList<Attribute>();
-
-			for (EgovMap allTabCol : allTabCols) {
-				String allTabColOwner = (String) allTabCol.get("owner");
-				String allTabColTableName = (String) allTabCol.get("tableName");
-				String columnName = (String) allTabCol.get("columnName");
-				String dataType = (String) allTabCol.get("dataType");
-				int dataLength = MapUtils.getIntValue(allTabCol, "dataLength");
-				String nullable = (String) allTabCol.get("nullable");
-				String allTabColTableComments = (String) allTabCol.get("tableComments");
-				String columnComments = (String) allTabCol.get("columnComments");
-
-				if (allTabColOwner.equals(allTableOwner) && allTableTableName.equals(allTabColTableName)) {
-					Attribute attr = new Attribute(columnName);
-					attr.setType(dataType);
-					attr.setNullable(nullable);
-					attr.setDataLength(dataLength);
-					attr.setTableComments(allTabColTableComments);
-					attr.setColumnComments(columnComments);
-					attributes.add(attr);
-					primaryKeys.add(attr);
-				}
-			}
-
-			dataModel.setAttributes(attributes);
-			dataModel.setPrimaryKeys(primaryKeys);
+//			List<Attribute> attributes = new ArrayList<Attribute>();
+//			List<Attribute> primaryKeys = new ArrayList<Attribute>();
+//
+//			for (EgovMap allTabCol : allTabCols) {
+//				String allTabColOwner = (String) allTabCol.get("owner");
+//				String allTabColTableName = (String) allTabCol.get("tableName");
+//				String columnName = (String) allTabCol.get("columnName");
+//				String dataType = (String) allTabCol.get("dataType");
+//				int dataLength = MapUtils.getIntValue(allTabCol, "dataLength");
+//				String nullable = (String) allTabCol.get("nullable");
+//				String allTabColTableComments = (String) allTabCol.get("tableComments");
+//				String columnComments = (String) allTabCol.get("columnComments");
+//
+//				if (allTabColOwner.equals(allTableOwner) && allTableTableName.equals(allTabColTableName)) {
+//					Attribute attr = new Attribute(columnName);
+//					attr.setType(dataType);
+//					attr.setNullable(nullable);
+//					attr.setDataLength(dataLength);
+//					attr.setTableComments(allTabColTableComments);
+//					attr.setColumnComments(columnComments);
+//					attributes.add(attr);
+//					primaryKeys.add(attr);
+//				}
+//			}
+//
+//			dataModel.setAttributes(attributes);
+//			dataModel.setPrimaryKeys(primaryKeys);
 
 			dataModels.add(dataModel);
 
@@ -228,6 +238,23 @@ public class CrudCodeGenTest_B1_excel {
 
 			cell = row.createCell(column++);
 			cell.setCellValue(allTableTableComments);
+
+			if (allTableTableName.startsWith("COM")) {
+				cell = row.createCell(column++);
+				cell.setCellValue(entity.getLcName().substring(0, 3));
+
+				cell = row.createCell(column++);
+				cell.setCellValue(entity.getLcName().substring(3, 5));
+
+				cell = row.createCell(column++);
+				cell.setCellValue(entity.getLcName().substring(5));
+			} else {
+				cell = row.createCell(column++);
+				cell.setCellValue(entity.getLcName());
+			}
+
+			cell = row.createCell(column++);
+			cell.setCellValue(entity.getPcName());
 
 			rownum++;
 
