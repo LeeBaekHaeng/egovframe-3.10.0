@@ -219,6 +219,10 @@ public class CrudCodeGenTest_C1_VO {
 					"god/templates/crud/src/main/resources/pkg/EgovSample_Sample2_MAPPER.vm");
 			writeStringToFile(dataModel, data, "_SQL_oracle.xml");
 
+			data = crudCodeGen.generate(dataModel,
+					"god/templates/crud/src/main/java/pkg/service/impl/Sample2Mapper.vm");
+			writeStringToFile(dataModel, data, "Mapper.java");
+
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
@@ -255,6 +259,8 @@ public class CrudCodeGenTest_C1_VO {
 				sb.append("/service");
 			} else if ("VO.java".equals(pathnameSuffix)) {
 				sb.append("/service");
+			} else if ("Mapper.java".equals(pathnameSuffix)) {
+				sb.append("/service/impl");
 			}
 			sb.append(SystemUtils.FILE_SEPARATOR);
 			sb.append(dataModel.getEntity().getName());
