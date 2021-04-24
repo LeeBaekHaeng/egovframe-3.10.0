@@ -40,7 +40,7 @@ import operation.CrudCodeGen;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { CrudCodeGenTest_A1_sql.class })
+@ContextConfiguration(classes = { CrudCodeGenTest_A2_sql.class })
 @ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
@@ -56,7 +56,7 @@ import operation.CrudCodeGen;
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class,
 						AllTabColsMapper.class }) })
 
-public class CrudCodeGenTest_A1_sql {
+public class CrudCodeGenTest_A2_sql {
 
 	@Autowired
 	private ApplicationContext context;
@@ -184,7 +184,25 @@ public class CrudCodeGenTest_A1_sql {
 
 		for (DataModelContext dataModel : dataModels) {
 			String data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/sql.vm");
-			writeStringToFile(dataModel, data);
+			writeStringToFile(dataModel, data, "");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/insert.vm");
+			writeStringToFile(dataModel, data, "insert");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/select.vm");
+			writeStringToFile(dataModel, data, "select");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/selectList.vm");
+			writeStringToFile(dataModel, data, "selectList");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/selectListCount.vm");
+			writeStringToFile(dataModel, data, "selectListCount");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/update.vm");
+			writeStringToFile(dataModel, data, "update");
+
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/delete.vm");
+			writeStringToFile(dataModel, data, "delete");
 
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
@@ -198,8 +216,8 @@ public class CrudCodeGenTest_A1_sql {
 		log.info("getTotalTimeSeconds={}", watch.getTotalTimeSeconds());
 	}
 
-	private void writeStringToFile(DataModelContext dataModel, String data) {
-		File file = getFile(dataModel);
+	private void writeStringToFile(DataModelContext dataModel, String data, String pathnameSuffix) {
+		File file = getFile(dataModel, pathnameSuffix);
 		Charset encoding = StandardCharsets.UTF_8;
 		log.debug("name={}", encoding.name());
 
@@ -210,7 +228,7 @@ public class CrudCodeGenTest_A1_sql {
 		}
 	}
 
-	private File getFile(DataModelContext dataModel) {
+	private File getFile(DataModelContext dataModel, String pathnameSuffix) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(FILE_PATHNAME);
 		sb.append(SystemUtils.FILE_SEPARATOR);
@@ -222,6 +240,10 @@ public class CrudCodeGenTest_A1_sql {
 		if (StringUtils.hasText(dataModel.getEntity().getTableComments())) {
 			sb.append(" ");
 			sb.append(dataModel.getEntity().getTableComments());
+		}
+		if (StringUtils.hasText(pathnameSuffix)) {
+			sb.append("-");
+			sb.append(pathnameSuffix);
 		}
 		sb.append(".sql");
 

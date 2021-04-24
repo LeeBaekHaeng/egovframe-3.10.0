@@ -1,0 +1,63 @@
+##
+#set($voPackage="${package}.service")
+#set($voClassName="${entity.pcName}VO")
+#set($daoPackage="${package}.service.impl")
+#set($daoClassName="${entity.pcName}DAO")
+#set($daoName="${entity.ccName}DAO")
+#set($daoInstanceName="${entity.ccName}DAO")
+##
+##
+#set($namespace="$entity.pcName")
+#set($resultMapId="${entity.ccName}")
+#set($resultMapClass="${voPackage}.${voClassName}")
+##
+##
+#set($insertQueryId="${daoClassName}.insert${entity.pcName}")
+#set($updateQueryId="${daoInstanceName}.update${entity.pcName}_S")
+#set($deleteQueryId="${daoInstanceName}.delete${entity.pcName}_S")
+#set($selectQueryId="${daoInstanceName}.select${entity.pcName}_S")
+#set($selectListQueryId="${daoInstanceName}.select${entity.pcName}List_D")
+#set($selectListTotCntQueryId="${daoInstanceName}.select${entity.pcName}ListTotCnt_S")
+##
+##
+##
+## ##################################################################################################
+##
+##package=${package}
+##
+##entity.name=${entity.name}
+##entity.ucName=${entity.ucName}
+##entity.lcName=${entity.lcName}
+##entity.ccName=${entity.ccName}
+##entity.pcName=${entity.pcName}
+##
+##/* ${insertQueryId} */
+/* insert${entity.pcName} */
+INSERT INTO ${entity.name} ( /* $!{entity.tableComments} */
+#set($i=0)	
+#foreach($attribute in $attributes)
+#if($i == 0)
+       ${attribute.name} /* $!{attribute.columnComments} */
+#elseif($i < ($attributes.size() - 1))
+     , ${attribute.name} /* $!{attribute.columnComments} */
+#else
+     , ${attribute.name} /* $!{attribute.columnComments} */
+#end
+#set($i=$i+1)
+#end
+##
+)
+VALUES (
+#set($i=0)	
+#foreach($attribute in $attributes)
+#if($i == 0)
+       ${attribute.values} /* $!{attribute.columnComments} */
+#elseif($i < ($attributes.size() - 1))
+     , ${attribute.values} /* $!{attribute.columnComments} */
+#else
+     , ${attribute.values} /* $!{attribute.columnComments} */
+#end
+#set($i=$i+1)
+#end
+)
+;
