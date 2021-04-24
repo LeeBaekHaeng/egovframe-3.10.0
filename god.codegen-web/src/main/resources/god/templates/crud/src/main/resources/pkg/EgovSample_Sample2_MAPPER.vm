@@ -7,77 +7,81 @@
 #set($daoInstanceName="${entity.ccName}DAO")
 ##
 ##
-#set($namespace="$entity.pcName")
-#set($resultMapId="${entity.ccName}")
+#set($namespace="$daoPackage.$entity.pcNameMapper")
+#set($resultMapId="resultMap${entity.pcName}")
 #set($resultMapClass="${voPackage}.${voClassName}")
 ##
 ##
-#set($insertQueryId="${daoInstanceName}.insert${entity.pcName}_S")
-#set($updateQueryId="${daoInstanceName}.update${entity.pcName}_S")
-#set($deleteQueryId="${daoInstanceName}.delete${entity.pcName}_S")
-#set($selectQueryId="${daoInstanceName}.select${entity.pcName}_S")
-#set($selectListQueryId="${daoInstanceName}.select${entity.pcName}List_D")
-#set($selectListTotCntQueryId="${daoInstanceName}.select${entity.pcName}ListTotCnt_S")
+#set($insertQueryId="insert${entity.pcName}")
+#set($updateQueryId="update${entity.pcName}")
+#set($deleteQueryId="delete${entity.pcName}")
+#set($selectQueryId="select${entity.pcName}")
+#set($selectListQueryId="select${entity.pcName}List")
+#set($selectListTotCntQueryId="select${entity.pcName}ListCount")
 ##
 ##
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="$namespace">
-	
+
 ## --------------------------------------------------------------------------------------------------------
-	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-	<typeAlias  alias="searchVO" type="egovframework.rte.cmmn.SampleDefaultVO"/>
-	
+##	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+##	<typeAlias  alias="searchVO" type="egovframework.rte.cmmn.SampleDefaultVO"/>
+##
 ## --------------------------------------------------------------------------------------------------------
 	<resultMap id="$resultMapId" class="$resultMapClass">
 #set($i=0)	
 #foreach($attribute in $attributes)
 #set($i=$i+1)	
-		<result property="${attribute.ccName}" column="${attribute.name}" columnIndex="$i"/>
+		<result property="${attribute.ccName}" column="${attribute.name}" columnIndex="$i"/> <!-- ${attribute.columnComments} -->
 #end		
 	</resultMap>
 	
 ## ##################################################################################################
 	<insert id="${insertQueryId}">
-		<![CDATA[
-			INSERT INTO ${entity.name} 
+<![CDATA[
+/* ${insertQueryId} */
+INSERT INTO ${entity.tableName} ( /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-				( ${attribute.name}
+       ${attribute.name} /* ${attribute.columnComments} */
 #elseif($i < ($attributes.size() - 1))
-				  , ${attribute.name}
+     , ${attribute.name} /* ${attribute.columnComments} */
 #else
-				  , ${attribute.name} )
+     , ${attribute.name} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
 ##
+)
+VALUES (
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-			VALUES ( #{${attribute.ccName}}
+        #{${attribute.ccName}}
 #elseif($i < ($attributes.size() - 1))
-				  , #{${attribute.ccName}}
+     , #{${attribute.ccName}} /* ${attribute.columnComments} */
 #else
-				  , #{${attribute.ccName}} )
+     , #{${attribute.ccName}} ) /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
-		]]>
+]]>
 	</insert>
-	
+
 ## ##################################################################################################	
 	<update id="${updateQueryId}">
-		<![CDATA[
-			UPDATE ${entity.name}
+<![CDATA[
+/* ${updateQueryId} */
+UPDATE ${entity.tableName} SET /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-			SET ${attribute.name}=#{${attribute.ccName}}
+       ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #else
-				, ${attribute.name}=#{${attribute.ccName}}
+     , ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end	
@@ -85,94 +89,114 @@
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
-			WHERE ${attribute.name}=#{${attribute.ccName}}
+ WHERE ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #else
-				AND ${attribute.name}=#{${attribute.ccName}}
+   AND ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
-		]]>
+]]>
 	</update>
-	
+
 ## ##################################################################################################
 	<delete id="${deleteQueryId}">
-		<![CDATA[
-			DELETE FROM ${entity.name} 
+<![CDATA[
+/* ${deleteQueryId} */
+DELETE FROM ${entity.tableName} /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
-			WHERE ${attribute.name}=#{${attribute.ccName}}
+ WHERE ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #else
-				AND ${attribute.name}=#{${attribute.ccName}}
+   AND ${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
-		]]>
+]]>
 	</delete>
-	
+
 ## ##################################################################################################	
-	<select id="${selectQueryId}" resultMap="$resultMapId">
-		<![CDATA[
-			SELECT
+	<select id="${selectQueryId}" parameterType="$resultMapClass" resultMap="$resultMapId">
+<![CDATA[
+/* ${selectQueryId} */
+SELECT
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-				${attribute.name}
+       A.${attribute.name} /* ${attribute.columnComments} */
 #else
-				, ${attribute.name}
+     , A.${attribute.name} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end				
-			FROM ${entity.name}
+  FROM ${entity.tableName} A /* ${entity.tableComments} */
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
-			WHERE ${attribute.name}=#{${attribute.ccName}}
+ WHERE A.${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #else
-				AND ${attribute.name}=#{${attribute.ccName}}
+   AND A.${attribute.name} = #{${attribute.ccName}} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
-		]]>
+]]>
 	</select>
-	
-## ##################################################################################################	
-	<select id="${selectListQueryId}" parameterType="searchVO" resultType="egovMap">
 
-			SELECT
+## ##################################################################################################	
+	<select id="${selectListQueryId}" parameterType="$resultMapClass" resultType="egovMap">
+<![CDATA[
+SELECT * FROM ( SELECT ROWNUM RN, TB.* FROM (
+SELECT /*+ INDEX_DESC(A A_PK) */
 #set($i=0)	
 #foreach($attribute in $attributes)
 #if($i == 0)
-				${attribute.name}
+       ${attribute.name} /* ${attribute.columnComments} */
 #else
-				, ${attribute.name}
+     , ${attribute.name} /* ${attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end	
-			FROM ${entity.name}
-			WHERE 1=1
-			<isEqual prepend="AND" property="searchCondition" compareValue="0">
-				${attributes.get(0).name} = #{searchKeyword}
-			</isEqual>
-			<isEqual prepend="AND" property="searchCondition" compareValue="1">
-				${attributes.get(1).name} LIKE '%' || #{searchKeyword} || '%'
-			</isEqual>
-			ORDER BY ID DESC
-			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+  FROM ${entity.tableName} A /* ${entity.tableComments} */
+WHERE 1 = 1
+#set($i=0)	
+#foreach($attribute in $primaryKeys)
+#if($i == 0)
+--   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+#else
+--   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+#end
+#set($i=$i+1)
+#end
+-- ORDER BY
+#set($i=0)	
+#foreach($attribute in $primaryKeys)
+#if($i == 0)
+--       A.${attribute.name} /* $!{attribute.columnComments} */
+#else
+--     , A.${attribute.name} /* $!{attribute.columnComments} */
+#end
+#set($i=$i+1)
+#end
+) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+]]>
 	</select>
-	
-## ##################################################################################################	
-	<select id="${selectListTotCntQueryId}" parameterType="searchVO" resultType="int">
 
-			SELECT COUNT(*) totcnt
-			FROM ${entity.name}
-			WHERE 1=1
-			<isEqual prepend="AND" property="searchCondition" compareValue="0">
-				${attributes.get(0).name} = #{searchKeyword}
-			</isEqual>
-			<isEqual prepend="AND" property="searchCondition" compareValue="1">
-				${attributes.get(1).name} LIKE '%' || #{searchKeyword} || '%'
-			</isEqual>
+## ##################################################################################################	
+	<select id="${selectListTotCntQueryId}" parameterType="$resultMapClass" resultType="int">
+<![CDATA[
+SELECT COUNT(*) COUNT
+  FROM ${entity.tableName} A /* ${entity.tableComments} */
+ WHERE 1 = 1
+#set($i=0)	
+#foreach($attribute in $primaryKeys)
+#if($i == 0)
+--   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+#else
+--   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+#end
+#set($i=$i+1)
+#end
+]]>
 	</select>
 
 </mapper>

@@ -156,7 +156,7 @@ public class CrudCodeGenTest_C1_VO {
 			entity.setTableComments(tableComments);
 			dataModel.setEntity(entity);
 
-			dataModel.setPackageName("test.god.codegen." + package1 + "." + package2 + "." + package3);
+			dataModel.setPackageName("god.test." + package1 + "." + package2 + "." + package3);
 			dataModel.setAuthor("이백행");
 			dataModel.setTeam("갓팀");
 			dataModel.setCreateDate(createDate);
@@ -215,6 +215,10 @@ public class CrudCodeGenTest_C1_VO {
 			data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/java/pkg/service/Sample2VO.vm");
 			writeStringToFile(dataModel, data, "VO.java");
 
+			data = crudCodeGen.generate(dataModel,
+					"god/templates/crud/src/main/resources/pkg/EgovSample_Sample2_MAPPER.vm");
+			writeStringToFile(dataModel, data, "_SQL_oracle.xml");
+
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
@@ -237,16 +241,25 @@ public class CrudCodeGenTest_C1_VO {
 	private File getFile(DataModelContext dataModel, String pathnameSuffix) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(FILE_PATHNAME);
-		sb.append(SystemUtils.FILE_SEPARATOR);
-		sb.append(dataModel.getPackageName().replaceAll("\\.", "/"));
-		if (".java".equals(pathnameSuffix)) {
-			sb.append("/service");
-		} else if ("VO.java".equals(pathnameSuffix)) {
-			sb.append("/service");
+
+		if ("_SQL_oracle.xml".equals(pathnameSuffix)) {
+			sb.append("/main/resources/god/mapper/test/");
+			sb.append(dataModel.getPackageName().replaceAll("god.test", "").replaceAll("\\.", "/"));
+			sb.append(SystemUtils.FILE_SEPARATOR);
+			sb.append(dataModel.getEntity().getName());
+			sb.append(pathnameSuffix);
+		} else {
+			sb.append("/main/java/");
+			sb.append(dataModel.getPackageName().replaceAll("\\.", "/"));
+			if (".java".equals(pathnameSuffix)) {
+				sb.append("/service");
+			} else if ("VO.java".equals(pathnameSuffix)) {
+				sb.append("/service");
+			}
+			sb.append(SystemUtils.FILE_SEPARATOR);
+			sb.append(dataModel.getEntity().getName());
+			sb.append(pathnameSuffix);
 		}
-		sb.append(SystemUtils.FILE_SEPARATOR);
-		sb.append(dataModel.getEntity().getName());
-		sb.append(pathnameSuffix);
 
 		log.debug("FILE_PATHNAME={}", FILE_PATHNAME);
 		log.debug("pathname={}", sb);
