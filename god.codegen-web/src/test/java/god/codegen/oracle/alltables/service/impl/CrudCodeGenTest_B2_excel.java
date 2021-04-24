@@ -46,7 +46,7 @@ import model.Entity;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { CrudCodeGenTest_B1_excel.class })
+@ContextConfiguration(classes = { CrudCodeGenTest_B2_excel.class })
 @ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
@@ -62,7 +62,7 @@ import model.Entity;
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class,
 						AllTabColsMapper.class }) })
 
-public class CrudCodeGenTest_B1_excel {
+public class CrudCodeGenTest_B2_excel {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
 			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel";
@@ -156,8 +156,8 @@ public class CrudCodeGenTest_B1_excel {
 		int size = allTables.size();
 
 		Workbook wb = new XSSFWorkbook();
-		wb.createSheet("테이블");
-		Sheet sheet = wb.getSheet("테이블");
+		wb.createSheet("컬럼");
+		Sheet sheet = wb.getSheet("컬럼");
 		int rownum = 0;
 
 		Row row = sheet.createRow(rownum++);
@@ -169,7 +169,25 @@ public class CrudCodeGenTest_B1_excel {
 		cell.setCellValue("TABLE_NAME");
 
 		cell = row.createCell(column++);
+		cell.setCellValue("COLUMN_NAME");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("DATA_TYPE");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("DATA_LENGTH");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("NULLABLE");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("COLUMN_ID");
+
+		cell = row.createCell(column++);
 		cell.setCellValue("TABLE_COMMENTS");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("COLUMN_COMMENTS");
 
 		for (EgovMap allTable : allTables) {
 			String allTableOwner = (String) allTable.get("owner");
@@ -198,6 +216,7 @@ public class CrudCodeGenTest_B1_excel {
 				String dataType = (String) allTabCol.get("dataType");
 				int dataLength = MapUtils.getIntValue(allTabCol, "dataLength");
 				String nullable = (String) allTabCol.get("nullable");
+				int columnId = MapUtils.getIntValue(allTabCol, "columnId");
 				String allTabColTableComments = (String) allTabCol.get("tableComments");
 				String columnComments = (String) allTabCol.get("columnComments");
 
@@ -210,6 +229,46 @@ public class CrudCodeGenTest_B1_excel {
 					attr.setColumnComments(columnComments);
 					attributes.add(attr);
 					primaryKeys.add(attr);
+
+					// OWNER
+					row = sheet.createRow(rownum);
+					column = 0;
+					cell = row.createCell(column++);
+					cell.setCellValue(allTabColOwner);
+
+					// TABLE_NAME
+					cell = row.createCell(column++);
+					cell.setCellValue(allTabColTableName);
+
+					// COLUMN_NAME
+					cell = row.createCell(column++);
+					cell.setCellValue(columnName);
+
+					// DATA_TYPE
+					cell = row.createCell(column++);
+					cell.setCellValue(dataType);
+
+					// DATA_LENGTH
+					cell = row.createCell(column++);
+					cell.setCellValue(dataLength);
+
+					// NULLABLE
+					cell = row.createCell(column++);
+					cell.setCellValue(nullable);
+
+					// COLUMN_ID
+					cell = row.createCell(column++);
+					cell.setCellValue(columnId);
+
+					// TABLE_COMMENTS
+					cell = row.createCell(column++);
+					cell.setCellValue(allTabColTableComments);
+
+					// COLUMN_COMMENTS
+					cell = row.createCell(column++);
+					cell.setCellValue(columnComments);
+
+					rownum++;
 				}
 			}
 
@@ -218,26 +277,13 @@ public class CrudCodeGenTest_B1_excel {
 
 			dataModels.add(dataModel);
 
-			row = sheet.createRow(rownum);
-			column = 0;
-			cell = row.createCell(column++);
-			cell.setCellValue(allTableOwner);
-
-			cell = row.createCell(column++);
-			cell.setCellValue(allTableTableName);
-
-			cell = row.createCell(column++);
-			cell.setCellValue(allTableTableComments);
-
-			rownum++;
-
 			log.info("select={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
 			i++;
 		}
 
-		String filepath = FILE_PATHNAME + SystemUtils.FILE_SEPARATOR + "테이블.xlsx";
+		String filepath = FILE_PATHNAME + SystemUtils.FILE_SEPARATOR + "컬럼.xlsx";
 		egovExcelService.createWorkbook(wb, filepath);
 	}
 
