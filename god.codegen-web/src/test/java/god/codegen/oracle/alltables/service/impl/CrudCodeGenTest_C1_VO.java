@@ -37,6 +37,7 @@ import egovframework.rte.fdl.excel.util.EgovExcelUtil;
 import egovframework.rte.fdl.string.EgovDateUtil;
 import god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper;
 import lombok.extern.slf4j.Slf4j;
+import model.Attribute;
 import model.DataModelContext;
 import model.Entity;
 import operation.CrudCodeGen;
@@ -65,9 +66,13 @@ public class CrudCodeGenTest_C1_VO {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/src";
 
-	private static final String COLUMN_FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
+	private static final String TABLE_FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
 			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
 			+ SystemUtils.FILE_SEPARATOR + "테이블.xlsx";
+
+	private static final String COLUMN_FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
+			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
+			+ SystemUtils.FILE_SEPARATOR + "컬럼.xlsx";
 
 	@Autowired
 	private ApplicationContext context;
@@ -116,11 +121,12 @@ public class CrudCodeGenTest_C1_VO {
 
 	@Test
 	public void test() throws Exception {
-		String templateName = COLUMN_FILE_PATHNAME;
+		String templateName = TABLE_FILE_PATHNAME;
 		XSSFWorkbook type = new XSSFWorkbook();
 		XSSFWorkbook wb = egovExcelService.loadExcelTemplate(templateName, type);
 
 		Sheet sheet = wb.getSheet("테이블");
+		Sheet columnSheet = columnSheet();
 
 		List<DataModelContext> dataModels = new ArrayList<>();
 
@@ -154,6 +160,39 @@ public class CrudCodeGenTest_C1_VO {
 			dataModel.setAuthor("이백행");
 			dataModel.setTeam("갓팀");
 			dataModel.setCreateDate(createDate);
+
+			List<Attribute> attributes = new ArrayList<Attribute>();
+			List<Attribute> primaryKeys = new ArrayList<Attribute>();
+
+			for (Row columnRow : columnSheet) {
+				if (columnRow.getRowNum() == 0) {
+					continue;
+				}
+
+				String allTabColOwner = EgovExcelUtil.getValue(columnRow.getCell(0));
+				String allTabColTableName = EgovExcelUtil.getValue(columnRow.getCell(1));
+				String columnName = EgovExcelUtil.getValue(columnRow.getCell(2));
+				String dataType = EgovExcelUtil.getValue(columnRow.getCell(3));
+				int dataLength = Integer.valueOf(EgovExcelUtil.getValue(columnRow.getCell(4)));
+				String nullable = EgovExcelUtil.getValue(columnRow.getCell(5));
+//				String columnId = EgovExcelUtil.getValue(columnRow.getCell(6));
+				String allTabColTableComments = EgovExcelUtil.getValue(columnRow.getCell(7));
+				String columnComments = EgovExcelUtil.getValue(columnRow.getCell(8));
+
+				if (allTabColOwner.equals(owner) && tableName.equals(allTabColTableName)) {
+					Attribute attr = new Attribute(columnName);
+					attr.setType(dataType);
+					attr.setNullable(nullable);
+					attr.setDataLength(dataLength);
+					attr.setTableComments(allTabColTableComments);
+					attr.setColumnComments(columnComments);
+					attributes.add(attr);
+					primaryKeys.add(attr);
+				}
+			}
+
+			dataModel.setAttributes(attributes);
+			dataModel.setPrimaryKeys(primaryKeys);
 
 			dataModels.add(dataModel);
 
@@ -208,6 +247,14 @@ public class CrudCodeGenTest_C1_VO {
 		log.debug("pathname={}", sb);
 
 		return new File(sb.toString());
+	}
+
+	private Sheet columnSheet() throws Exception {
+		String templateName = COLUMN_FILE_PATHNAME;
+		XSSFWorkbook type = new XSSFWorkbook();
+		XSSFWorkbook wb = egovExcelService.loadExcelTemplate(templateName, type);
+
+		return wb.getSheet("컬럼");
 	}
 
 }

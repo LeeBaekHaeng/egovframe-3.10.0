@@ -5,6 +5,8 @@
 ##
 package $voPackage;
 
+import java.time.LocalDateTime;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -28,22 +30,32 @@ public class ${voClassName} extends ComDefaultVO {
 
 #set($i=0)	
 #foreach($attribute in $attributes)
-    /** ${attribute.name} */
-    private ${attribute.javaType} ${attribute.ccName};
-    
+	/** ${attribute.columnComments} */
+	private ${attribute.javaType} ${attribute.ccName};
+
 #set($i=$i+1)
 #end
 ##
 #set($i=0)	
 #foreach($attribute in $attributes)
-    public ${attribute.javaType} get${attribute.pcName}() {
-        return this.${attribute.ccName};
-    }
-    
-    public void set${attribute.pcName}(${attribute.javaType} ${attribute.ccName}) {
-        this.${attribute.ccName} = ${attribute.ccName};
-    }
-    
+	/**
+	 * ${attribute.columnComments}
+	 *
+	 * @return
+	 */
+	public ${attribute.javaType} get${attribute.pcName}() {
+		return this.${attribute.ccName};
+	}
+
+	/**
+	 * ${attribute.columnComments}
+	 *
+	 * @param occrrncDe
+	 */
+	public void set${attribute.pcName}(${attribute.javaType} ${attribute.ccName}) {
+		this.${attribute.ccName} = ${attribute.ccName};
+	}
+
 #set($i=$i+1)
 #end  
 }

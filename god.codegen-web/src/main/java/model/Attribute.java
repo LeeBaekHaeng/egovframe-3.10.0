@@ -21,6 +21,13 @@ public class Attribute extends NameCasing {
 	}
 
 	public void setType(String type) {
+		if ("DATE".equals(type)) {
+			this.javaType = "LocalDateTime";
+		} else if ("NUMBER".equals(type)) {
+			this.javaType = "Long";
+		} else {
+			this.javaType = "String";
+		}
 		this.type = type;
 	}
 
