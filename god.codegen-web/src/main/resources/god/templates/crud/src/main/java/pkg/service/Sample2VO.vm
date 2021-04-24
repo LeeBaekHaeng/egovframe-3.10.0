@@ -5,45 +5,58 @@
 ##
 package $voPackage;
 
-import egovframework.rte.cmmn.SampleDefaultVO;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * @Class Name : ${voClassName}.java
- * @Description : ${entity.pcName} VO class
- * @Modification Information
- * @
- * @  수정일         수정자                   수정내용
- * @ -------    --------    ---------------------------
- * @ ${createDate}    ${author}          최초 생성
+ * <pre>
+ * &#64;Class Name : ${voClassName}.java
+ * &#64;Description : ${entity.pcName} VO class
+ * &#64;Modification Information
+ * &#64;
+ * &#64;  수정일         수정자                   수정내용
+ * &#64; -------    --------    ---------------------------
+ * &#64; ${createDate}    ${author}          최초 생성
  *
- *  @author 실행환경 개발팀 ${author}
- *  @since ${createDate}
- *  @version 1.0
- *  @see
+ *  &#64;author 실행환경 개발팀 ${author}
+ *  &#64;since ${createDate}
+ *  &#64;version 1.0
+ *  &#64;see
  *  
  *  Copyright (C) 2009 by MOSPA  All right reserved.
+ * </pre>
  */
-public class ${voClassName} extends SampleDefaultVO{
-    private static final long serialVersionUID = 1L;
-    
+@SuppressWarnings("serial")
+public class ${voClassName} extends ${entity.pcName} {
+
 #set($i=0)	
 #foreach($attribute in $attributes)
-    /** ${attribute.name} */
-    private ${attribute.javaType} ${attribute.ccName};
-    
+	/** ${attribute.columnComments} */
+	private List<${attribute.javaType}> ${attribute.ccName}s;
+
 #set($i=$i+1)
 #end
 ##
 #set($i=0)	
 #foreach($attribute in $attributes)
-    public ${attribute.javaType} get${attribute.pcName}() {
-        return this.${attribute.ccName};
-    }
-    
-    public void set${attribute.pcName}(${attribute.javaType} ${attribute.ccName}) {
-        this.${attribute.ccName} = ${attribute.ccName};
-    }
-    
+	/**
+	 * ${attribute.columnComments}
+	 *
+	 * @return
+	 */
+	public List<${attribute.javaType}> get${attribute.pcName}s() {
+		return this.${attribute.ccName}s;
+	}
+
+	/**
+	 * ${attribute.columnComments}
+	 *
+	 * @param ${attribute.ccName}s
+	 */
+	public void set${attribute.pcName}(List<${attribute.javaType}> ${attribute.ccName}s) {
+		this.${attribute.ccName}s = ${attribute.ccName}s;
+	}
+
 #set($i=$i+1)
 #end  
 }

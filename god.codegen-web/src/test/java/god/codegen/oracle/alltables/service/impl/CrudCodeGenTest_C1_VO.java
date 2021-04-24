@@ -212,6 +212,9 @@ public class CrudCodeGenTest_C1_VO {
 			String data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/java/pkg/service/Sample2.vm");
 			writeStringToFile(dataModel, data, ".java");
 
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/java/pkg/service/Sample2VO.vm");
+			writeStringToFile(dataModel, data, "VO.java");
+
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
@@ -237,6 +240,8 @@ public class CrudCodeGenTest_C1_VO {
 		sb.append(SystemUtils.FILE_SEPARATOR);
 		sb.append(dataModel.getPackageName().replaceAll("\\.", "/"));
 		if (".java".equals(pathnameSuffix)) {
+			sb.append("/service");
+		} else if ("VO.java".equals(pathnameSuffix)) {
 			sb.append("/service");
 		}
 		sb.append(SystemUtils.FILE_SEPARATOR);

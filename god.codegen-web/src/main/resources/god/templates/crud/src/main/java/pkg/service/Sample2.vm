@@ -10,20 +10,22 @@ import java.time.LocalDateTime;
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
- * @Class Name : ${voClassName}.java
- * @Description : ${entity.pcName} class
- * @Modification Information
- * @
- * @  수정일         수정자                   수정내용
- * @ -------    --------    ---------------------------
- * @ ${createDate}    ${author}          최초 생성
+ * <pre>
+ * &#64;Class Name : ${voClassName}.java
+ * &#64;Description : ${entity.pcName} class
+ * &#64;Modification Information
+ * &#64;
+ * &#64;  수정일         수정자                   수정내용
+ * &#64; -------    --------    ---------------------------
+ * &#64; ${createDate}    ${author}          최초 생성
  *
- *  @author 실행환경 개발팀 ${author}
- *  @since ${createDate}
- *  @version 1.0
- *  @see
+ *  &#64;author 실행환경 개발팀 ${author}
+ *  &#64;since ${createDate}
+ *  &#64;version 1.0
+ *  &#64;see
  *  
  *  Copyright (C) 2009 by MOSPA  All right reserved.
+ * </pre>
  */
 @SuppressWarnings("serial")
 public class ${voClassName} extends ComDefaultVO {
@@ -50,7 +52,7 @@ public class ${voClassName} extends ComDefaultVO {
 	/**
 	 * ${attribute.columnComments}
 	 *
-	 * @param occrrncDe
+	 * @param ${attribute.ccName}
 	 */
 	public void set${attribute.pcName}(${attribute.javaType} ${attribute.ccName}) {
 		this.${attribute.ccName} = ${attribute.ccName};
