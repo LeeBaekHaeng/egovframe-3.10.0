@@ -140,6 +140,15 @@ SELECT
 #set($i=$i+1)
 #end
 ]]>
+
+#foreach($attribute in $primaryKeys)
+		<if test="${attribute.ccName} != null">
+<![CDATA[
+   AND A.${attribute.name} = #{${attribute.ccName}} /* $!{attribute.columnComments} */
+]]>
+		</if>
+#end
+
 	</select>
 
 ## ##################################################################################################	
@@ -167,6 +176,17 @@ WHERE 1 = 1
 #end
 #set($i=$i+1)
 #end
+]]>
+
+#foreach($attribute in $primaryKeys)
+		<if test="${attribute.ccName} != null">
+<![CDATA[
+   AND A.${attribute.name} = #{${attribute.ccName}} /* $!{attribute.columnComments} */
+]]>
+		</if>
+
+#end
+<![CDATA[
 -- ORDER BY
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
@@ -197,6 +217,15 @@ SELECT COUNT(*) COUNT
 #set($i=$i+1)
 #end
 ]]>
+
+#foreach($attribute in $primaryKeys)
+		<if test="${attribute.ccName} != null">
+<![CDATA[
+   AND A.${attribute.name} = #{${attribute.ccName}} /* $!{attribute.columnComments} */
+]]>
+		</if>
+#end
+
 	</select>
 
 </mapper>
