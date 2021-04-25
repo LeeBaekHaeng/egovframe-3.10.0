@@ -59,7 +59,7 @@ public interface ${daoClassName} {
 	 * @param vo - 등록할 정보가 담긴 ${voClassName}
 	 * @return 등록 결과
 	 */
-	String ${insertMethodName}(${voClassName} vo);
+	int ${insertMethodName}(${voClassName} vo);
 
 	/**
 	 * ${entity.name} ${entity.tableComments}을 수정한다.

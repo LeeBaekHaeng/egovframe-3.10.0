@@ -190,6 +190,12 @@ public class CrudCodeGenTest_B2_excel {
 		cell = row.createCell(column++);
 		cell.setCellValue("COLUMN_COMMENTS");
 
+		cell = row.createCell(column++);
+		cell.setCellValue("PK");
+
+		cell = row.createCell(column++);
+		cell.setCellValue("FK");
+
 		for (EgovMap allTable : allTables) {
 			String allTableOwner = (String) allTable.get("owner");
 			String allTableTableName = (String) allTable.get("tableName");
@@ -220,6 +226,8 @@ public class CrudCodeGenTest_B2_excel {
 				int columnId = MapUtils.getIntValue(allTabCol, "columnId");
 				String allTabColTableComments = (String) allTabCol.get("tableComments");
 				String columnComments = (String) allTabCol.get("columnComments");
+				String pk = (String) allTabCol.get("pk");
+				String fk = (String) allTabCol.get("fk");
 
 				if (allTabColOwner.equals(allTableOwner) && allTableTableName.equals(allTabColTableName)) {
 					Attribute attr = new Attribute(columnName);
@@ -268,6 +276,14 @@ public class CrudCodeGenTest_B2_excel {
 					// COLUMN_COMMENTS
 					cell = row.createCell(column++);
 					cell.setCellValue(columnComments);
+
+					// PK
+					cell = row.createCell(column++);
+					cell.setCellValue(pk);
+
+					// FK
+					cell = row.createCell(column++);
+					cell.setCellValue(fk);
 
 					rownum++;
 				}

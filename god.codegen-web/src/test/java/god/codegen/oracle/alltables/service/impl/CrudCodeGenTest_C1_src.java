@@ -178,6 +178,8 @@ public class CrudCodeGenTest_C1_src {
 //				String columnId = EgovExcelUtil.getValue(columnRow.getCell(6));
 				String allTabColTableComments = EgovExcelUtil.getValue(columnRow.getCell(7));
 				String columnComments = EgovExcelUtil.getValue(columnRow.getCell(8));
+				String pk = EgovExcelUtil.getValue(columnRow.getCell(9));
+				String fk = EgovExcelUtil.getValue(columnRow.getCell(10));
 
 				if (allTabColOwner.equals(owner) && tableName.equals(allTabColTableName)) {
 					Attribute attr = new Attribute(columnName);
@@ -186,8 +188,13 @@ public class CrudCodeGenTest_C1_src {
 					attr.setDataLength(dataLength);
 					attr.setTableComments(allTabColTableComments);
 					attr.setColumnComments(columnComments);
+					attr.setPk(pk);
+					attr.setFk(fk);
 					attributes.add(attr);
-					primaryKeys.add(attr);
+
+					if ("Y".equals(pk)) {
+						primaryKeys.add(attr);
+					}
 				}
 			}
 

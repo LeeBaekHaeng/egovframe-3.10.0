@@ -35,6 +35,8 @@ public class Attribute extends NameCasing {
 	private int dataLength;
 	private String tableComments;
 	private String columnComments;
+	private String pk;
+	private String fk;
 
 	public String getNullable() {
 		return nullable;
@@ -66,6 +68,22 @@ public class Attribute extends NameCasing {
 
 	public void setColumnComments(String columnComments) {
 		this.columnComments = columnComments;
+	}
+
+	public String getPk() {
+		return pk;
+	}
+
+	public void setPk(String pk) {
+		this.pk = pk;
+	}
+
+	public String getFk() {
+		return fk;
+	}
+
+	public void setFk(String fk) {
+		this.fk = fk;
 	}
 
 	public String getValues() {
