@@ -79,7 +79,6 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 *
 	 * @param vo - 등록할 정보가 담긴 ${voClassName}
 	 * @return 등록 결과
-	 * @exception Exception
 	 */
 	public String ${insertMethodName}(${voClassName} vo) {
 		egovLogger.debug(vo.toString());
@@ -102,7 +101,6 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 *
 	 * @param vo - 수정할 정보가 담긴 ${voClassName}
 	 * @return void형
-	 * @exception Exception
 	 */
 	public int ${updateMethodName}(${voClassName} vo) {
 		return ${daoInstanceName}.${updateMethodName2}(vo);
@@ -112,8 +110,7 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 * ${entity.name} ${entity.tableComments}을 삭제한다.
 	 *
 	 * @param vo - 삭제할 정보가 담긴 ${voClassName}
-	 * @return void형 
-	 * @exception Exception
+	 * @return void형
 	 */
 	public int ${deleteMethodName}(${voClassName} vo) {
 		return ${daoInstanceName}.${deleteMethodName2}(vo);
@@ -124,7 +121,6 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 *
 	 * @param vo - 조회할 정보가 담긴 ${voClassName}
 	 * @return 조회한 ${entity.name}
-	 * @exception Exception
 	 */
 	public ${voClassName} ${selectMethodName}(${voClassName} vo) {
 		${voClassName} result = ${daoInstanceName}.${selectMethodName2}(vo);
@@ -138,7 +134,6 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 *
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return ${entity.name} 목록
-	 * @exception Exception
 	 */
 	public List<EgovMap> ${selectListMethodName}(${voClassName} vo) {
 		return ${daoInstanceName}.${selectListMethodName2}(vo);
@@ -149,7 +144,6 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	 *
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return ${entity.name} 총 갯수
-	 * @exception
 	 */
 	public int ${selectListTotCntMethodName}(${voClassName} vo) {
 		return ${daoInstanceName}.${selectListTotCntMethodName2}(vo);

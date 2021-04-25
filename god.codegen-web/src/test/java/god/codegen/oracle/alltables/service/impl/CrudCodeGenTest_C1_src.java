@@ -44,7 +44,7 @@ import operation.CrudCodeGen;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { CrudCodeGenTest_C1_VO.class })
+@ContextConfiguration(classes = { CrudCodeGenTest_C1_src.class })
 @ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
@@ -60,7 +60,7 @@ import operation.CrudCodeGen;
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class,
 						AllTabColsMapper.class }) })
 
-public class CrudCodeGenTest_C1_VO {
+public class CrudCodeGenTest_C1_src {
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
 
@@ -231,6 +231,9 @@ public class CrudCodeGenTest_C1_VO {
 					"god/templates/crud/src/main/java/pkg/service/impl/EgovSample2ServiceImpl.vm");
 			writeStringToFile(dataModel, data, "ServiceImpl.java");
 
+//			data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/java/pkg/web/EgovSample2Controller.vm");
+//			writeStringToFile(dataModel, data, "Controller.java");
+
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
@@ -273,6 +276,8 @@ public class CrudCodeGenTest_C1_VO {
 				sb.append("/service");
 			} else if ("ServiceImpl.java".equals(pathnameSuffix)) {
 				sb.append("/service/impl");
+			} else if ("Controller.java".equals(pathnameSuffix)) {
+				sb.append("/web");
 			}
 			sb.append(SystemUtils.FILE_SEPARATOR);
 			sb.append(dataModel.getEntity().getName());
