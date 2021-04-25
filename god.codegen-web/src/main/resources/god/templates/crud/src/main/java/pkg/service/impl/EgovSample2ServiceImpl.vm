@@ -71,7 +71,7 @@ public class ${serviceImplClassName} extends EgovAbstractServiceImpl implements 
 	private ${daoClassName} ${daoInstanceName};
 
 	@Autowired
-	@Qualifier("${egovIdGnrServiceInstanceName}")
+//	@Qualifier("${egovIdGnrServiceInstanceName}")
 	private EgovIdGnrService ${egovIdGnrServiceInstanceName};
 
 	/**

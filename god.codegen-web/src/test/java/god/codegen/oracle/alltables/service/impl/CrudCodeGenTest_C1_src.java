@@ -234,6 +234,10 @@ public class CrudCodeGenTest_C1_src {
 //			data = crudCodeGen.generate(dataModel, "god/templates/crud/src/main/java/pkg/web/EgovSample2Controller.vm");
 //			writeStringToFile(dataModel, data, "Controller.java");
 
+			data = crudCodeGen.generate(dataModel,
+					"god/templates/crud/src/main/java/pkg/web/EgovSample2RestController.vm");
+			writeStringToFile(dataModel, data, "RestController.java");
+
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
 
@@ -277,6 +281,8 @@ public class CrudCodeGenTest_C1_src {
 			} else if ("ServiceImpl.java".equals(pathnameSuffix)) {
 				sb.append("/service/impl");
 			} else if ("Controller.java".equals(pathnameSuffix)) {
+				sb.append("/web");
+			} else if ("RestController.java".equals(pathnameSuffix)) {
 				sb.append("/web");
 			}
 			sb.append(SystemUtils.FILE_SEPARATOR);
