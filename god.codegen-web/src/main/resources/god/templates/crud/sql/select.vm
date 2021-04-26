@@ -18,9 +18,9 @@ SELECT /*+ INDEX_DESC(A A_PK) */
 #set($i=0)	
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
--- WHERE A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+ WHERE A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
 #else
---   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end

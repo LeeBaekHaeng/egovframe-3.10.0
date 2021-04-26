@@ -31,12 +31,30 @@ public class Attribute extends NameCasing {
 		this.type = type;
 	}
 
+	private String owner;
+	private String tableName;
 	private String nullable;
 	private int dataLength;
 	private String tableComments;
 	private String columnComments;
 	private String pk;
 	private String fk;
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 
 	public String getNullable() {
 		return nullable;

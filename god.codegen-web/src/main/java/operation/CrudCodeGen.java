@@ -44,6 +44,7 @@ public class CrudCodeGen {
 		context.put("primaryKeys", dataModel.getPrimaryKeys());
 		context.put("createDate", dataModel.getCreateDate());
 		context.put("author", dataModel.getAuthor());
+		context.put("team", dataModel.getTeam());
 
 		Template template = null;
 

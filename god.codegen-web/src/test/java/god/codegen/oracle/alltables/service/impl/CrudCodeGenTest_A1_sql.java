@@ -98,16 +98,17 @@ public class CrudCodeGenTest_A1_sql {
 
 		List<String> owners = new ArrayList<>();
 		owners.add("COM");
-		owners.add("COM320");
+//		owners.add("COM320");
 		allTablesVO.setOwners(owners);
 
 //		allTablesVO.setOwner("COM");
-////		allTablesVO.setTableName("COMTCADMINISTCODE");
+		allTablesVO.setTableName("COMTCADMINISTCODE");
 //		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
 
 		AllTabColsVO allTabColsVO = new AllTabColsVO();
 		allTabColsVO.setOwner(allTablesVO.getOwner());
 		allTabColsVO.setTableName(allTablesVO.getTableName());
+		allTabColsVO.setOwners(owners);
 
 		// when
 		List<EgovMap> allTables = allTablesMapper.selectList(allTablesVO);
@@ -127,12 +128,14 @@ public class CrudCodeGenTest_A1_sql {
 			String allTableOwner = (String) allTable.get("owner");
 			String allTableTableName = (String) allTable.get("tableName");
 			String allTableTableComments = (String) allTable.get("tableComments");
+			String pkName = (String) allTable.get("pkName");
 
 			DataModelContext dataModel = new DataModelContext();
 
 			Entity entity = new Entity(allTableTableName);
 			entity.setOwner(allTableOwner);
 			entity.setTableComments(allTableTableComments);
+			entity.setPkName(pkName);
 			dataModel.setEntity(entity);
 
 			dataModel.setPackageName("god.codegen." + entity.getLcName());
@@ -152,16 +155,21 @@ public class CrudCodeGenTest_A1_sql {
 				String nullable = (String) allTabCol.get("nullable");
 				String allTabColTableComments = (String) allTabCol.get("tableComments");
 				String columnComments = (String) allTabCol.get("columnComments");
+				String pk = (String) allTabCol.get("pk");
 
 				if (allTabColOwner.equals(allTableOwner) && allTableTableName.equals(allTabColTableName)) {
 					Attribute attr = new Attribute(columnName);
+					attr.setOwner(allTabColOwner);
+					attr.setTableName(allTabColTableName);
 					attr.setType(dataType);
 					attr.setNullable(nullable);
 					attr.setDataLength(dataLength);
 					attr.setTableComments(allTabColTableComments);
 					attr.setColumnComments(columnComments);
 					attributes.add(attr);
-					primaryKeys.add(attr);
+					if ("Y".equals(pk)) {
+						primaryKeys.add(attr);
+					}
 				}
 			}
 
