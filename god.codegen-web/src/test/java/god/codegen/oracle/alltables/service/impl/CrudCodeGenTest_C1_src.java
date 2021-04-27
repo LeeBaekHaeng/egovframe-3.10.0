@@ -49,11 +49,16 @@ import operation.CrudCodeGen;
 
 @Configuration
 
-@ImportResource({ "classpath*:/egovframework/spring/com/context-crypto.xml",
+@ImportResource({
+
+		"classpath*:/egovframework/spring/com/context-crypto.xml",
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-mapper-god-oracle.xml",
-		"classpath*:/egovframework/spring/com/test-context-common.xml" })
+
+		"classpath*:/egovframework/spring/com/test-context-common.xml",
+
+})
 
 @ComponentScan(useDefaultFilters = false, basePackages = {
 		"god.codegen.oracle.alltables.service.impl" }, includeFilters = {
@@ -66,13 +71,9 @@ public class CrudCodeGenTest_C1_src {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/src";
 
-	private static final String TABLE_FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
-			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
-			+ SystemUtils.FILE_SEPARATOR + "테이블.xlsx";
+	private static final String TABLE_FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/excel/테이블.xlsx";
 
-	private static final String COLUMN_FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
-			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "excel"
-			+ SystemUtils.FILE_SEPARATOR + "컬럼.xlsx";
+	private static final String COLUMN_FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/excel/컬럼.xlsx";
 
 	@Autowired
 	private ApplicationContext context;
@@ -81,31 +82,10 @@ public class CrudCodeGenTest_C1_src {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		log.info("start");
-		log.info("setUpBeforeClass");
+		log.debug("setUpBeforeClass");
+
+		log.debug("start");
 		STOP_WATCH.start();
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		log.info("stop");
-		log.info("tearDownAfterClass");
-
-		STOP_WATCH.stop();
-
-		log.info("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
-		log.info("getTotalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
-	}
-
-	@Before
-	public void setUp() throws Exception {
-		log.info("setUp");
-
-		String[] beanDefinitionNames = context.getBeanDefinitionNames();
-
-		for (String beanDefinitionName : beanDefinitionNames) {
-			log.debug("beanDefinitionName={}", beanDefinitionName);
-		}
 
 		try {
 			FileUtils.forceDelete(new File(FILE_PATHNAME));
@@ -114,9 +94,31 @@ public class CrudCodeGenTest_C1_src {
 		}
 	}
 
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		log.debug("tearDownAfterClass");
+
+		log.debug("stop");
+		STOP_WATCH.stop();
+
+		log.debug("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+		log.debug("getTotalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		log.debug("setUp");
+
+		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+
+		for (String beanDefinitionName : beanDefinitionNames) {
+			log.debug("beanDefinitionName={}", beanDefinitionName);
+		}
+	}
+
 	@After
 	public void tearDown() throws Exception {
-		log.info("tearDown");
+		log.debug("tearDown");
 	}
 
 	@Test
@@ -205,6 +207,7 @@ public class CrudCodeGenTest_C1_src {
 
 			log.info("select={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
+			log.info("");
 
 			i++;
 		}
@@ -247,6 +250,7 @@ public class CrudCodeGenTest_C1_src {
 
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
+			log.info("");
 
 			j++;
 		}
@@ -273,6 +277,7 @@ public class CrudCodeGenTest_C1_src {
 			sb.append(dataModel.getPackageName().replaceAll("god.test", "").replaceAll("\\.", "/"));
 			sb.append(SystemUtils.FILE_SEPARATOR);
 			sb.append(dataModel.getEntity().getName());
+			sb.append("Mapper");
 			sb.append(pathnameSuffix);
 		} else {
 			sb.append("/main/java/");
