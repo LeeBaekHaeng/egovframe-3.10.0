@@ -9,6 +9,6 @@ import god.codegen.oracle.alltabcols.service.AllTabColsVO;
 @Mapper
 public interface AllTabColsMapper {
 
-	List<EgovMap> selectList(AllTabColsVO vo);
+	List<EgovMap> selectAllTabColsList(AllTabColsVO vo);
 
 }

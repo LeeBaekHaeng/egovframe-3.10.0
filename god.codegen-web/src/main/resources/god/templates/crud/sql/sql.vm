@@ -32,7 +32,7 @@
 ##entity.pcName=${entity.pcName}
 ##
 ##/* ${insertQueryId} */
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 INSERT /* insert${entity.pcName} */
   INTO ${entity.name} (  /* $!{entity.tableComments} */
 #set($i=0)
@@ -64,7 +64,7 @@ VALUES (
 ;
 
 ## ##################################################################################################
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 UPDATE /* update${entity.pcName} */
        ${entity.name}  /* $!{entity.tableComments} */
 #set($i=0)
@@ -89,7 +89,7 @@ UPDATE /* update${entity.pcName} */
 ;
 
 ## ##################################################################################################
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 DELETE /* delete${entity.pcName} */
   FROM ${entity.name}  /* $!{entity.tableComments} */
 #set($i=0)
@@ -110,7 +110,7 @@ L, M, N
 X, Y, Z
 */
 
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 SELECT /* select${entity.pcName} */
 #set($i=0)
 #foreach($attribute in $attributes)
@@ -140,7 +140,7 @@ L, M, N
 X, Y, Z
 */
 
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 SELECT * FROM ( SELECT ROWNUM RN, TB.* FROM (
 SELECT /* select${entity.pcName}List */
        /*+ INDEX_DESC(A $entity.pkName) */
@@ -185,7 +185,7 @@ L, M, N
 X, Y, Z
 */
 
-/* $team, $entity.tableComments, $author */
+/* $team, $!{entity.tableComments}, $author */
 SELECT /* select${entity.pcName}ListCount */
        COUNT(*) COUNT
   FROM ${entity.name} A  /* $!{entity.tableComments} */

@@ -111,7 +111,7 @@ public class CrudCodeGenTest_A2_sql {
 
 		// when
 		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(allTablesVO);
-		List<EgovMap> allTabCols = allTabColsMapper.selectList(allTabColsVO);
+		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(allTabColsVO);
 
 		// then
 //		assertEquals(results.get(0).get("owner"), vo.getOwner());

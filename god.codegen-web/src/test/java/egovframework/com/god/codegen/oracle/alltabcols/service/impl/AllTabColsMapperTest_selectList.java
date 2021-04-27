@@ -73,7 +73,7 @@ public class AllTabColsMapperTest_selectList {
 		vo.setOwner("COM");
 
 		// when
-		List<EgovMap> results = dao.selectList(vo);
+		List<EgovMap> results = dao.selectAllTabColsList(vo);
 
 		// then
 		assertEquals(results.get(0).get("owner"), vo.getOwner());

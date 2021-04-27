@@ -5,12 +5,13 @@
 <mapper
 	namespace="god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper">
 
-	<select id="selectList"
+	<select id="selectAllTabColsList"
 		parameterType="god.codegen.oracle.alltabcols.service.AllTabColsVO"
 		resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
 
 <![CDATA[
-SELECT /* AllTabColsDAO.selectList */
+/* 갓팀, 모든 테이블 컬럼, 이백행 */
+SELECT /* selectAllTabColsList */
        A.OWNER
      , A.TABLE_NAME
      , A.COLUMN_NAME
@@ -40,6 +41,24 @@ SELECT /* AllTabColsDAO.selectList */
 ]]>
 		</if>
 
+
+		<if test="owners != null">
+			<foreach collection="owners" item="item"
+				open="   AND A.OWNER IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+		<if test="tableNames != null">
+			<foreach collection="tableNames" item="item"
+				open="   AND A.TABLE_NAME IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
 
 <![CDATA[
  ORDER BY A.OWNER, A.TABLE_NAME, A.COLUMN_ID

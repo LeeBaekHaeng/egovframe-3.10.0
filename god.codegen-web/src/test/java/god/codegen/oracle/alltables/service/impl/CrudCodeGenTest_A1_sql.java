@@ -11,7 +11,10 @@ import java.util.List;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +48,16 @@ import operation.CrudCodeGen;
 
 @Configuration
 
-@ImportResource({ "classpath*:/egovframework/spring/com/context-crypto.xml",
+@ImportResource({
+
+		"classpath*:/egovframework/spring/com/context-crypto.xml",
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-mapper-god-oracle.xml",
-		"classpath*:/egovframework/spring/com/test-context-common.xml" })
+
+		"classpath*:/egovframework/spring/com/test-context-common.xml",
+
+})
 
 @ComponentScan(useDefaultFilters = false, basePackages = {
 		"god.codegen.oracle.alltables.service.impl" }, includeFilters = {
@@ -57,6 +65,10 @@ import operation.CrudCodeGen;
 						AllTabColsMapper.class }) })
 
 public class CrudCodeGenTest_A1_sql {
+
+	private static final StopWatch STOP_WATCH = new StopWatch();
+
+	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/sql";
 
 	@Autowired
 	private ApplicationContext context;
@@ -67,16 +79,12 @@ public class CrudCodeGenTest_A1_sql {
 	@Autowired
 	private AllTabColsMapper allTabColsMapper;
 
-	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + SystemUtils.FILE_SEPARATOR + "Desktop"
-			+ SystemUtils.FILE_SEPARATOR + "god.codegen" + SystemUtils.FILE_SEPARATOR + "sql";
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		log.debug("setUpBeforeClass");
 
-	@Before
-	public void setUp() throws Exception {
-		String[] beanDefinitionNames = context.getBeanDefinitionNames();
-
-		for (String beanDefinitionName : beanDefinitionNames) {
-			log.debug("beanDefinitionName={}", beanDefinitionName);
-		}
+		log.debug("start");
+		STOP_WATCH.start();
 
 		try {
 			FileUtils.forceDelete(new File(FILE_PATHNAME));
@@ -85,34 +93,65 @@ public class CrudCodeGenTest_A1_sql {
 		}
 	}
 
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		log.debug("tearDownAfterClass");
+
+		log.debug("stop");
+		STOP_WATCH.stop();
+
+		log.debug("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+		log.debug("getTotalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		log.debug("setUp");
+
+		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+
+		for (String beanDefinitionName : beanDefinitionNames) {
+			log.debug("beanDefinitionName={}", beanDefinitionName);
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		log.debug("tearDown");
+	}
+
 	@Test
 	public void test() throws Exception {
 		log.info("start");
 		log.info("select 중");
 
-		StopWatch watch = new StopWatch();
-		watch.start();
-
 		// given
 		AllTablesVO allTablesVO = new AllTablesVO();
 
+//		allTablesVO.setOwner("COM");
+//		allTablesVO.setOwner("COM320");
+//		allTablesVO.setTableName("COMTCADMINISTCODE");
+//		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
+
 		List<String> owners = new ArrayList<>();
 		owners.add("COM");
-//		owners.add("COM320");
+		owners.add("COM320");
 		allTablesVO.setOwners(owners);
 
-//		allTablesVO.setOwner("COM");
-		allTablesVO.setTableName("COMTCADMINISTCODE");
-//		allTablesVO.setTableName("COMTCADMINISTCODERECPTNLOG");
+		List<String> tableNames = new ArrayList<>();
+//		tableNames.add("COMTCADMINISTCODE");
+//		tableNames.add("COMTCADMINISTCODERECPTNLOG");
+		allTablesVO.setTableNames(tableNames);
 
 		AllTabColsVO allTabColsVO = new AllTabColsVO();
 		allTabColsVO.setOwner(allTablesVO.getOwner());
 		allTabColsVO.setTableName(allTablesVO.getTableName());
 		allTabColsVO.setOwners(owners);
+		allTabColsVO.setTableNames(tableNames);
 
 		// when
 		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(allTablesVO);
-		List<EgovMap> allTabCols = allTabColsMapper.selectList(allTabColsVO);
+		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(allTabColsVO);
 
 		// then
 //		assertEquals(results.get(0).get("owner"), vo.getOwner());
@@ -180,6 +219,7 @@ public class CrudCodeGenTest_A1_sql {
 
 			log.info("select={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
+			log.info("");
 
 			i++;
 		}
@@ -196,14 +236,10 @@ public class CrudCodeGenTest_A1_sql {
 
 			log.info("writeStringToFile={} of {}, {}, {}, {}", j, size, dataModel.getEntity().getOwner(),
 					dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
+			log.info("");
 
 			j++;
 		}
-
-		watch.stop();
-
-		log.info("getTotalTimeMillis={}", watch.getTotalTimeMillis());
-		log.info("getTotalTimeSeconds={}", watch.getTotalTimeSeconds());
 	}
 
 	private void writeStringToFile(DataModelContext dataModel, String data) {
@@ -219,18 +255,27 @@ public class CrudCodeGenTest_A1_sql {
 	}
 
 	private File getFile(DataModelContext dataModel) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(FILE_PATHNAME);
-		sb.append(SystemUtils.FILE_SEPARATOR);
+		boolean hasText = StringUtils.hasText(dataModel.getEntity().getTableComments());
+
+		StringBuffer sb = new StringBuffer(FILE_PATHNAME);
+
+		sb.append("/");
 		sb.append(dataModel.getEntity().getOwner());
-		sb.append(SystemUtils.FILE_SEPARATOR);
+
+		sb.append("/");
 		sb.append(dataModel.getEntity().getName());
-		sb.append(SystemUtils.FILE_SEPARATOR);
-		sb.append(dataModel.getEntity().getName());
-		if (StringUtils.hasText(dataModel.getEntity().getTableComments())) {
+		if (hasText) {
 			sb.append(" ");
 			sb.append(dataModel.getEntity().getTableComments());
 		}
+
+		sb.append("/");
+		sb.append(dataModel.getEntity().getName());
+		if (hasText) {
+			sb.append(" ");
+			sb.append(dataModel.getEntity().getTableComments());
+		}
+
 		sb.append(".sql");
 
 		log.debug("FILE_PATHNAME={}", FILE_PATHNAME);

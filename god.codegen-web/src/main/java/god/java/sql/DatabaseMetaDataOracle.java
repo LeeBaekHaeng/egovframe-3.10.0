@@ -56,7 +56,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 		AllTabColsVO vo = new AllTabColsVO();
 		vo.setOwner(schemaPattern);
 
-		List<EgovMap> allTabCols = allTabColsMapper.selectList(vo);
+		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(vo);
 
 		for (EgovMap allTabCol : allTabCols) {
 			ResultSetColumn column = new ResultSetColumn();

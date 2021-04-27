@@ -10,7 +10,7 @@
 
 <![CDATA[
 /* 갓팀, 모든 테이블, 이백행 */
-SELECT /* select */
+SELECT /* selectAllTablesList */
        A.OWNER
        , A.TABLE_NAME
        , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) AS TABLE_COMMENTS
