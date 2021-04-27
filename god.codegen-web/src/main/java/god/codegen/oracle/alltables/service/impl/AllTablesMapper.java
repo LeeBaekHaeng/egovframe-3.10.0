@@ -9,6 +9,6 @@ import god.codegen.oracle.alltables.service.AllTablesVO;
 @Mapper
 public interface AllTablesMapper {
 
-	List<EgovMap> selectList(AllTablesVO vo);
+	List<EgovMap> selectAllTablesList(AllTablesVO vo);
 
 }

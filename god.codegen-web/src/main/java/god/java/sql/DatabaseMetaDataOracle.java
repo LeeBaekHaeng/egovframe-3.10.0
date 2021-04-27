@@ -35,7 +35,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 //		owners.add(schemaPattern);
 //		vo.setOwners(owners);
 
-		List<EgovMap> allTables = allTablesMapper.selectList(vo);
+		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(vo);
 
 		for (EgovMap allTable : allTables) {
 			ResultSeTable table = new ResultSeTable();

@@ -110,7 +110,7 @@ public class CrudCodeGenTest_A2_sql {
 		allTabColsVO.setTableName(allTablesVO.getTableName());
 
 		// when
-		List<EgovMap> allTables = allTablesMapper.selectList(allTablesVO);
+		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(allTablesVO);
 		List<EgovMap> allTabCols = allTabColsMapper.selectList(allTabColsVO);
 
 		// then

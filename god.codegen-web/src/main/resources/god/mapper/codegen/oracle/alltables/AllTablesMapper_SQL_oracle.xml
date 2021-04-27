@@ -4,19 +4,32 @@
 <mapper
 	namespace="god.codegen.oracle.alltables.service.impl.AllTablesMapper">
 
-	<select id="selectList"
+	<select id="selectAllTablesList"
 		parameterType="god.codegen.oracle.alltables.service.AllTablesVO"
 		resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
 
 <![CDATA[
+/* 갓팀, 모든 테이블, 이백행 */
 SELECT /* select */
        A.OWNER
        , A.TABLE_NAME
-       , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) TABLE_COMMENTS
-       , (SELECT L.CONSTRAINT_NAME FROM ALL_CONSTRAINTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME AND EXISTS (SELECT 1 FROM ALL_CONSTRAINTS X WHERE X.OWNER = L.OWNER AND X.CONSTRAINT_NAME = L.CONSTRAINT_NAME AND X.CONSTRAINT_TYPE = 'P' AND X.TABLE_NAME = L.TABLE_NAME)) PK_NAME
+       , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) AS TABLE_COMMENTS
+       , (SELECT L.CONSTRAINT_NAME FROM ALL_CONSTRAINTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME AND EXISTS (SELECT 1 FROM ALL_CONSTRAINTS X WHERE X.OWNER = L.OWNER AND X.CONSTRAINT_NAME = L.CONSTRAINT_NAME AND X.CONSTRAINT_TYPE = 'P' AND X.TABLE_NAME = L.TABLE_NAME)) AS PK_NAME
   FROM ALL_TABLES A
  WHERE 1 = 1
 ]]>
+
+		<if test="owner != null">
+<![CDATA[
+   AND A.OWNER = #{owner}
+]]>
+		</if>
+
+		<if test="tableName != null">
+<![CDATA[
+   AND A.TABLE_NAME = #{tableName}
+]]>
+		</if>
 
 		<if test="owners != null">
 			<foreach collection="owners" item="item"
@@ -35,19 +48,6 @@ SELECT /* select */
 ]]>
 			</foreach>
 		</if>
-
-		<if test="owner != null">
-<![CDATA[
-   AND A.OWNER = #{owner}
-]]>
-		</if>
-
-		<if test="tableName != null">
-<![CDATA[
-   AND A.TABLE_NAME = #{tableName}
-]]>
-		</if>
-
 
 <![CDATA[
  ORDER BY A.OWNER, A.TABLE_NAME
