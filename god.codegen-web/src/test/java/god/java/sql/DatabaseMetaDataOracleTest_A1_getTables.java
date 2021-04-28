@@ -84,9 +84,9 @@ public class DatabaseMetaDataOracleTest_A1_getTables {
 	public void test() throws Exception {
 		log.info("test");
 
-		List<ResultSeTable> tables = databaseMetaData.getTables(null, "COM", null, null);
+		List<Table> tables = databaseMetaData.getTables(null, "COM", null, null);
 
-		for (ResultSeTable table : tables) {
+		for (Table table : tables) {
 			log.debug("getTableName={}", table.getTableName());
 			log.debug("getRemarks={}", table.getRemarks());
 		}

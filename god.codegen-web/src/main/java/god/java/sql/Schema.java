@@ -1,6 +1,6 @@
 package god.java.sql;
 
-public class ResultSetSchema {
+public class Schema {
 
 	private String tableSchem;
 	private String tableCatalog;

@@ -23,10 +23,10 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<ResultSeTable> getTables(String catalog, String schemaPattern, String tableNamePattern,
+	public List<Table> getTables(String catalog, String schemaPattern, String tableNamePattern,
 			String[] types) {
 
-		List<ResultSeTable> tables = new ArrayList<>();
+		List<Table> tables = new ArrayList<>();
 
 		AllTablesVO vo = new AllTablesVO();
 		vo.setOwner(schemaPattern);
@@ -38,7 +38,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(vo);
 
 		for (EgovMap allTable : allTables) {
-			ResultSeTable table = new ResultSeTable();
+			Table table = new Table();
 			table.setTableName((String) allTable.get("tableName"));
 			table.setRemarks((String) allTable.get("tableComments"));
 			tables.add(table);
@@ -48,10 +48,10 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<ResultSetColumn> getColumns(String catalog, String schemaPattern, String tableNamePattern,
+	public List<Column> getColumns(String catalog, String schemaPattern, String tableNamePattern,
 			String columnNamePattern) {
 
-		List<ResultSetColumn> columns = new ArrayList<>();
+		List<Column> columns = new ArrayList<>();
 
 		AllTabColsVO vo = new AllTabColsVO();
 		vo.setOwner(schemaPattern);
@@ -59,7 +59,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(vo);
 
 		for (EgovMap allTabCol : allTabCols) {
-			ResultSetColumn column = new ResultSetColumn();
+			Column column = new Column();
 			column.setTableName((String) allTabCol.get("tableName"));
 			column.setColumnName((String) allTabCol.get("columnName"));
 			column.setRemarks((String) allTabCol.get("tableComments"));
@@ -70,9 +70,9 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<ResultSetSchema> getSchemas(String catalog, String schemaPattern) {
+	public List<Schema> getSchemas(String catalog, String schemaPattern) {
 
-		List<ResultSetSchema> schemas = new ArrayList<>();
+		List<Schema> schemas = new ArrayList<>();
 
 		return schemas;
 	}

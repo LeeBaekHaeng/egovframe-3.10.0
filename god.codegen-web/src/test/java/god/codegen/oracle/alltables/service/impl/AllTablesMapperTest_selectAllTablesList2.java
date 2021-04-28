@@ -23,13 +23,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
 
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import god.codegen.oracle.alltables.service.AllTablesVO;
+import god.java.sql.TableVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { AllTablesMapperTest_selectList.class })
+@ContextConfiguration(classes = { AllTablesMapperTest_selectAllTablesList2.class })
 @ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 		"god.codegen.oracle.alltables.service.impl" }, includeFilters = {
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class }) })
 
-public class AllTablesMapperTest_selectList {
+public class AllTablesMapperTest_selectAllTablesList2 {
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
 
@@ -118,20 +118,21 @@ public class AllTablesMapperTest_selectList {
 		vo.setTableNames(tableNames);
 
 		// when
-		List<EgovMap> results = mapper.selectAllTablesList(vo);
+		List<TableVO> results = mapper.selectAllTablesList2(vo);
 
 		// then
-		assertEquals(results.get(0).get("owner"), owners.get(0));
+		assertEquals(results.get(0).getTableSchem(), owners.get(0));
 
 		log.debug("results={}", results);
 		log.debug("size={}", results.size());
 
 		results.forEach(result -> {
 			log.debug("result={}", result);
-			log.debug("owner={}", result.get("owner"));
-			log.debug("tableName={}", result.get("tableName"));
-			log.debug("tableComments={}", result.get("tableComments"));
-			log.debug("pkName={}", result.get("pkName"));
+			log.debug("getTableSchem={}", result.getTableSchem());
+			log.debug("getTableName={}", result.getTableName());
+			log.debug("getRemarks={}", result.getRemarks());
+
+			log.debug("getPkName={}", result.getPkName());
 			log.debug("");
 		});
 	}

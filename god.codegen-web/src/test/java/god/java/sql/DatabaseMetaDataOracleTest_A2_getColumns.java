@@ -84,9 +84,9 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 	public void test() throws Exception {
 		log.info("test");
 
-		List<ResultSetColumn> columns = databaseMetaData.getColumns(null, "COM", null, null);
+		List<Column> columns = databaseMetaData.getColumns(null, "COM", null, null);
 
-		for (ResultSetColumn column : columns) {
+		for (Column column : columns) {
 			log.debug("getTableName={}", column.getTableName());
 			log.debug("getColumnName={}", column.getColumnName());
 			log.debug("getRemarks={}", column.getRemarks());

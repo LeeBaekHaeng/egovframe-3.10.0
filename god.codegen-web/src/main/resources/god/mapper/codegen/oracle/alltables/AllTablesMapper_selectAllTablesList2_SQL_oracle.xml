@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="god.codegen.oracle.alltables.service.impl.AllTablesMapper">
+
+	<resultMap id="resultMapTableVO" type="god.java.sql.TableVO">
+		<result property="tableSchem" column="OWNER" />
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="remarks" column="TABLE_COMMENTS" />
+
+		<result property="pkName" column="PK_NAME" />
+	</resultMap>
+
+	<select id="selectAllTablesList2"
+		parameterType="god.codegen.oracle.alltables.service.AllTablesVO"
+		resultMap="resultMapTableVO">
+
+<![CDATA[
+/* 갓팀, 모든 테이블, 이백행 */
+SELECT /* selectAllTablesList2 */
+       A.OWNER
+       , A.TABLE_NAME
+       , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) AS TABLE_COMMENTS
+       , (SELECT L.CONSTRAINT_NAME FROM ALL_CONSTRAINTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME AND EXISTS (SELECT 1 FROM ALL_CONSTRAINTS X WHERE X.OWNER = L.OWNER AND X.CONSTRAINT_NAME = L.CONSTRAINT_NAME AND X.CONSTRAINT_TYPE = 'P' AND X.TABLE_NAME = L.TABLE_NAME)) AS PK_NAME
+  FROM ALL_TABLES A
+ WHERE 1 = 1
+]]>
+
+		<if test="owner != null">
+<![CDATA[
+   AND A.OWNER = #{owner}
+]]>
+		</if>
+
+		<if test="tableName != null">
+<![CDATA[
+   AND A.TABLE_NAME = #{tableName}
+]]>
+		</if>
+
+		<if test="owners != null">
+			<foreach collection="owners" item="item"
+				open="   AND A.OWNER IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+		<if test="tableNames != null">
+			<foreach collection="tableNames" item="item"
+				open="   AND A.TABLE_NAME IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+<![CDATA[
+ ORDER BY A.OWNER, A.TABLE_NAME
+]]>
+
+	</select>
+
+</mapper>

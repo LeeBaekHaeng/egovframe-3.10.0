@@ -1,6 +1,6 @@
 package god.java.sql;
 
-public class ResultSeTable {
+public class Table {
 
 	private String tableCat;
 	private String tableSchem;
