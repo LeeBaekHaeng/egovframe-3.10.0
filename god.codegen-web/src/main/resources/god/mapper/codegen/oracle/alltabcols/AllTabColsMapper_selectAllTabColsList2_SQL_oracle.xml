@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:38 
+	KST 2016 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper">
+
+	<resultMap id="resultMapColumnVO"
+		type="god.java.sql.ColumnVO">
+		<result property="tableSchem" column="OWNER" />
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="columnName" column="COLUMN_NAME" />
+		<result property="typeName" column="DATA_TYPE" />
+		<result property="columnSize" column="DATA_LENGTH" />
+		<result property="isNullable" column="NULLABLE" />
+
+		<result property="columnId" column="COLUMN_ID" />
+		<result property="tableRemarks" column="TABLE_COMMENTS" />
+
+		<result property="remarks" column="COLUMN_COMMENTS" />
+
+		<result property="pk" column="PK" />
+	</resultMap>
+
+	<select id="selectAllTabColsList2"
+		parameterType="god.codegen.oracle.alltabcols.service.AllTabColsVO"
+		resultMap="resultMapColumnVO">
+
+<![CDATA[
+/* 갓팀, 모든 테이블 컬럼, 이백행 */
+SELECT /* selectAllTabColsList2 */
+       A.OWNER
+     , A.TABLE_NAME
+     , A.COLUMN_NAME
+     , A.DATA_TYPE
+     , A.DATA_LENGTH
+     , A.DATA_PRECISION
+     , A.DATA_SCALE
+     , A.NULLABLE
+     , A.COLUMN_ID
+     , A.DATA_DEFAULT
+     , (SELECT L.COMMENTS FROM ALL_TAB_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME) AS TABLE_COMMENTS
+     , (SELECT L.COMMENTS FROM ALL_COL_COMMENTS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME AND L.COLUMN_NAME = A.COLUMN_NAME) AS COLUMN_COMMENTS
+     , (SELECT 'Y' FROM ALL_CONS_COLUMNS L WHERE L.OWNER = A.OWNER AND L.TABLE_NAME = A.TABLE_NAME AND L.COLUMN_NAME = A.COLUMN_NAME AND EXISTS (SELECT 1 FROM ALL_CONSTRAINTS X WHERE X.OWNER = L.OWNER AND X.CONSTRAINT_NAME = L.CONSTRAINT_NAME AND X.CONSTRAINT_TYPE = 'P' AND X.TABLE_NAME = L.TABLE_NAME)) AS PK
+  FROM ALL_TAB_COLS A
+ WHERE 1 = 1
+]]>
+
+		<if test="owner != null">
+<![CDATA[
+   AND A.OWNER = #{owner}
+]]>
+		</if>
+
+		<if test="tableName != null">
+<![CDATA[
+   AND A.TABLE_NAME = #{tableName}
+]]>
+		</if>
+
+
+		<if test="owners != null">
+			<foreach collection="owners" item="item"
+				open="   AND A.OWNER IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+		<if test="tableNames != null">
+			<foreach collection="tableNames" item="item"
+				open="   AND A.TABLE_NAME IN (" close=")" separator=",">
+<![CDATA[
+#{item}
+]]>
+			</foreach>
+		</if>
+
+<![CDATA[
+ ORDER BY A.OWNER, A.TABLE_NAME, A.COLUMN_ID
+]]>
+
+	</select>
+
+</mapper>

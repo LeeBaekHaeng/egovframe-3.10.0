@@ -84,7 +84,12 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 	public void test() throws Exception {
 		log.info("test");
 
-		List<Column> columns = databaseMetaData.getColumns(null, "COM", null, null);
+		String catalog = "";
+		String schemaPattern = "COM";
+		String tableNamePattern = "COMTCADMINISTCODE";
+		String columnNamePattern = "";
+
+		List<Column> columns = databaseMetaData.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
 
 		for (Column column : columns) {
 			log.debug("getTableName={}", column.getTableName());

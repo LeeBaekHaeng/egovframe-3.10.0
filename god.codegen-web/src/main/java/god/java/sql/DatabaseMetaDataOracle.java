@@ -23,8 +23,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<Table> getTables(String catalog, String schemaPattern, String tableNamePattern,
-			String[] types) {
+	public List<Table> getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) {
 
 		List<Table> tables = new ArrayList<>();
 
@@ -55,6 +54,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 
 		AllTabColsVO vo = new AllTabColsVO();
 		vo.setOwner(schemaPattern);
+		vo.setTableName(tableNamePattern);
 
 		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(vo);
 
@@ -62,7 +62,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 			Column column = new Column();
 			column.setTableName((String) allTabCol.get("tableName"));
 			column.setColumnName((String) allTabCol.get("columnName"));
-			column.setRemarks((String) allTabCol.get("tableComments"));
+			column.setRemarks((String) allTabCol.get("columnComments"));
 			columns.add(column);
 		}
 
