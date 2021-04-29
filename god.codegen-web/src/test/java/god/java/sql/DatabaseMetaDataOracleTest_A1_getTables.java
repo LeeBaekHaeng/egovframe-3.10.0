@@ -29,14 +29,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 
-@ImportResource({ "classpath*:/egovframework/spring/com/context-crypto.xml",
-		"classpath*:/egovframework/spring/com/context-datasource.xml",
-		"classpath*:/egovframework/spring/com/context-mapper.xml",
-		"classpath*:/egovframework/spring/com/context-mapper-god-oracle.xml",
-		"classpath*:/egovframework/spring/com/test-context-common.xml" })
+@ImportResource({
 
-@ComponentScan(useDefaultFilters = true, basePackages = { "god" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {}) })
+//		"classpath*:egovframework/spring/com/**/context-*.xml",
+
+		"classpath*:egovframework/spring/com/context-crypto.xml",
+		"classpath*:egovframework/spring/com/context-datasource.xml",
+		"classpath*:egovframework/spring/com/context-mapper.xml",
+		"classpath*:egovframework/spring/com/context-mapper-god-oracle.xml",
+
+		"classpath*:egovframework/spring/com/test-context-common.xml",
+
+})
+
+@ComponentScan(useDefaultFilters = false, basePackages = { "god" }, includeFilters = {
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { DatabaseMetaData.class }) })
 
 public class DatabaseMetaDataOracleTest_A1_getTables {
 
@@ -51,6 +58,8 @@ public class DatabaseMetaDataOracleTest_A1_getTables {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		log.info("setUpBeforeClass");
+
+		log.info("start");
 		STOP_WATCH.start();
 	}
 
@@ -58,6 +67,7 @@ public class DatabaseMetaDataOracleTest_A1_getTables {
 	public static void tearDownAfterClass() throws Exception {
 		log.info("tearDownAfterClass");
 
+		log.info("stop");
 		STOP_WATCH.stop();
 
 		log.info("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
@@ -84,11 +94,30 @@ public class DatabaseMetaDataOracleTest_A1_getTables {
 	public void test() throws Exception {
 		log.info("test");
 
-		List<Table> tables = databaseMetaData.getTables(null, "COM", null, null);
+		String catalog = "";
+		String schemaPattern = "COM";
+		String tableNamePattern = "COMTCADMINISTCODE";
+		String types[] = { "", "" };
 
-		for (Table table : tables) {
+		List<TableVO> tables = databaseMetaData.getTables(catalog, schemaPattern, tableNamePattern, types);
+		int size = tables.size();
+		log.debug("tables");
+		log.debug("\n\n\n");
+		log.debug("size={}", size);
+		log.debug("\n\n\n");
+
+		for (TableVO table : tables) {
+			log.debug("getTableCat={}", table.getTableCat());
+			log.debug("getTableSchem={}", table.getTableSchem());
 			log.debug("getTableName={}", table.getTableName());
+			log.debug("getTableType={}", table.getTableType());
 			log.debug("getRemarks={}", table.getRemarks());
+			log.debug("getTypeCat={}", table.getTypeCat());
+			log.debug("getTypeSchem={}", table.getTypeSchem());
+			log.debug("getTypeName={}", table.getTypeName());
+			log.debug("getSelfReferencingColName={}", table.getSelfReferencingColName());
+			log.debug("getRefGeneration={}", table.getRefGeneration());
+			log.debug("\n\n\n");
 		}
 	}
 

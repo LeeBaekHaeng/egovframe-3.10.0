@@ -23,9 +23,9 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<Table> getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) {
+	public List<TableVO> getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) {
 
-		List<Table> tables = new ArrayList<>();
+		List<TableVO> tables = new ArrayList<>();
 
 		AllTablesVO vo = new AllTablesVO();
 		vo.setOwner(schemaPattern);
@@ -34,12 +34,22 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 //		owners.add(schemaPattern);
 //		vo.setOwners(owners);
 
+		vo.setTableName(tableNamePattern);
+
 		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(vo);
 
 		for (EgovMap allTable : allTables) {
-			Table table = new Table();
+			TableVO table = new TableVO();
+			table.setTableCat((String) allTable.get("tableCat"));
+			table.setTableSchem((String) allTable.get("owner"));
 			table.setTableName((String) allTable.get("tableName"));
+			table.setTableType((String) allTable.get("tableType"));
 			table.setRemarks((String) allTable.get("tableComments"));
+			table.setTypeCat((String) allTable.get("typeCat"));
+			table.setTypeSchem((String) allTable.get("typeSchem"));
+			table.setTypeName((String) allTable.get("typeName"));
+			table.setSelfReferencingColName((String) allTable.get("selfReferencingColName"));
+			table.setRefGeneration((String) allTable.get("refGeneration"));
 			tables.add(table);
 		}
 
@@ -47,10 +57,10 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<Column> getColumns(String catalog, String schemaPattern, String tableNamePattern,
+	public List<ColumnVO> getColumns(String catalog, String schemaPattern, String tableNamePattern,
 			String columnNamePattern) {
 
-		List<Column> columns = new ArrayList<>();
+		List<ColumnVO> columns = new ArrayList<>();
 
 		AllTabColsVO vo = new AllTabColsVO();
 		vo.setOwner(schemaPattern);
@@ -59,7 +69,7 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 		List<EgovMap> allTabCols = allTabColsMapper.selectAllTabColsList(vo);
 
 		for (EgovMap allTabCol : allTabCols) {
-			Column column = new Column();
+			ColumnVO column = new ColumnVO();
 			column.setTableName((String) allTabCol.get("tableName"));
 			column.setColumnName((String) allTabCol.get("columnName"));
 			column.setRemarks((String) allTabCol.get("columnComments"));
@@ -70,9 +80,9 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 	}
 
 	@Override
-	public List<Schema> getSchemas(String catalog, String schemaPattern) {
+	public List<SchemaVO> getSchemas(String catalog, String schemaPattern) {
 
-		List<Schema> schemas = new ArrayList<>();
+		List<SchemaVO> schemas = new ArrayList<>();
 
 		return schemas;
 	}
