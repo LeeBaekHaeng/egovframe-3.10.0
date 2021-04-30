@@ -7,7 +7,7 @@
 	<property name="was.name" value="${project.name}.was" />
 	<property name="web.name" value="${project.name}.web" />
 
-	<property name="src" location="codegen-web-1.0.0" />
+	<property name="src" location="${project.name}-1.0.0" />
 	<property name="build" location="build/dev" />
 	<property name="was.build" location="${build}/${was.name}" />
 	<property name="web.build" location="${build}/${web.name}" />
