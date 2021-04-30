@@ -4,7 +4,7 @@
 	</description>
 	<!-- set global properties for this build -->
 	<property name="project.name" value="codegen-web" />
-	<property name="was.name" value="${project.name}.war" />
+	<property name="was.name" value="${project.name}.was" />
 	<property name="web.name" value="${project.name}.web" />
 
 	<property name="src" location="codegen-web-1.0.0" />
