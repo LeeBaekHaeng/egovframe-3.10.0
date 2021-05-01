@@ -22,9 +22,51 @@
 		<result property="pk" column="PK" />
 	</resultMap>
 
+	<resultMap id="resultMapColumnVO2"
+		type="god.java.sql.ColumnVO">
+		<result property="tableCat" column="TABLE_CAT" />
+
+		<!-- <result property="tableSchem" column="TABLE_SCHEM" /> -->
+		<result property="tableSchem" column="OWNER" />
+
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="columnName" column="COLUMN_NAME" />
+
+		<!-- <result property="dataType" column="DATA_TYPE" /> -->
+		<result property="typeName" column="DATA_TYPE" />
+
+		<result property="columnSize" column="DATA_LENGTH" />
+		<result property="bufferLength" column="BUFFER_LENGTH" />
+		<result property="decimalDigits" column="DECIMAL_DIGITS" />
+		<result property="numPrecRadix" column="NUM_PREC_RADIX" />
+		<!-- <result property="nullable" column="NULLABLE" /> -->
+
+		<!-- <result property="remarks" column="REMARKS" /> -->
+		<result property="remarks" column="COLUMN_COMMENTS" />
+
+		<result property="columnDef" column="COLUMN_DEF" />
+		<result property="sqlDataType" column="SQL_DATA_TYPE" />
+		<result property="sqlDatetimeSub" column="SQL_DATETIME_SUB" />
+		<result property="charOctetLength" column="CHAR_OCTET_LENGTH" />
+		<result property="ordinalPosition" column="ORDINAL_POSITION" />
+
+		<!-- <result property="isNullable" column="IS_NULLABLE" /> -->
+		<result property="isNullable" column="NULLABLE" />
+
+		<result property="scopeCatalog" column="SCOPE_CATALOG" />
+		<result property="scopeSchema" column="SCOPE_SCHEMA" />
+		<result property="scopeTable" column="SCOPE_TABLE" />
+		<result property="sourceDataType" column="SOURCE_DATA_TYPE" />
+		<result property="isAutoincrement" column="IS_AUTOINCREMENT" />
+
+		<result property="columnId" column="COLUMN_ID" />
+		<result property="tableRemarks" column="TABLE_COMMENTS" />
+		<result property="pk" column="PK" />
+	</resultMap>
+
 	<select id="selectAllTabColsList2"
 		parameterType="god.codegen.oracle.alltabcols.service.AllTabColsVO"
-		resultMap="resultMapColumnVO">
+		resultMap="resultMapColumnVO2">
 
 <![CDATA[
 /* 갓팀, 모든 테이블 컬럼, 이백행 */

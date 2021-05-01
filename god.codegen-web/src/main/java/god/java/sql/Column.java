@@ -1,5 +1,8 @@
 package god.java.sql;
 
+import lombok.ToString;
+
+@ToString
 public class Column {
 
 	private String tableCat;
@@ -9,7 +12,7 @@ public class Column {
 	private int dataType;
 	private String typeName;
 	private int columnSize;
-	private String bufferLength;
+	private int bufferLength;
 	private int decimalDigits;
 	private int numPrecRadix;
 	private int nullable;
@@ -83,11 +86,11 @@ public class Column {
 		this.columnSize = columnSize;
 	}
 
-	public String getBufferLength() {
+	public int getBufferLength() {
 		return bufferLength;
 	}
 
-	public void setBufferLength(String bufferLength) {
+	public void setBufferLength(int bufferLength) {
 		this.bufferLength = bufferLength;
 	}
 
