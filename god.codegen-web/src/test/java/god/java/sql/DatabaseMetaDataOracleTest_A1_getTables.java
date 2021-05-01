@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 		"classpath*:egovframework/spring/com/context-crypto.xml",
 		"classpath*:egovframework/spring/com/context-datasource.xml",
+
 		"classpath*:egovframework/spring/com/context-mapper.xml",
 		"classpath*:egovframework/spring/com/context-mapper-god-oracle.xml",
 
@@ -79,6 +80,8 @@ public class DatabaseMetaDataOracleTest_A1_getTables {
 		log.info("setUp");
 
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+
+		log.debug("beanDefinitionNames.length={}", beanDefinitionNames.length);
 
 		for (String beanDefinitionName : beanDefinitionNames) {
 			log.debug("beanDefinitionName={}", beanDefinitionName);

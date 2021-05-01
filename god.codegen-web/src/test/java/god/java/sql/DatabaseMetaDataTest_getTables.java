@@ -86,11 +86,11 @@ public class DatabaseMetaDataTest_getTables {
 
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 
+		log.debug("beanDefinitionNames.length={}", beanDefinitionNames.length);
+
 		for (String beanDefinitionName : beanDefinitionNames) {
 			log.debug("beanDefinitionName={}", beanDefinitionName);
 		}
-
-		log.debug("beanDefinitionName.length={}", beanDefinitionNames.length);
 	}
 
 	@After
@@ -118,7 +118,7 @@ public class DatabaseMetaDataTest_getTables {
 		log.debug("tables={}", tables);
 
 		ResultSetMetaData rsmd = tables.getMetaData();
-		int columnCount = rsmd.getColumnCount() + 1;
+		int columnCount = rsmd.getColumnCount();
 
 //		debug(rsmd, columnCount);
 //		setTableVO(rsmd, columnCount);

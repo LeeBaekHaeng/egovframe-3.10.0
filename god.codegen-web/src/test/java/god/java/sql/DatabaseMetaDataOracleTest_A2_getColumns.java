@@ -29,14 +29,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 
-@ImportResource({ "classpath*:/egovframework/spring/com/context-crypto.xml",
+@ImportResource({
+
+//		"classpath*:egovframework/spring/com/**/context-*.xml",
+
+		"classpath*:/egovframework/spring/com/context-crypto.xml",
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
+
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-mapper-god-oracle.xml",
-		"classpath*:/egovframework/spring/com/test-context-common.xml" })
 
-@ComponentScan(useDefaultFilters = true, basePackages = { "god" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {}) })
+		"classpath*:/egovframework/spring/com/test-context-common.xml",
+
+})
+
+@ComponentScan(useDefaultFilters = false, basePackages = { "god" }, includeFilters = {
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { DatabaseMetaData.class }) })
 
 public class DatabaseMetaDataOracleTest_A2_getColumns {
 
@@ -51,6 +59,8 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		log.info("setUpBeforeClass");
+
+		log.info("start");
 		STOP_WATCH.start();
 	}
 
@@ -58,6 +68,7 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 	public static void tearDownAfterClass() throws Exception {
 		log.info("tearDownAfterClass");
 
+		log.info("stop");
 		STOP_WATCH.stop();
 
 		log.info("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
@@ -70,6 +81,8 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 
+		log.debug("beanDefinitionNames.length={}", beanDefinitionNames.length);
+
 		for (String beanDefinitionName : beanDefinitionNames) {
 			log.debug("beanDefinitionName={}", beanDefinitionName);
 		}
@@ -81,7 +94,7 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		log.info("test");
 
 		String catalog = "";
@@ -92,10 +105,31 @@ public class DatabaseMetaDataOracleTest_A2_getColumns {
 		List<ColumnVO> columns = databaseMetaData.getColumns(catalog, schemaPattern, tableNamePattern,
 				columnNamePattern);
 
-		for (ColumnVO column : columns) {
-			log.debug("getTableName={}", column.getTableName());
-			log.debug("getColumnName={}", column.getColumnName());
-			log.debug("getRemarks={}", column.getRemarks());
+		for (ColumnVO columnVO : columns) {
+			log.debug("tableCat={}", columnVO.getTableCat());
+			log.debug("tableSchem={}", columnVO.getTableSchem());
+			log.debug("tableName={}", columnVO.getTableName());
+			log.debug("columnName={}", columnVO.getColumnName());
+			log.debug("dataType={}", columnVO.getDataType());
+			log.debug("typeName={}", columnVO.getTypeName());
+			log.debug("columnSize={}", columnVO.getColumnSize());
+			log.debug("bufferLength={}", columnVO.getBufferLength());
+			log.debug("decimalDigits={}", columnVO.getDecimalDigits());
+			log.debug("numPrecRadix={}", columnVO.getNumPrecRadix());
+			log.debug("nullable={}", columnVO.getNullable());
+			log.debug("remarks={}", columnVO.getRemarks());
+			log.debug("columnDef={}", columnVO.getColumnDef());
+			log.debug("sqlDataType={}", columnVO.getSqlDataType());
+			log.debug("sqlDatetimeSub={}", columnVO.getSqlDatetimeSub());
+			log.debug("charOctetLength={}", columnVO.getCharOctetLength());
+			log.debug("ordinalPosition={}", columnVO.getOrdinalPosition());
+			log.debug("isNullable={}", columnVO.getIsNullable());
+			log.debug("scopeCatalog={}", columnVO.getScopeCatalog());
+			log.debug("scopeSchema={}", columnVO.getScopeSchema());
+			log.debug("scopeTable={}", columnVO.getScopeTable());
+			log.debug("sourceDataType={}", columnVO.getSourceDataType());
+			log.debug("isAutoincrement={}", columnVO.getIsAutoincrement());
+			log.debug("");
 		}
 	}
 

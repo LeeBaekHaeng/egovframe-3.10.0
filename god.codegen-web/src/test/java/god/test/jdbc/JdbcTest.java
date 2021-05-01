@@ -127,7 +127,7 @@ public class JdbcTest {
 		log.debug("catalogs={}", catalogs);
 
 		ResultSetMetaData rsmd = catalogs.getMetaData();
-		int columnCount = rsmd.getColumnCount() + 1;
+		int columnCount = rsmd.getColumnCount();
 		log.debug("columnCount={}", columnCount);
 		for (int i = 1; i < columnCount; i++) {
 			log.debug("{}={}", i, rsmd.getColumnName(i));
@@ -151,7 +151,7 @@ public class JdbcTest {
 		log.debug("schemas={}", schemas);
 
 		ResultSetMetaData rsmd = schemas.getMetaData();
-		int columnCount = rsmd.getColumnCount() + 1;
+		int columnCount = rsmd.getColumnCount();
 		log.debug("columnCount={}", columnCount);
 		for (int i = 1; i < columnCount; i++) {
 //			log.debug("{}={}", i, rs.getString(i));
