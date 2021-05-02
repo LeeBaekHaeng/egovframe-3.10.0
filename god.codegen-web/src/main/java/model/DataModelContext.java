@@ -71,4 +71,15 @@ public class DataModelContext {
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
+
+	private GodPathname godPathname;
+
+	public GodPathname getGodPathname() {
+		return godPathname;
+	}
+
+	public void setGodPathname(GodPathname godPathname) {
+		this.godPathname = godPathname;
+	}
+
 }

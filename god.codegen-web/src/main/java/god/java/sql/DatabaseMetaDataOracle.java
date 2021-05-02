@@ -107,6 +107,8 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 //			columnVO.setSourceDataType((short) allTabCol.get("sourceDataType"));
 //			columnVO.setIsAutoincrement((String) allTabCol.get("isAutoincrement"));
 
+			columnVO.setPk((String) allTabCol.get("pk"));
+
 			columns.add(columnVO);
 		}
 

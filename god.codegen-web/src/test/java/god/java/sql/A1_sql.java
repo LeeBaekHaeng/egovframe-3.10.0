@@ -18,7 +18,6 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.StringUtils;
 
 import god.codegen.datamodel.service.DataModelService;
 import god.codegen.datamodel.service.DataModelVO;
@@ -67,48 +66,98 @@ public class A1_sql extends GodTestV1 {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/sql";
 
+	private static final String SCHEMA_PATTERN = "COM";
+//	private static final String SCHEMA_PATTERN = "COM320";
+	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
+
 	@Autowired
 	private DataModelService dataModelService;
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		FileUtils.forceDelete(new File(FILE_PATHNAME));
+//		FileUtils.forceDelete(new File(FILE_PATHNAME));
+//		FileUtils.forceDeleteOnExit(new File(FILE_PATHNAME));
+//		FileUtils.deleteDirectory(new File(FILE_PATHNAME));
+		FileUtils.deleteQuietly(new File(FILE_PATHNAME));
 	}
 
 	@Override
 	public void test() {
+
+		DataModelVO dataModelVO = new DataModelVO();
+//		dataModelVO.setSchemaPattern(SCHEMA_PATTERN);
+		dataModelVO.setSchemaPattern(SCHEMA_PATTERN);
+		dataModelVO.setTableNamePattern(TABLE_NAME_PATTERN);
+
+		List<DataModelContext> dataModels = dataModelService.getDataModel(dataModelVO);
+		int size = dataModels.size();
+
+		log.debug("dataModels={}", dataModels);
+		log.debug("size={}", size);
+		log.debug("");
+
+		CrudCodeGen crudCodeGen = new CrudCodeGen();
+
+		int i = 1;
+
+		for (DataModelContext dataModel : dataModels) {
+//			debug(dataModel);
+//			debugGodPathname(dataModel);
+			generate(crudCodeGen, dataModel, i, size);
+			info(dataModel, i, size);
+			i++;
+		}
+
+	}
+
+	private void generate(CrudCodeGen crudCodeGen, DataModelContext dataModel, int i, int size) {
 		try {
-			DataModelVO dataModelVO = new DataModelVO();
-			dataModelVO.setSchemaPattern("COM");
-			dataModelVO.setTableNamePattern("COMTCADMINISTCODE");
+			String data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/sql.vm");
+			writeStringToFile(dataModel, "", data);
 
-			List<DataModelContext> dataModels = dataModelService.getDataModel(dataModelVO);
-			int size = dataModels.size();
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/insert.vm");
+			writeStringToFile(dataModel, "A1-insert", data);
 
-			log.debug("dataModels={}", dataModels);
-			log.debug("size={}", size);
-			log.debug("");
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/select.vm");
+			writeStringToFile(dataModel, "B1-select", data);
 
-			CrudCodeGen crudCodeGen = new CrudCodeGen();
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/selectList.vm");
+			writeStringToFile(dataModel, "C1-selectList", data);
 
-			int i = 1;
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/selectListCount.vm");
+			writeStringToFile(dataModel, "D1-selectListCount", data);
 
-			for (DataModelContext dataModel : dataModels) {
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/update.vm");
+			writeStringToFile(dataModel, "E1-update", data);
 
-				String data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/sql.vm");
-				writeStringToFile(dataModel, data);
-
-				log.info("writeStringToFile={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
-						dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
-				log.info("");
-
-				i++;
-			}
+			data = crudCodeGen.generate(dataModel, "god/templates/crud/sql/delete.vm");
+			writeStringToFile(dataModel, "F1-delete", data);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 	}
+
+	private void writeStringToFile(DataModelContext dataModel, String filename, String data) {
+		File file = new File(FILE_PATHNAME + "/" + dataModel.getGodPathname().getSql(filename));
+		Charset encoding = StandardCharsets.UTF_8;
+//		log.debug("name={}", encoding.name());
+//		log.debug("file={}", file);
+
+		try {
+			FileUtils.writeStringToFile(file, data, encoding);
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
+	}
+
+	private void info(DataModelContext dataModel, int i, int size) {
+		log.info("writeStringToFile={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
+				dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
+		log.info("");
+	}
+
+	// debug
 
 	void debug(DataModelContext dataModel) {
 		log.debug("dataModel={}", dataModel);
@@ -130,46 +179,16 @@ public class A1_sql extends GodTestV1 {
 		log.debug("");
 	}
 
-	private void writeStringToFile(DataModelContext dataModel, String data) {
-		File file = getFile(dataModel);
-		Charset encoding = StandardCharsets.UTF_8;
-		log.debug("name={}", encoding.name());
-
-		try {
-			FileUtils.writeStringToFile(file, data, encoding);
-		} catch (IOException e) {
-			log.error(e.getMessage());
-		}
-	}
-
-	private File getFile(DataModelContext dataModel) {
-		boolean hasText = StringUtils.hasText(dataModel.getEntity().getTableComments());
-
-		StringBuffer sb = new StringBuffer(FILE_PATHNAME);
-
-		sb.append("/");
-		sb.append(dataModel.getEntity().getOwner());
-
-		sb.append("/");
-		sb.append(dataModel.getEntity().getName());
-		if (hasText) {
-			sb.append(" ");
-			sb.append(dataModel.getEntity().getTableComments());
-		}
-
-		sb.append("/");
-		sb.append(dataModel.getEntity().getName());
-		if (hasText) {
-			sb.append(" ");
-			sb.append(dataModel.getEntity().getTableComments());
-		}
-
-		sb.append(".sql");
-
-		log.debug("FILE_PATHNAME={}", FILE_PATHNAME);
-		log.debug("pathname={}", sb);
-
-		return new File(sb.toString());
+	void debugGodPathname(DataModelContext dataModel) {
+		log.debug("dataModel={}", dataModel);
+		log.debug("getSql={}", dataModel.getGodPathname().getSql());
+		log.debug("insert={}", dataModel.getGodPathname().getSql("A1-insert"));
+		log.debug("select={}", dataModel.getGodPathname().getSql("B1-select"));
+		log.debug("selectList={}", dataModel.getGodPathname().getSql("C1-selectList"));
+		log.debug("selectListCount={}", dataModel.getGodPathname().getSql("D1-selectListCount"));
+		log.debug("update={}", dataModel.getGodPathname().getSql("E1-update"));
+		log.debug("delete={}", dataModel.getGodPathname().getSql("F1-delete"));
+		log.debug("");
 	}
 
 }

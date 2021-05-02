@@ -34,7 +34,8 @@
 ##/* ${insertQueryId} */
 /* $team, $!{entity.tableComments}, $author */
 INSERT /* insert${entity.pcName} */
-  INTO ${entity.name} (  /* $!{entity.tableComments} */
+  INTO ${entity.name}  /* $!{entity.tableComments} */
+(
 #set($i=0)
 #foreach($attribute in $attributes)
 #if($i == 0)
@@ -69,12 +70,14 @@ UPDATE /* update${entity.pcName} */
        ${entity.name}  /* $!{entity.tableComments} */
 #set($i=0)
 #foreach($attribute in $attributes)
+#if( $attribute.pk != "Y" )
 #if($i == 0)
    SET ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #else
      , ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
+#end
 #end
 ##
 #set($i=0)

@@ -1,22 +1,24 @@
-/* update${entity.pcName} */
-UPDATE ${entity.name} SET /* $!{entity.tableComments} */
-#set($i=0)	
+/* $team, $!{entity.tableComments}, $author */
+UPDATE /* update${entity.pcName} */
+       ${entity.name}  /* $!{entity.tableComments} */
+#set($i=0)
 #foreach($attribute in $attributes)
+#if( $attribute.pk != "Y" )
 #if($i == 0)
-       ${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+   SET ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #else
-     , ${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+     , ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
-#end	
+#end
+#end
 ##
- WHERE 1 = 1
-#set($i=0)	
+#set($i=0)
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
-   AND ${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+ WHERE ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #else
-   AND ${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+   AND ${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end

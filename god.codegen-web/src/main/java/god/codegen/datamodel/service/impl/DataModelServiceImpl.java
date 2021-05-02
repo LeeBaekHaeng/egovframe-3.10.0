@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import model.Attribute;
 import model.DataModelContext;
 import model.Entity;
+import model.GodPathname;
 
 @Service
 
@@ -109,6 +110,8 @@ public class DataModelServiceImpl implements DataModelService {
 
 		dataModel.setAttributes(attributes);
 		dataModel.setPrimaryKeys(primaryKeys);
+
+		dataModel.setGodPathname(new GodPathname(entity));
 
 		return dataModel;
 	}

@@ -3,24 +3,25 @@ A, B, C
 L, M, N
 X, Y, Z
 */
-/* select${entity.pcName} */
-SELECT /*+ INDEX_DESC(A A_PK) */
-#set($i=0)	
+
+/* $team, $!{entity.tableComments}, $author */
+SELECT /* select${entity.pcName} */
+#set($i=0)
 #foreach($attribute in $attributes)
 #if($i == 0)
-       A.${attribute.name} /* $!{attribute.columnComments} */
+       A.${attribute.name}  /* $!{attribute.columnComments} */
 #else
-     , A.${attribute.name} /* $!{attribute.columnComments} */
+     , A.${attribute.name}  /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
-#end				
-  FROM ${entity.name} A /* $!{entity.tableComments} */
-#set($i=0)	
+#end
+  FROM ${entity.name} A  /* $!{entity.tableComments} */
+#set($i=0)
 #foreach($attribute in $primaryKeys)
 #if($i == 0)
- WHERE A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+ WHERE A.${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #else
-   AND A.${attribute.name} = ${attribute.values} /* $!{attribute.columnComments} */
+   AND A.${attribute.name} = ${attribute.values}  /* $!{attribute.columnComments} */
 #end
 #set($i=$i+1)
 #end
