@@ -66,9 +66,11 @@ public class A1_sql extends GodTestV1 {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/sql";
 
-	private static final String SCHEMA_PATTERN = "COM";
-//	private static final String SCHEMA_PATTERN = "COM320";
-	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
+//	private static final String SCHEMA_PATTERN = "COM";
+	private static final String SCHEMA_PATTERN = "COM320";
+
+	private static final String TABLE_NAME_PATTERN = null;
+//	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
 
 	@Autowired
 	private DataModelService dataModelService;
@@ -154,7 +156,6 @@ public class A1_sql extends GodTestV1 {
 	private void info(DataModelContext dataModel, int i, int size) {
 		log.info("writeStringToFile={} of {}, {}, {}, {}", i, size, dataModel.getEntity().getOwner(),
 				dataModel.getEntity().getName(), dataModel.getEntity().getTableComments());
-		log.info("");
 	}
 
 	// debug

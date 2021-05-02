@@ -21,26 +21,26 @@ public class GodTestV1 {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		log.debug("setUpBeforeClass\n");
+		log.info("setUpBeforeClass\n");
 
-		log.debug("start\n");
+		log.info("start\n");
 		STOP_WATCH.start();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		log.debug("tearDownAfterClass\n");
+		log.info("tearDownAfterClass\n");
 
-		log.debug("stop\n");
+		log.info("stop\n");
 		STOP_WATCH.stop();
 
-		log.debug("getTotalTimeMillis={}\n", STOP_WATCH.getTotalTimeMillis());
-		log.debug("getTotalTimeSeconds={}\n", STOP_WATCH.getTotalTimeSeconds());
+		log.info("getTotalTimeMillis={}\n", STOP_WATCH.getTotalTimeMillis());
+		log.info("getTotalTimeSeconds={}\n", STOP_WATCH.getTotalTimeSeconds());
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		log.debug("setUp\n");
+		log.info("setUp\n");
 
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 
@@ -55,7 +55,7 @@ public class GodTestV1 {
 
 	@After
 	public void tearDown() throws Exception {
-		log.debug("tearDown\n");
+		log.info("tearDown\n");
 	}
 
 	@Test

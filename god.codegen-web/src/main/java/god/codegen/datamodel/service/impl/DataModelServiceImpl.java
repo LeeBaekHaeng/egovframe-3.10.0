@@ -93,18 +93,21 @@ public class DataModelServiceImpl implements DataModelService {
 		List<Attribute> primaryKeys = new ArrayList<Attribute>();
 
 		for (ColumnVO column : columns) {
-			Attribute attr = new Attribute(column.getColumnName());
-			attr.setType(column.getTypeName());
-			attr.setNullable(column.getIsNullable());
-			attr.setDataLength(column.getColumnSize());
-			attr.setTableComments(table.getRemarks());
-			attr.setColumnComments(column.getRemarks());
-			attr.setPk(column.getPk());
+			if (column.getTableSchem().equals(table.getTableSchem())
+					&& column.getTableName().equals(table.getTableName())) {
+				Attribute attr = new Attribute(column.getColumnName());
+				attr.setType(column.getTypeName());
+				attr.setNullable(column.getIsNullable());
+				attr.setDataLength(column.getColumnSize());
+				attr.setTableComments(table.getRemarks());
+				attr.setColumnComments(column.getRemarks());
+				attr.setPk(column.getPk());
 
-			attributes.add(attr);
+				attributes.add(attr);
 
-			if ("Y".equals(column.getPk())) {
-				primaryKeys.add(attr);
+				if ("Y".equals(column.getPk())) {
+					primaryKeys.add(attr);
+				}
 			}
 		}
 

@@ -80,7 +80,10 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 //			columnVO.setRemarks((String) allTabCol.get("columnComments"));
 
 //			columnVO.setTableCat((String) allTabCol.get("tableCat"));
+
 //			columnVO.setTableSchem((String) allTabCol.get("tableSchem"));
+			columnVO.setTableSchem((String) allTabCol.get("owner"));
+
 			columnVO.setTableName((String) allTabCol.get("tableName"));
 			columnVO.setColumnName((String) allTabCol.get("columnName"));
 //			columnVO.setDataType((Integer) allTabCol.get("dataType"));
