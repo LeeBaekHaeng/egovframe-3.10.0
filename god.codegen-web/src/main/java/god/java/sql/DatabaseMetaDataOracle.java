@@ -11,23 +11,17 @@ import god.codegen.oracle.alltabcols.service.AllTabColsVO;
 import god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper;
 import god.codegen.oracle.alltables.service.AllTablesVO;
 import god.codegen.oracle.alltables.service.impl.AllTablesMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class DatabaseMetaDataOracle implements DatabaseMetaData {
 
 	private final AllTablesMapper allTablesMapper;
 	private final AllTabColsMapper allTabColsMapper;
 
-	public DatabaseMetaDataOracle(AllTablesMapper allTablesMapper, AllTabColsMapper allTabColsMapper) {
-		this.allTablesMapper = allTablesMapper;
-		this.allTabColsMapper = allTabColsMapper;
-	}
-
 	@Override
 	public List<TableVO> getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types) {
-
-		List<TableVO> tables = new ArrayList<>();
-
 		AllTablesVO vo = new AllTablesVO();
 		vo.setOwner(schemaPattern);
 
@@ -36,6 +30,13 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 //		vo.setOwners(owners);
 
 		vo.setTableName(tableNamePattern);
+
+//		return getTablesEgovMap(vo);
+		return allTablesMapper.selectAllTablesList2(vo);
+	}
+
+	List<TableVO> getTablesEgovMap(AllTablesVO vo) {
+		List<TableVO> tables = new ArrayList<>();
 
 		List<EgovMap> allTables = allTablesMapper.selectAllTablesList(vo);
 
@@ -51,6 +52,9 @@ public class DatabaseMetaDataOracle implements DatabaseMetaData {
 			tableVO.setTypeName((String) allTable.get("typeName"));
 			tableVO.setSelfReferencingColName((String) allTable.get("selfReferencingColName"));
 			tableVO.setRefGeneration((String) allTable.get("refGeneration"));
+
+			tableVO.setPkName((String) allTable.get("pkName"));
+
 			tables.add(tableVO);
 		}
 

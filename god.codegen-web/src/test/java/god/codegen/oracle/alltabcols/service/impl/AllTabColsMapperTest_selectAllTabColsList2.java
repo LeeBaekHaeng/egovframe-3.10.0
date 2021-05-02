@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import god.codegen.oracle.alltabcols.service.AllTabColsVO;
 import god.java.sql.ColumnVO;
-import god.test.jdbc.GodTestV1;
+import god.test.GodTestV1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
