@@ -1,5 +1,8 @@
 package model;
 
+import lombok.ToString;
+
+@ToString
 public class Attribute extends NameCasing {
 	public Attribute(String name) {
 		super(name);
