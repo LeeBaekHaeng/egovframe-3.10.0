@@ -52,7 +52,6 @@ public class AllTabColsMapperTest_selectAllTabColsList2 extends GodTestV1 {
 	@Autowired
 	private AllTabColsMapper allTabColsMapper;
 
-	@Override
 	@Test
 	public void test() {
 		log.debug("test");

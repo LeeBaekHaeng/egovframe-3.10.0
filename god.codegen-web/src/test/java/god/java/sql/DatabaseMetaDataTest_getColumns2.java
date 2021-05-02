@@ -51,7 +51,6 @@ public class DatabaseMetaDataTest_getColumns2 extends GodTestV1 {
 	@Autowired
 	private DataSource dataSource;
 
-	@Override
 	@Test
 	public void test() {
 		log.debug("test\n");

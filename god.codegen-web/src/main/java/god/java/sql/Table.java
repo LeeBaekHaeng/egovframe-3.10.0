@@ -1,5 +1,8 @@
 package god.java.sql;
 
+import lombok.ToString;
+
+@ToString
 public class Table {
 
 	private String tableCat;

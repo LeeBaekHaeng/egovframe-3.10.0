@@ -4,69 +4,97 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+
+@RunWith(SpringJUnit4ClassRunner.class)
+
+//@ActiveProfiles({ "altibase", "dummy" })
+//@ActiveProfiles({ "cubrid", "dummy" })
+//@ActiveProfiles({ "maria", "dummy" })
+//@ActiveProfiles({ "mysql", "dummy" })
+@ActiveProfiles({ "oracle", "dummy" })
+//@ActiveProfiles({ "postgres", "dummy" })
+//@ActiveProfiles({ "tibero", "dummy" })
+
+@Transactional
+
 public class GodTestV1 {
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
+	private static final StopWatch STOP_WATCH2 = new StopWatch();
+
+	private static String[] beanDefinitionNames;
 
 	@Autowired
 	private ApplicationContext context;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		log.info("setUpBeforeClass\n");
+		log.info("setUpBeforeClass");
+		log.info("");
 
-		log.info("start\n");
+		log.info("start");
+		log.info("");
 		STOP_WATCH.start();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		log.info("tearDownAfterClass\n");
+		log.info("tearDownAfterClass");
+		log.info("");
 
-		log.info("stop\n");
+		log.info("stop");
+		log.info("");
 		STOP_WATCH.stop();
 
-		log.info("getTotalTimeMillis={}\n", STOP_WATCH.getTotalTimeMillis());
-		log.info("getTotalTimeSeconds={}\n", STOP_WATCH.getTotalTimeSeconds());
+		log.info("getTotalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+		log.info("getTotalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		log.info("setUp\n");
+		log.info("setUp");
+		log.info("");
 
-		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+		log.info("start2");
+		log.info("");
+		STOP_WATCH2.start();
 
-		log.debug("beanDefinitionNames.length={}\n", beanDefinitionNames.length);
+		if (beanDefinitionNames == null) {
+			beanDefinitionNames = context.getBeanDefinitionNames();
 
-		for (String beanDefinitionName : beanDefinitionNames) {
-			log.debug("beanDefinitionName={}", beanDefinitionName);
+			log.debug("beanDefinitionNames.length={}", beanDefinitionNames.length);
+			log.debug("");
+
+			for (String beanDefinitionName : beanDefinitionNames) {
+				log.debug("beanDefinitionName={}", beanDefinitionName);
+			}
+
+			log.debug("");
 		}
-
-		log.debug("\n");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		log.info("tearDown\n");
-	}
+		log.info("tearDown");
+		log.info("");
 
-	@Test
-	public void test() {
-		log.debug("test\n");
+		log.info("stop2");
+		log.info("");
+		STOP_WATCH2.stop();
 
-		try {
-
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		log.info("getTotalTimeMillis={}", STOP_WATCH2.getTotalTimeMillis());
+		log.info("getTotalTimeSeconds={}", STOP_WATCH2.getTotalTimeSeconds());
 	}
 
 }

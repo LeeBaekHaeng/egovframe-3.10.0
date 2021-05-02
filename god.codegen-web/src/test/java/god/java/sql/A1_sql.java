@@ -8,21 +8,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
-import org.junit.runner.RunWith;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import god.codegen.datamodel.service.DataModelService;
 import god.codegen.datamodel.service.DataModelVO;
-import god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper;
-import god.codegen.oracle.alltables.service.impl.AllTablesMapper;
 import god.test.GodTestV1;
 import lombok.extern.slf4j.Slf4j;
 import model.Attribute;
@@ -31,46 +22,16 @@ import model.Entity;
 import operation.CrudCodeGen;
 
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { A1_sql.class })
-
-//@ActiveProfiles({ "altibase", "dummy" })
-//@ActiveProfiles({ "cubrid", "dummy" })
-//@ActiveProfiles({ "maria", "dummy" })
-//@ActiveProfiles({ "mysql", "dummy" })
-@ActiveProfiles({ "oracle", "dummy" })
-//@ActiveProfiles({ "postgres", "dummy" })
-//@ActiveProfiles({ "tibero", "dummy" })
-
-@Configuration
-
-@ImportResource({
-
-//		"classpath*:egovframework/spring/com/**/context-*.xml",
-
-		"classpath*:/egovframework/spring/com/context-crypto.xml",
-		"classpath*:/egovframework/spring/com/context-datasource.xml",
-
-		"classpath*:egovframework/spring/com/context-mapper.xml",
-		"classpath*:egovframework/spring/com/context-mapper-god-oracle.xml",
-
-		"classpath*:egovframework/spring/com/test-context-common.xml",
-
-})
-
-@ComponentScan(useDefaultFilters = false, basePackages = { "god" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class, AllTabColsMapper.class,
-				DatabaseMetaDataOracle.class, DataModelService.class }) })
-
+@ContextConfiguration(classes = { A0_Configuration.class })
 public class A1_sql extends GodTestV1 {
 
 	private static final String FILE_PATHNAME = SystemUtils.USER_HOME + "/Desktop/god.codegen/sql";
 
-//	private static final String SCHEMA_PATTERN = "COM";
-	private static final String SCHEMA_PATTERN = "COM320";
+	private static final String SCHEMA_PATTERN = "COM";
+//	private static final String SCHEMA_PATTERN = "COM320";
 
-	private static final String TABLE_NAME_PATTERN = null;
-//	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
+//	private static final String TABLE_NAME_PATTERN = null;
+	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
 
 	@Autowired
 	private DataModelService dataModelService;
@@ -84,8 +45,9 @@ public class A1_sql extends GodTestV1 {
 		FileUtils.deleteQuietly(new File(FILE_PATHNAME));
 	}
 
-	@Override
+	@Test
 	public void test() {
+		log.debug("test");
 
 		DataModelVO dataModelVO = new DataModelVO();
 //		dataModelVO.setSchemaPattern(SCHEMA_PATTERN);
@@ -111,6 +73,12 @@ public class A1_sql extends GodTestV1 {
 			i++;
 		}
 
+		log.debug("");
+	}
+
+	@Test
+	public void test2() {
+		log.debug("test2");
 	}
 
 	private void generate(CrudCodeGen crudCodeGen, DataModelContext dataModel, int i, int size) {
