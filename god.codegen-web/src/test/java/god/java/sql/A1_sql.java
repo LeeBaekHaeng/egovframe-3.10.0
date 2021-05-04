@@ -34,6 +34,8 @@ public class A1_sql extends GodTestV1 {
 	private static final String TABLE_NAME_PATTERN = "COMTCADMINISTCODE";
 
 	@Autowired
+//	@Qualifier("dataModelServiceImpl")
+//	@Qualifier("v2DataModelServiceImpl")
 	private DataModelService dataModelService;
 
 	@Override

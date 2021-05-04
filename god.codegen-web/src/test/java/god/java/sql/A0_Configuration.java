@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
-import god.codegen.datamodel.service.DataModelService;
-import god.codegen.oracle.alltabcols.service.impl.AllTabColsMapper;
-import god.codegen.oracle.alltables.service.impl.AllTablesMapper;
+import god.codegen.datamodel.service.impl.V2DataModelServiceImpl;
 
 @Configuration
 
@@ -29,8 +27,17 @@ import god.codegen.oracle.alltables.service.impl.AllTablesMapper;
 })
 
 @ComponentScan(useDefaultFilters = false, basePackages = { "god" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AllTablesMapper.class, AllTabColsMapper.class,
-				DatabaseMetaDataOracle.class, DataModelService.class }) })
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+
+//				DataModelService.class,
+
+//				DataModelServiceImpl.class,
+
+				V2DataModelServiceImpl.class,
+
+				DatabaseMetaData.class,
+
+		}) })
 
 public class A0_Configuration {
 
