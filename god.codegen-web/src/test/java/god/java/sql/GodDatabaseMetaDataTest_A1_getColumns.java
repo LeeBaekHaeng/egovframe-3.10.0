@@ -39,6 +39,9 @@ public class GodDatabaseMetaDataTest_A1_getColumns {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		if (con != null) {
+			con.close();
+		}
 	}
 
 	@Before
@@ -51,18 +54,26 @@ public class GodDatabaseMetaDataTest_A1_getColumns {
 
 	@Test
 	public void test() throws SQLException {
-		ResultSet columns = dmd.getColumns(null, "COM", null, null);
-		log.debug("columns={}\n", columns);
+		ResultSet columns = null;
 
-		ResultSetMetaData rsmd = columns.getMetaData();
-		log.debug("rsmd={}\n", rsmd);
+		try {
+			columns = dmd.getColumns(null, "COM", null, null);
+			log.debug("columns={}\n", columns);
 
-		int columnCount = rsmd.getColumnCount() + 1;
-		log.debug("columnCount={}\n", columnCount);
+			ResultSetMetaData rsmd = columns.getMetaData();
+			log.debug("rsmd={}\n", rsmd);
 
-		testA1(rsmd, columnCount);
+			int columnCount = rsmd.getColumnCount() + 1;
+			log.debug("columnCount={}\n", columnCount);
 
-		testA2(columns, columnCount);
+			testA1(rsmd, columnCount);
+
+			testA2(columns, columnCount);
+		} finally {
+			if (columns != null) {
+				columns.close();
+			}
+		}
 	}
 
 	void testA1(ResultSetMetaData rsmd, int columnCount) throws SQLException {
