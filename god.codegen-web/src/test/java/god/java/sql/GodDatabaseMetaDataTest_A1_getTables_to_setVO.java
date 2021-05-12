@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -62,11 +64,34 @@ public class GodDatabaseMetaDataTest_A1_getTables_to_setVO {
 		log.debug("columnCount={}\n", columnCount);
 
 		testA1(rsmd, columnCount);
+
+		List<TableVO> tableVOs = new ArrayList<>();
+		while (tables.next()) {
+			TableVO tableVO = new TableVO();
+			tableVO.setTableCat(tables.getString("TABLE_CAT"));
+			tableVO.setTableSchem(tables.getString("TABLE_SCHEM"));
+			tableVO.setTableName(tables.getString("TABLE_NAME"));
+			tableVO.setTableType(tables.getString("TABLE_TYPE"));
+			tableVO.setRemarks(tables.getString("REMARKS"));
+			tableVOs.add(tableVO);
+		}
+
+		for (TableVO tableVO : tableVOs) {
+			log.debug("tableCat={}", tableVO.getTableCat());
+			log.debug("tableSchem={}", tableVO.getTableSchem());
+			log.debug("tableName={}", tableVO.getTableName());
+			log.debug("tableType={}", tableVO.getTableType());
+			log.debug("remarks={}", tableVO.getRemarks());
+
+			log.debug("");
+		}
 	}
 
 	void testA1(ResultSetMetaData rsmd, int columnCount) throws SQLException {
 		StringBuffer sb = new StringBuffer("\n");
 		StringBuffer sb2 = new StringBuffer("\n");
+		StringBuffer sb3 = new StringBuffer("\n");
+		StringBuffer sb4 = new StringBuffer("\n");
 
 		for (int column = 1; column < columnCount; column++) {
 			String columnName = rsmd.getColumnName(column);
@@ -88,6 +113,12 @@ public class GodDatabaseMetaDataTest_A1_getTables_to_setVO {
 
 				sb2.append("log.debug(\"" + columnNameNameCasing.getCcName() + "={}\", "
 						+ columnNameNameCasing.getCcName() + ");\n");
+
+				sb3.append("tableVO.set" + columnNameNameCasing.getPcName() + "(tables.getString(\"" + columnName
+						+ "\"));\n");
+
+				sb4.append("log.debug(\"" + columnNameNameCasing.getCcName() + "={}\", tableVO.get"
+						+ columnNameNameCasing.getPcName() + "());\n");
 			}
 		}
 
@@ -95,6 +126,8 @@ public class GodDatabaseMetaDataTest_A1_getTables_to_setVO {
 
 		sb.append("\n");
 		sb.append(sb2);
+		sb.append(sb3);
+		sb.append(sb4);
 
 		log.debug("sb={}\n", sb);
 	}
