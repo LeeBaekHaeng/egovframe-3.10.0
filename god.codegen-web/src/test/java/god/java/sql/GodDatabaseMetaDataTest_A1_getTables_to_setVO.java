@@ -1,7 +1,6 @@
 package god.java.sql;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ public class GodDatabaseMetaDataTest_A1_getTables_to_setVO {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "com", "com01");
+		con = GodDriverManagerTest.getConnection();
 
 		log.debug("con={}", con);
 		log.debug("");

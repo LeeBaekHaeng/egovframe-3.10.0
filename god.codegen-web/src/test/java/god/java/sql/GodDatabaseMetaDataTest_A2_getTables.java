@@ -16,7 +16,7 @@ import model.NameCasing;
 import oracle.jdbc.OracleConnection;
 
 @Slf4j
-public class GodDatabaseMetaDataTest_A1_getTables {
+public class GodDatabaseMetaDataTest_A2_getTables {
 
 	private static Connection con;
 	private static java.sql.DatabaseMetaData dmd;
@@ -61,13 +61,13 @@ public class GodDatabaseMetaDataTest_A1_getTables {
 		log.debug("columnCount={}\n", columnCount);
 
 		testA1(rsmd, columnCount);
-
-		testA2(tables, columnCount);
 	}
 
 	void testA1(ResultSetMetaData rsmd, int columnCount) throws SQLException {
 		StringBuffer sb = new StringBuffer("\n");
 		StringBuffer sb2 = new StringBuffer("\n");
+		StringBuffer sb3 = new StringBuffer("\n");
+		StringBuffer sb4 = new StringBuffer("\n");
 
 		for (int column = 1; column < columnCount; column++) {
 			String columnName = rsmd.getColumnName(column);
@@ -85,11 +85,16 @@ public class GodDatabaseMetaDataTest_A1_getTables {
 			if (columnClassName.endsWith("Integer")) {
 				// TODO god
 			} else {
-				sb.append(columnClassName2 + " " + columnNameNameCasing.getCcName() + " = schemas.getString(\""
-						+ columnName + "\");\n");
+				sb.append("\tprivate " + columnClassName2 + " " + columnNameNameCasing.getCcName() + ";\n");
 
 				sb2.append("log.debug(\"" + columnNameNameCasing.getCcName() + "={}\", "
 						+ columnNameNameCasing.getCcName() + ");\n");
+
+				sb3.append("tableVO.set" + columnNameNameCasing.getPcName() + "(tables.getString(\"" + columnName
+						+ "\"));\n");
+
+				sb4.append("log.debug(\"" + columnNameNameCasing.getCcName() + "={}\", tableVO.get"
+						+ columnNameNameCasing.getPcName() + "());\n");
 			}
 		}
 
@@ -97,38 +102,10 @@ public class GodDatabaseMetaDataTest_A1_getTables {
 
 		sb.append("\n");
 		sb.append(sb2);
+		sb.append(sb3);
+		sb.append(sb4);
 
 		log.debug("sb={}\n", sb);
-	}
-
-	void testA2(ResultSet schemas, int columnCount) throws SQLException {
-		log.debug("schemas\n");
-
-		while (schemas.next()) {
-//			testA2A1(schemas, columnCount);
-			testA2A2(schemas);
-		}
-	}
-
-	void testA2A1(ResultSet schemas, int columnCount) throws SQLException {
-		for (int columnIndex = 1; columnIndex < columnCount; columnIndex++) {
-			log.debug("{}={}", schemas.getRow(), schemas.getString(columnIndex));
-		}
-	}
-
-	void testA2A2(ResultSet schemas) throws SQLException {
-		String tableCat = schemas.getString("TABLE_CAT");
-		String tableSchem = schemas.getString("TABLE_SCHEM");
-		String tableName = schemas.getString("TABLE_NAME");
-		String tableType = schemas.getString("TABLE_TYPE");
-		String remarks = schemas.getString("REMARKS");
-
-		log.debug("tableCat={}", tableCat);
-		log.debug("tableSchem={}", tableSchem);
-		log.debug("tableName={}", tableName);
-		log.debug("tableType={}", tableType);
-		log.debug("remarks={}", remarks);
-		log.debug("");
 	}
 
 }
