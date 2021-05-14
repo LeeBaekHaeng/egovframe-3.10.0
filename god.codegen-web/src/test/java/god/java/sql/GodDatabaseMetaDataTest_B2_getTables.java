@@ -16,7 +16,7 @@ import model.NameCasing;
 import oracle.jdbc.OracleConnection;
 
 @Slf4j
-public class GodDatabaseMetaDataTest_A2_getTables {
+public class GodDatabaseMetaDataTest_B2_getTables {
 
 	private static Connection con;
 	private static java.sql.DatabaseMetaData dmd;

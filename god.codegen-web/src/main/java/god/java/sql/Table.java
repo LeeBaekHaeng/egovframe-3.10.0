@@ -3,7 +3,7 @@ package god.java.sql;
 import lombok.ToString;
 
 @ToString
-public class Table {
+public abstract class Table {
 
 	private String tableCat;
 	private String tableSchem;
