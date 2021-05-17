@@ -14,6 +14,20 @@ public class GodDriverManagerTest {
 		return getConnectionA2();
 	}
 
+	public static Connection getConnectionMariadb() {
+		try {
+			Class.forName("net.sf.log4jdbc.DriverSpy");
+
+			return DriverManager.getConnection("jdbc:log4jdbc:mysql://127.0.0.1:3306/com", "com", "com01");
+		} catch (ClassNotFoundException e) {
+			log.error(e.getMessage());
+			return null;
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			return null;
+		}
+	}
+
 	static Connection getConnectionA1() {
 		try {
 			return DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "com", "com01");

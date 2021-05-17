@@ -24,6 +24,7 @@ public class GodDatabaseMetaDataTest_B2_getTables {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		con = GodDriverManagerTest.getConnection();
+//		con = GodDriverManagerTest.getConnectionMariadb();
 
 		log.debug("con={}", con);
 		log.debug("");
