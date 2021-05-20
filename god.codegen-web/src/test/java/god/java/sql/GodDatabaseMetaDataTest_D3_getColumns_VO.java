@@ -9,9 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
+import model.NameCasing;
 
 @Slf4j
-public class GodDatabaseMetaDataTest_D3_getColumns_sql {
+public class GodDatabaseMetaDataTest_D3_getColumns_VO {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -41,23 +42,14 @@ public class GodDatabaseMetaDataTest_D3_getColumns_sql {
 		String columnNamePattern = null;
 
 		List<ColumnVO> columns = gdmd.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
-		int size = columns.size();
 
-		StringBuffer sb = new StringBuffer("\nselect\n");
-		StringBuffer sb2 = new StringBuffer("\ninsert into ");
-		StringBuffer sb3 = new StringBuffer("\nupdate ");
-		StringBuffer sb4 = new StringBuffer("\ndelete from ");
+		StringBuffer sb = new StringBuffer("\n");
 
-		sb2.append(tableNamePattern);
-		sb2.append(" (\n");
-
-		sb3.append(tableNamePattern);
-		sb3.append(" set\n");
-
-		sb4.append(tableNamePattern);
-		sb4.append(" where 1 = 1\n");
-
-		int i = 1;
+		NameCasing tableNamePatternNameCasing = new NameCasing(tableNamePattern);
+		sb.append("god.com." + tableNamePatternNameCasing.getLcName() + ".service");
+		sb.append("\n\n");
+		sb.append(tableNamePatternNameCasing.getPcName() + "VO");
+		sb.append("\n\n");
 
 		for (ColumnVO column : columns) {
 			log.debug("column={}", column);
@@ -81,98 +73,23 @@ public class GodDatabaseMetaDataTest_D3_getColumns_sql {
 			log.debug("isNullable={}", column.getIsNullable());
 			log.debug("");
 
-			sb.append("    ");
-			sb.append(column.getColumnName());
+			NameCasing columnNameNameCasing = new NameCasing(column.getColumnName());
 
-			sb2.append("    ");
-			sb2.append(column.getColumnName());
-
-			sb3.append("    ");
-			sb3.append(column.getColumnName());
-			sb3.append(" = ");
-
-			sb4.append("    ");
-			sb4.append(column.getColumnName());
-			sb4.append(" = ");
+			sb.append("private ");
 
 			if ("NUMBER".equals(column.getTypeName())) {
-				sb3.append("0");
-				sb4.append("0");
+				sb.append("Long");
 			} else if ("DATE".equals(column.getTypeName())) {
-				sb3.append("'2021-04-15 22:19:58'");
-				sb4.append("'2021-04-15 22:19:58'");
+				sb.append("LocalDateTime");
 			} else {
-				sb3.append("''");
-				sb4.append("''");
+				sb.append("String");
 			}
 
-			if (i < size) {
-				sb2.append(",\n");
-				sb3.append(",\n");
-				sb4.append(",\n");
-			} else {
-				sb2.append("\n");
-				sb3.append("\n");
-				sb4.append("\n");
-			}
+			sb.append(" ");
+			sb.append(columnNameNameCasing.getCcName());
 
-			i++;
+			sb.append(";\n");
 		}
-
-		sb.append("from\n    ");
-		sb.append(tableNamePattern);
-
-		sb.append("\nwhere 1 = 1\n");
-
-		sb2.append(") values (\n");
-
-		sb3.append("where 1 = 1\n");
-
-		i = 1;
-
-		for (ColumnVO column : columns) {
-			sb.append("--    and ");
-			sb.append(column.getColumnName());
-
-			sb2.append("    ");
-
-			sb3.append("    and ");
-			sb3.append(column.getColumnName());
-			sb3.append(" = ");
-
-			if ("NUMBER".equals(column.getTypeName())) {
-				sb.append(" = 0\n");
-				sb2.append("0");
-				sb3.append("0");
-			} else if ("DATE".equals(column.getTypeName())) {
-				sb.append(" = '2021-04-15 22:19:58'\n");
-				sb2.append("'2021-04-15 22:19:58'");
-				sb3.append("'2021-04-15 22:19:58'");
-			} else {
-				sb.append(" = ''\n");
-				sb2.append("''");
-				sb3.append("''");
-			}
-
-			if (i < size) {
-				sb2.append(",\n");
-				sb3.append("\n");
-			} else {
-				sb2.append("\n");
-				sb3.append("\n");
-			}
-
-			i++;
-		}
-
-		sb.append(";\n");
-		sb2.append(")\n;\n");
-		sb3.append(";\n");
-		sb4.append(";\n");
-
-		sb.append(sb2);
-		sb.append(sb3);
-		sb.append(sb4);
 
 		log.debug("sb={}", sb);
 	}
