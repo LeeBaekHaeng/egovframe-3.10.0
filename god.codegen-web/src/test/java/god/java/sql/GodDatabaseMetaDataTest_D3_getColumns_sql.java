@@ -44,6 +44,9 @@ public class GodDatabaseMetaDataTest_D3_getColumns_sql {
 		int size = columns.size();
 
 		StringBuffer sb = new StringBuffer("\nselect\n");
+		StringBuffer sb2 = new StringBuffer("\ninsert into ");
+		sb2.append(tableNamePattern);
+		sb2.append(" (\n");
 
 		int i = 1;
 
@@ -72,10 +75,15 @@ public class GodDatabaseMetaDataTest_D3_getColumns_sql {
 			sb.append("    ");
 			sb.append(column.getColumnName());
 
+			sb2.append("    ");
+			sb2.append(column.getColumnName());
+
 			if (i < size) {
 				sb.append(",\n");
+				sb2.append(",\n");
 			} else {
 				sb.append("\n");
+				sb2.append("\n");
 			}
 
 			i++;
@@ -86,20 +94,40 @@ public class GodDatabaseMetaDataTest_D3_getColumns_sql {
 
 		sb.append("\nwhere 1 = 1\n");
 
+		sb2.append(") values (\n");
+
+		i = 1;
+
 		for (ColumnVO column : columns) {
 			sb.append("--    and ");
 			sb.append(column.getColumnName());
 
+			sb2.append("    ");
+
 			if ("NUMBER".equals(column.getTypeName())) {
 				sb.append(" = 0\n");
+				sb2.append("0");
 			} else if ("DATE".equals(column.getTypeName())) {
 				sb.append(" = '2021-04-15 22:19:58'\n");
+				sb2.append("'2021-04-15 22:19:58'");
 			} else {
 				sb.append(" = ''\n");
+				sb2.append("''");
 			}
+
+			if (i < size) {
+				sb2.append(",\n");
+			} else {
+				sb2.append("\n");
+			}
+
+			i++;
 		}
 
-		sb.append("\n;");
+		sb.append(";\n");
+		sb2.append(")\n;\n");
+
+		sb.append(sb2);
 
 		log.debug("sb={}", sb);
 	}
