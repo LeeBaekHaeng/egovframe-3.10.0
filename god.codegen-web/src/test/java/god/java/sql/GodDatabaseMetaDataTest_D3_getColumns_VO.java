@@ -44,6 +44,8 @@ public class GodDatabaseMetaDataTest_D3_getColumns_VO {
 		List<ColumnVO> columns = gdmd.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
 
 		StringBuffer sb = new StringBuffer("\n");
+		StringBuffer sb2 = new StringBuffer("\n");
+		StringBuffer sb3 = new StringBuffer("\n");
 
 		NameCasing tableNamePatternNameCasing = new NameCasing(tableNamePattern);
 		sb.append("god.com." + tableNamePatternNameCasing.getLcName() + ".service");
@@ -89,7 +91,28 @@ public class GodDatabaseMetaDataTest_D3_getColumns_VO {
 			sb.append(columnNameNameCasing.getCcName());
 
 			sb.append(";\n");
+
+			sb2.append("log.debug(\"");
+			sb2.append(columnNameNameCasing.getCcName());
+			sb2.append("={}\", vo.get");
+			sb2.append(columnNameNameCasing.getPcName());
+			sb2.append("());\n");
+
+			sb3.append("vo.set");
+			sb3.append(columnNameNameCasing.getPcName());
+			if ("NUMBER".equals(column.getTypeName())) {
+				sb3.append("(0);\n");
+			} else if ("DATE".equals(column.getTypeName())) {
+				sb3.append("(LocalDateTime.now());\n");
+			} else {
+				sb3.append("(\"test ");
+				sb3.append(column.getRemarks());
+				sb3.append("\");\n");
+			}
 		}
+
+		sb.append(sb2);
+		sb.append(sb3);
 
 		log.debug("sb={}", sb);
 	}
