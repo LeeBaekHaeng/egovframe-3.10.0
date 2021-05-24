@@ -46,6 +46,8 @@ public class GodDatabaseMetaDataTest_D3_getColumns_VO {
 		StringBuffer sb = new StringBuffer("\n");
 		StringBuffer sb2 = new StringBuffer("\n");
 		StringBuffer sb3 = new StringBuffer("\n");
+		StringBuffer sb4 = new StringBuffer("\n");
+		StringBuffer sb5 = new StringBuffer("\n");
 
 		NameCasing tableNamePatternNameCasing = new NameCasing(tableNamePattern);
 		sb.append("god.com." + tableNamePatternNameCasing.getLcName() + ".service");
@@ -109,10 +111,37 @@ public class GodDatabaseMetaDataTest_D3_getColumns_VO {
 				sb3.append(column.getRemarks());
 				sb3.append("\");\n");
 			}
+
+			if ("NUMBER".equals(column.getTypeName())) {
+				sb4.append("Long");
+				sb4.append(" ");
+				sb4.append(columnNameNameCasing.getCcName());
+			} else if ("DATE".equals(column.getTypeName())) {
+				sb4.append("LocalDateTime");
+				sb4.append(" ");
+				sb4.append(columnNameNameCasing.getCcName());
+				sb4.append(" = LocalDateTime.now()");
+			} else {
+				sb4.append("String");
+				sb4.append(" ");
+				sb4.append(columnNameNameCasing.getCcName());
+				sb4.append(" = \"test ");
+				sb4.append(column.getRemarks());
+				sb4.append("\"");
+			}
+			sb4.append(";\n");
+
+			sb5.append("vo.set");
+			sb5.append(columnNameNameCasing.getPcName());
+			sb5.append("(");
+			sb5.append(columnNameNameCasing.getCcName());
+			sb5.append(");\n");
 		}
 
 		sb.append(sb2);
 		sb.append(sb3);
+		sb.append(sb4);
+		sb.append(sb5);
 
 		log.debug("sb={}", sb);
 	}
