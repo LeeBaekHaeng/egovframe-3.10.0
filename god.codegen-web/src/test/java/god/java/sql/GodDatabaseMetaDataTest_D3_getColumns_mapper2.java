@@ -46,7 +46,63 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 		List<ColumnVO> columns = gdmd.getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
 
+		resultMap(columns);
 		select(columns);
+	}
+
+	void resultMap(List<ColumnVO> columns) {
+		StringBuffer sb = new StringBuffer("\n");
+
+		int i = 1;
+
+		NameCasing tnc = null;
+
+		for (ColumnVO column : columns) {
+			NameCasing cnc = new NameCasing(column.getColumnName());
+
+			if (i == 1) {
+				tnc = new NameCasing(column.getTableName());
+				resultMap(sb, tnc);
+			}
+
+			result(sb, cnc);
+
+			i++;
+		}
+
+		sb.append("</resultMap>\n");
+
+		log.debug("sb={}", sb);
+	}
+
+	void resultMap(StringBuffer sb, NameCasing tnc) {
+		sb.append("<resultMap");
+
+		sb.append(" id=\"");
+		sb.append(tnc.getCcName());
+		sb.append("ResultMap");
+		sb.append("\"");
+
+		sb.append(" type=\"");
+		sb.append(tnc.getPcName());
+		sb.append("VO");
+		sb.append("\"");
+
+		sb.append(">\n");
+	}
+
+	void result(StringBuffer sb, NameCasing cnc) {
+		sb.append("    <result");
+
+		sb.append(" property=\"");
+		sb.append(cnc.getCcName());
+		sb.append("\"");
+
+		sb.append(" column=\"");
+		sb.append(cnc.getName());
+		sb.append("\"");
+
+		sb.append(" />\n");
 	}
 
 	void select(List<ColumnVO> columns) {
@@ -79,6 +135,10 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 				sb.append(">\n");
 				sb.append("<![CDATA[\n");
+
+				sb.append("/* select");
+				sb.append(tnc.getPcName());
+				sb.append(" */\n");
 
 				sb.append("select\n");
 				sb.append("    ");
