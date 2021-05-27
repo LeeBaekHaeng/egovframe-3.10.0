@@ -48,6 +48,7 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 		resultMap(columns);
 		select(columns);
+		insert(columns);
 	}
 
 	void resultMap(List<ColumnVO> columns) {
@@ -180,6 +181,86 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 		sb.append("]]>\n");
 		sb.append("</select>\n");
+
+		log.debug("sb={}", sb);
+	}
+
+	void insert(List<ColumnVO> columns) {
+		StringBuffer sb = new StringBuffer("\n");
+		StringBuffer sb2 = new StringBuffer();
+
+		int i = 1;
+		int size = columns.size();
+
+		NameCasing tnc = null;
+
+		for (ColumnVO column : columns) {
+			NameCasing cnc = new NameCasing(column.getColumnName());
+
+			if (i == 1) {
+				tnc = new NameCasing(column.getTableName());
+
+				String insertId = "insert" + tnc.getPcName();
+
+				sb.append("<insert");
+
+				sb.append(" id=\"");
+				sb.append(insertId);
+				sb.append("\"");
+
+				sb.append(" parameterType=\"");
+				sb.append(tnc.getPcName());
+				sb.append("VO\"");
+
+				sb.append(">\n");
+				sb.append("<![CDATA[\n");
+
+				sb.append("/* ");
+				sb.append(insertId);
+				sb.append(" */\n");
+
+				sb.append("insert into ");
+				sb.append(tnc.getName());
+				sb.append(" (\n");
+
+				sb.append("    ");
+				sb.append(cnc.getName());
+				sb.append(",");
+
+				sb2.append("    #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("},");
+			} else if (i == size) {
+				sb.append("    ");
+				sb.append(cnc.getName());
+
+				sb2.append("    #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("}");
+			} else {
+				sb.append("    ");
+				sb.append(cnc.getName());
+				sb.append(",");
+
+				sb2.append("    #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("},");
+			}
+
+			sb.append("\n");
+			sb2.append("\n");
+
+			i++;
+		}
+
+		sb.append(") values (\n");
+
+		sb.append(sb2);
+
+		sb.append(");\n");
+
+		sb.append("]]>\n");
+		sb.append("</insert>\n");
 
 		log.debug("sb={}", sb);
 	}
