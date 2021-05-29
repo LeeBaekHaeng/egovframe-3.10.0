@@ -49,6 +49,7 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 		resultMap(columns);
 		select(columns);
 		insert(columns);
+		update(columns);
 	}
 
 	void resultMap(List<ColumnVO> columns) {
@@ -261,6 +262,99 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 		sb.append("]]>\n");
 		sb.append("</insert>\n");
+
+		log.debug("sb={}", sb);
+	}
+
+	void update(List<ColumnVO> columns) {
+		StringBuffer sb = new StringBuffer("\n");
+		StringBuffer sb2 = new StringBuffer();
+
+		int i = 1;
+		int size = columns.size();
+
+		NameCasing tnc = null;
+
+		for (ColumnVO column : columns) {
+			NameCasing cnc = new NameCasing(column.getColumnName());
+
+			if (i == 1) {
+				tnc = new NameCasing(column.getTableName());
+
+				String updateId = "update" + tnc.getPcName();
+
+				sb.append("<update");
+
+				sb.append(" id=\"");
+				sb.append(updateId);
+				sb.append("\"");
+
+				sb.append(" parameterType=\"");
+				sb.append(tnc.getPcName());
+				sb.append("VO\"");
+
+				sb.append(">\n");
+				sb.append("<![CDATA[\n");
+
+				sb.append("/* ");
+				sb.append(updateId);
+				sb.append(" */\n");
+
+				sb.append("update ");
+				sb.append(tnc.getName());
+				sb.append(" set\n");
+
+				sb.append("    ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("},");
+
+				sb2.append("    and ");
+				sb2.append(cnc.getName());
+				sb2.append(" = #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("}");
+			} else if (i == size) {
+				sb.append("    ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("}");
+
+				sb2.append("    and ");
+				sb2.append(cnc.getName());
+				sb2.append(" = #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("}");
+			} else {
+				sb.append("    ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("},");
+
+				sb2.append("    and ");
+				sb2.append(cnc.getName());
+				sb2.append(" = #{");
+				sb2.append(cnc.getCcName());
+				sb2.append("}");
+			}
+
+			sb.append("\n");
+			sb2.append("\n");
+
+			i++;
+		}
+
+		sb.append("where 1 = 1\n");
+
+		sb.append(sb2);
+
+		sb.append(");\n");
+
+		sb.append("]]>\n");
+		sb.append("</update>\n");
 
 		log.debug("sb={}", sb);
 	}
