@@ -50,6 +50,7 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 		select(columns);
 		insert(columns);
 		update(columns);
+		delete(columns);
 	}
 
 	void resultMap(List<ColumnVO> columns) {
@@ -351,10 +352,75 @@ public class GodDatabaseMetaDataTest_D3_getColumns_mapper2 {
 
 		sb.append(sb2);
 
-		sb.append(");\n");
-
 		sb.append("]]>\n");
 		sb.append("</update>\n");
+
+		log.debug("sb={}", sb);
+	}
+
+	void delete(List<ColumnVO> columns) {
+		StringBuffer sb = new StringBuffer("\n");
+
+		int i = 1;
+		int size = columns.size();
+
+		NameCasing tnc = null;
+
+		for (ColumnVO column : columns) {
+			NameCasing cnc = new NameCasing(column.getColumnName());
+
+			if (i == 1) {
+				tnc = new NameCasing(column.getTableName());
+
+				String deleteId = "delete" + tnc.getPcName();
+
+				sb.append("<delete");
+
+				sb.append(" id=\"");
+				sb.append(deleteId);
+				sb.append("\"");
+
+				sb.append(" parameterType=\"");
+				sb.append(tnc.getPcName());
+				sb.append("VO\"");
+
+				sb.append(">\n");
+				sb.append("<![CDATA[\n");
+
+				sb.append("/* ");
+				sb.append(deleteId);
+				sb.append(" */\n");
+
+				sb.append("delete from ");
+				sb.append(tnc.getName());
+				sb.append(" where 1 = 1\n");
+
+				sb.append("    and ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("}");
+			} else if (i == size) {
+				sb.append("    and ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("}");
+			} else {
+				sb.append("    and ");
+				sb.append(cnc.getName());
+				sb.append(" = #{");
+				sb.append(cnc.getCcName());
+				sb.append("}");
+			}
+
+			sb.append("\n");
+
+			i++;
+		}
+
+		sb.append("]]>\n");
+		sb.append("</delete>\n");
 
 		log.debug("sb={}", sb);
 	}
