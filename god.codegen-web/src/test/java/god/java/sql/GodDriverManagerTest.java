@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 public class GodDriverManagerTest {
 
 	public static Connection getConnection() {
-//		return getConnectionA1();
-		return getConnectionA2();
+		return getConnectionA1();
+//		return getConnectionA2();
 	}
 
 	public static Connection getConnectionMariadb() {
