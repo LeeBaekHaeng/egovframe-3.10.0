@@ -32,6 +32,16 @@ public class GodDatabaseMetaDataTest_A1 {
 
 		DatabaseMetaData dmd = con.getMetaData();
 
+		String driverName = dmd.getDriverName();
+		String driverVersion = dmd.getDriverVersion();
+		int driverMajorVersion = dmd.getDriverMajorVersion();
+		int driverMinorVersion = dmd.getDriverMinorVersion();
+		log.debug("driverName={}", driverName);
+		log.debug("driverVersion={}", driverVersion);
+		log.debug("driverMajorVersion={}", driverMajorVersion);
+		log.debug("driverMinorVersion={}", driverMinorVersion);
+		log.debug("");
+
 		ResultSet tables = dmd.getTables(null, "COM", "COMTC%", null);
 
 		log.debug("tables={}", tables);
@@ -43,22 +53,28 @@ public class GodDatabaseMetaDataTest_A1 {
 			String tableName = tables.getString("TABLE_NAME");
 			String tableType = tables.getString("TABLE_TYPE");
 			String remarks = tables.getString("REMARKS");
-//			String typeCat = tables.getString("TYPE_CAT");
-//			String typeSchem = tables.getString("TYPE_SCHEM");
-//			String typeName = tables.getString("TYPE_NAME");
-//			String selfReferencingColName = tables.getString("SELF_REFERENCING_COL_NAME");
-//			String refGeneration = tables.getString("REF_GENERATION");
 
 			log.debug("tableCat={}", tableCat);
 			log.debug("tableSchem={}", tableSchem);
 			log.debug("tableName={}", tableName);
 			log.debug("tableType={}", tableType);
 			log.debug("remarks={}", remarks);
-//			log.debug("typeCat={}", typeCat);
-//			log.debug("typeSchem={}", typeSchem);
-//			log.debug("typeName={}", typeName);
-//			log.debug("selfReferencingColName={}", selfReferencingColName);
-//			log.debug("refGeneration={}", refGeneration);
+			log.debug("");
+
+			if ("MySQL Connector Java".equals(driverName)) {
+				String typeCat = tables.getString("TYPE_CAT");
+				String typeSchem = tables.getString("TYPE_SCHEM");
+				String typeName = tables.getString("TYPE_NAME");
+				String selfReferencingColName = tables.getString("SELF_REFERENCING_COL_NAME");
+				String refGeneration = tables.getString("REF_GENERATION");
+
+				log.debug("typeCat={}", typeCat);
+				log.debug("typeSchem={}", typeSchem);
+				log.debug("typeName={}", typeName);
+				log.debug("selfReferencingColName={}", selfReferencingColName);
+				log.debug("refGeneration={}", refGeneration);
+			}
+
 			log.debug("");
 		}
 	}
