@@ -17,7 +17,7 @@ import operation.CrudCodeGen.WizardModel;
 import oracle.jdbc.OracleConnection;
 
 @Slf4j
-public class GodDatabaseMetaDataTest_A1 {
+public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 
 	@Test
 	public void test() throws Exception {
