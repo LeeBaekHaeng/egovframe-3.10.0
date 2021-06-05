@@ -60,3 +60,19 @@ Web
 
 - C:\Users\god\Downloads\egovframework.dev.imp.all-3.10.0-source\egovframework.dev.imp.codegen.template.templates\eGovFrameTemplates
 - C:\EGOVFRAME-3.10.0\eGovFrameDev-3.10.0-64bit\eclipse\plugins\egovframework.dev.imp.codegen.template.templates_3.10.0.202102261503\eGovFrameTemplates
+
+## 3. CodeGenTableWizardPage.java
+
+/egovframework.dev.imp.codegen.template/src/egovframework/dev/imp/codegen/template/wizards/CodeGenTableWizardPage.java
+
+```java
+DataModelContext dataModel = new DataModelContext();
+dataModel.setVender(vender);
+dataModel.setDatabaseProductName(databaseProductName);
+
+Entity entity = new Entity(table.getName());
+dataModel.setEntity(entity);
+
+List<Attribute> attributes = new ArrayList<Attribute>();
+List<Attribute> pkAttributes = new ArrayList<Attribute>();
+```
