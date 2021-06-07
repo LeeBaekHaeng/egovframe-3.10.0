@@ -2,19 +2,20 @@ package god.java.sql;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
+import egovframework.dev.imp.codegen.template.model.Attribute;
 import egovframework.dev.imp.codegen.template.model.DataModelContext;
 import egovframework.dev.imp.codegen.template.model.Entity;
 import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 import operation.CrudCodeGen;
 import operation.CrudCodeGen.WizardModel;
-import oracle.jdbc.OracleConnection;
 
 @Slf4j
 public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
@@ -23,30 +24,9 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 	public void test() throws Exception {
 		log.debug("test");
 
-//		Class.forName("com.mysql.jdbc.Driver");
-
-		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/com", "com", "com01");
-//		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "com", "com01");
-
-		log.debug("con={}", con);
-		log.debug("");
-
-		if (con.isWrapperFor(OracleConnection.class)) {
-			OracleConnection ocon = con.unwrap(OracleConnection.class);
-			ocon.setRemarksReporting(true);
-		}
+		Connection con = A1_GodDriverManagerTest.getConnection();
 
 		DatabaseMetaData dmd = con.getMetaData();
-
-		String driverName = dmd.getDriverName();
-		String driverVersion = dmd.getDriverVersion();
-		int driverMajorVersion = dmd.getDriverMajorVersion();
-		int driverMinorVersion = dmd.getDriverMinorVersion();
-		log.debug("driverName={}", driverName);
-		log.debug("driverVersion={}", driverVersion);
-		log.debug("driverMajorVersion={}", driverMajorVersion);
-		log.debug("driverMinorVersion={}", driverMinorVersion);
-		log.debug("");
 
 		String vender = dmd.getDatabaseProductVersion();
 		String databaseProductName = dmd.getDatabaseProductName();
@@ -54,9 +34,16 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 		log.debug("databaseProductName={}", databaseProductName);
 		log.debug("");
 
-		ResultSet tables = dmd.getTables(null, "COM", "COMTC%", null);
+		String schemaPattern = "COM";
+		String tableNamePattern = "COMTC%";
+
+		ResultSet tables = dmd.getTables(null, schemaPattern, tableNamePattern, null);
+		ResultSet columns = dmd.getColumns(null, schemaPattern, tableNamePattern, null);
 
 		log.debug("tables={}", tables);
+		log.debug("");
+
+		log.debug("columns={}", columns);
 		log.debug("");
 
 		CrudCodeGen crudCodeGen = new CrudCodeGen();
@@ -70,6 +57,13 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 			String tableType = tables.getString("TABLE_TYPE");
 			String remarks = tables.getString("REMARKS");
 
+			if (tableCat == null) {
+				tableCat = "";
+			}
+			if (tableSchem == null) {
+				tableSchem = "";
+			}
+
 			log.debug("tableCat={}", tableCat);
 			log.debug("tableSchem={}", tableSchem);
 			log.debug("tableName={}", tableName);
@@ -77,7 +71,7 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 			log.debug("remarks={}", remarks);
 			log.debug("");
 
-			if ("MySQL Connector Java".equals(driverName)) {
+			if ("MySQL".equals(databaseProductName)) {
 				String typeCat = tables.getString("TYPE_CAT");
 				String typeSchem = tables.getString("TYPE_SCHEM");
 				String typeName = tables.getString("TYPE_NAME");
@@ -99,6 +93,95 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen {
 
 			Entity entity = new Entity(tableName);
 			dataModel.setEntity(entity);
+
+			List<Attribute> attributes = new ArrayList<Attribute>();
+			List<Attribute> pkAttributes = new ArrayList<Attribute>();
+			while (columns.next()) {
+				String columnsTableCat = columns.getString("TABLE_CAT");
+				String columnsTableSchem = columns.getString("TABLE_SCHEM");
+				String columnsTableName = columns.getString("TABLE_NAME");
+
+				if (columnsTableCat == null) {
+					columnsTableCat = "";
+				}
+				if (columnsTableSchem == null) {
+					columnsTableSchem = "";
+				}
+
+				if (columnsTableCat.equals(tableCat) && columnsTableSchem.equals(tableSchem)
+						&& columnsTableName.equals(tableName)) {
+
+					String columnName = columns.getString("COLUMN_NAME");
+					int dataType = columns.getInt("DATA_TYPE");
+					String typeName = columns.getString("TYPE_NAME");
+					int columnSize = columns.getInt("COLUMN_SIZE");
+					int bufferLength = columns.getInt("BUFFER_LENGTH");
+					int decimalDigits = columns.getInt("DECIMAL_DIGITS");
+					int numPrecRadix = columns.getInt("NUM_PREC_RADIX");
+					int nullable = columns.getInt("NULLABLE");
+					String columnsRemarks = columns.getString("REMARKS");
+					String columnDef = columns.getString("COLUMN_DEF");
+					int sqlDataType = columns.getInt("SQL_DATA_TYPE");
+					int sqlDatetimeSub = columns.getInt("SQL_DATETIME_SUB");
+					int charOctetLength = columns.getInt("CHAR_OCTET_LENGTH");
+					int ordinalPosition = columns.getInt("ORDINAL_POSITION");
+					String isNullable = columns.getString("IS_NULLABLE");
+
+					log.debug("columnsTableCat={}", columnsTableCat);
+					log.debug("columnsTableSchem={}", columnsTableSchem);
+					log.debug("columnsTableName={}", columnsTableName);
+					log.debug("columnName={}", columnName);
+					log.debug("dataType={}", dataType);
+					log.debug("typeName={}", typeName);
+					log.debug("columnSize={}", columnSize);
+					log.debug("bufferLength={}", bufferLength);
+					log.debug("decimalDigits={}", decimalDigits);
+					log.debug("numPrecRadix={}", numPrecRadix);
+					log.debug("nullable={}", nullable);
+					log.debug("columnsRemarks={}", columnsRemarks);
+					log.debug("columnDef={}", columnDef);
+					log.debug("sqlDataType={}", sqlDataType);
+					log.debug("sqlDatetimeSub={}", sqlDatetimeSub);
+					log.debug("charOctetLength={}", charOctetLength);
+					log.debug("ordinalPosition={}", ordinalPosition);
+					log.debug("isNullable={}", isNullable);
+
+					if ("MySQL".equals(databaseProductName)) {
+						String scopeCatalog = columns.getString("SCOPE_CATALOG");
+						String scopeSchema = columns.getString("SCOPE_SCHEMA");
+						String scopeTable = columns.getString("SCOPE_TABLE");
+						int sourceDataType = columns.getInt("SOURCE_DATA_TYPE");
+						String isAutoincrement = columns.getString("IS_AUTOINCREMENT");
+
+						log.debug("");
+
+						log.debug("scopeCatalog={}", scopeCatalog);
+						log.debug("scopeSchema={}", scopeSchema);
+						log.debug("scopeTable={}", scopeTable);
+						log.debug("sourceDataType={}", sourceDataType);
+						log.debug("isAutoincrement={}", isAutoincrement);
+
+					}
+
+					log.debug("");
+
+					Attribute attr = new Attribute(columnName);
+//					attr.setType(colExpr.getDataType().getName());
+//					attr.setJavaType(getJavaClassName(colExpr.getDataType().getName()));
+					attributes.add(attr);
+
+//					Column column = TableHelper.getColumnForColumnExpression(tableExpr, colExpr);
+//					if ((column != null) && TableHelper.isPrimaryKey(column)) {
+//						attr.setPrimaryKey(true);
+//						pkAttributes.add(attr);
+//					}
+
+				}
+
+			}
+
+			dataModel.setAttributes(attributes);
+			dataModel.setPrimaryKeys(pkAttributes);
 
 			WizardModel wizardModel = new CrudCodeGen.WizardModel();
 			wizardModel.setAuthor("공통개발팀 이백행");
