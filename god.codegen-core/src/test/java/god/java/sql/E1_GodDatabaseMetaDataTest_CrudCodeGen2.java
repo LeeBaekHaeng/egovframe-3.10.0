@@ -42,7 +42,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 		}
 
 		String schemaPattern = "COM";
-		String tableNamePattern = "COMTC%";
+//		String tableNamePattern = "COMTC%";
+		String tableNamePattern = "comtcadministcode%";
 
 		ResultSet tables = dmd.getTables(null, schemaPattern, tableNamePattern, null);
 		ResultSet columns = dmd.getColumns(null, schemaPattern, tableNamePattern, null);
@@ -135,6 +136,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 
 				attributes = new ArrayList<Attribute>();
 //				pkAttributes = new ArrayList<Attribute>();
+
+				dataModel.setAttributes(attributes);
 			} else if (tableName.equals(tableNameTemp)) {
 				Attribute attr = new Attribute(columnName);
 				attr.setType(typeName);
@@ -152,9 +155,17 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			tableNameTemp = tableName;
 		}
 
+		dataModels.add(dataModel);
+
 		for (DataModelContext dataModel2 : dataModels) {
 //			log.debug("dataModel2={}", dataModel2);
 			log.debug("getName={}", dataModel2.getEntity().getName());
+
+			for (Attribute attribute : dataModel2.getAttributes()) {
+				log.debug("getName={}", attribute.getName());
+			}
+
+			log.debug("");
 		}
 	}
 
