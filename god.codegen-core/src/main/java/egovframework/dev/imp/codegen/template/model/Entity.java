@@ -18,32 +18,61 @@ package egovframework.dev.imp.codegen.template.model;
 /**
  * 
  * 엔티티 정보 클래스
- * <p><b>NOTE:</b> 어트리뷰트(데이터베이스 테이블) 정보를 담기위한 모델 클래스 
+ * <p>
+ * <b>NOTE:</b> 어트리뷰트(데이터베이스 테이블) 정보를 담기위한 모델 클래스
  * 
  * @author 개발환경 개발팀 이흥주
  * @since 2009.08.03
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  *  == 개정이력(Modification Information) ==
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.08.03  이흥주          최초 생성
  *
- * </pre>
+ *      </pre>
  */
 public class Entity extends DbModelElement {
 
-    /**
-     * 
-     * 생성자
-     *
-     * @param name 이름
-     */
-    public Entity(String name) {
-        super(name);
-    }
+	private String tableCat;
+	private String tableSchem;
+	private String tableName;
+
+	/**
+	 * 
+	 * 생성자
+	 *
+	 * @param name 이름
+	 */
+	public Entity(String name) {
+		super(name);
+	}
+
+	public String getTableCat() {
+		return tableCat;
+	}
+
+	public void setTableCat(String tableCat) {
+		this.tableCat = tableCat;
+	}
+
+	public String getTableSchem() {
+		return tableSchem;
+	}
+
+	public void setTableSchem(String tableSchem) {
+		this.tableSchem = tableSchem;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 
 }

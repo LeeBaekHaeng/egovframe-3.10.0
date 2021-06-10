@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,7 +12,10 @@ import org.junit.Test;
 import egovframework.dev.imp.codegen.template.model.Attribute;
 import egovframework.dev.imp.codegen.template.model.DataModelContext;
 import egovframework.dev.imp.codegen.template.model.Entity;
+import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
+import operation.CrudCodeGen;
+import operation.CrudCodeGen.WizardModel;
 
 @Slf4j
 public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
@@ -132,6 +136,9 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 				dataModel.setDatabaseProductName(databaseProductName);
 
 				entity = new Entity(tableName);
+				entity.setTableCat(tableCat);
+				entity.setTableSchem(tableSchem);
+				entity.setTableName(tableName);
 				dataModel.setEntity(entity);
 
 				attributes = new ArrayList<Attribute>();
@@ -162,10 +169,88 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			log.debug("getName={}", dataModel2.getEntity().getName());
 
 			for (Attribute attribute : dataModel2.getAttributes()) {
-				log.debug("getName={}", attribute.getName());
+				log.debug("getAttributes={}", attribute.getName());
+			}
+
+			List<Attribute> pkAttributes = new ArrayList<>();
+
+			ResultSet primaryKeys = dmd.getPrimaryKeys(dataModel2.getEntity().getTableCat(),
+					dataModel2.getEntity().getTableSchem(), dataModel2.getEntity().getTableName());
+
+			while (primaryKeys.next()) {
+				String tableCat = primaryKeys.getString("TABLE_CAT");
+				String tableSchem = primaryKeys.getString("TABLE_SCHEM");
+				String tableName = primaryKeys.getString("TABLE_NAME");
+				String columnName = primaryKeys.getString("COLUMN_NAME");
+				int keySeq = primaryKeys.getInt("KEY_SEQ");
+
+				log.debug("tableCat={}", tableCat);
+				log.debug("tableSchem={}", tableSchem);
+				log.debug("tableName={}", tableName);
+				log.debug("columnName={}", columnName);
+				log.debug("keySeq={}", keySeq);
+
+				for (Attribute attribute : dataModel2.getAttributes()) {
+					if (attribute.getTableName().equals(tableName) && attribute.getName().equals(columnName)) {
+						pkAttributes.add(attribute);
+					}
+				}
+			}
+
+			dataModel2.setPrimaryKeys(pkAttributes);
+
+			for (Attribute attribute : dataModel2.getPrimaryKeys()) {
+				log.debug("getPrimaryKeys={}", attribute.getName());
 			}
 
 			log.debug("");
+		}
+
+		CrudCodeGen crudCodeGen = new CrudCodeGen();
+
+		String createDate = EgovDateUtil.toString(new Date(), null, null);
+
+		for (DataModelContext dataModel2 : dataModels) {
+////			log.debug("dataModel2={}", dataModel2);
+//			log.debug("getName={}", dataModel2.getEntity().getName());
+//			log.debug("");
+//
+//			for (Attribute attribute : dataModel2.getAttributes()) {
+//				log.debug("getAttributes={}", attribute.getName());
+//			}
+//			log.debug("");
+//
+//			for (Attribute attribute : dataModel2.getPrimaryKeys()) {
+//				log.debug("getPrimaryKeys={}", attribute.getName());
+//			}
+//			log.debug("");
+
+			WizardModel wizardModel = new CrudCodeGen.WizardModel();
+			wizardModel.setAuthor("공통개발팀 이백행");
+			wizardModel.setCreateDate(createDate);
+
+			// DataAccess
+			wizardModel.setCheckDataAccess("Y");
+			wizardModel.setSqlMapFolder(dataModel2.getEntity().getLcName() + "/sqlmap");
+			wizardModel.setMapperFolder(dataModel2.getEntity().getLcName() + "/mapper");
+			wizardModel.setDaoPackage(dataModel2.getEntity().getLcName() + ".service.impl");
+			wizardModel.setMapperPackage(dataModel2.getEntity().getLcName() + ".mapper");
+			wizardModel.setVoPackage(dataModel2.getEntity().getLcName() + ".service");
+
+			// Service
+			wizardModel.setCheckService("Y");
+			wizardModel.setServicePackage(dataModel2.getEntity().getLcName() + ".service.impl");
+			wizardModel.setImplPackage(dataModel2.getEntity().getLcName() + ".service.impl");
+
+			// Web
+			wizardModel.setCheckWeb("Y");
+			wizardModel.setControllerPackage(dataModel2.getEntity().getLcName());
+			wizardModel.setJspFolder(dataModel2.getEntity().getLcName() + "/jsp");
+
+			String templateFile = "eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER.vm";
+			String result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			log.debug(result);
 		}
 	}
 
