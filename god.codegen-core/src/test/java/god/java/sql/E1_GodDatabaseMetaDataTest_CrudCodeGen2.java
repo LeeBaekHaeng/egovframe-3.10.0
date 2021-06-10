@@ -46,8 +46,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 		}
 
 		String schemaPattern = "COM";
-//		String tableNamePattern = "COMTC%";
-		String tableNamePattern = "comtcadministcode%";
+		String tableNamePattern = "COMTC%";
+//		String tableNamePattern = "comtcadministcode%";
 
 		ResultSet tables = dmd.getTables(null, schemaPattern, tableNamePattern, null);
 		ResultSet columns = dmd.getColumns(null, schemaPattern, tableNamePattern, null);
@@ -150,6 +150,7 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 				attr.setType(typeName);
 //					attr.setJavaType(getJavaClassName(colExpr.getDataType().getName()));
 				attr.setTableName(tableName);
+				attr.setRemarks(columnsRemarks);
 				attributes.add(attr);
 
 //					Column column = TableHelper.getColumnForColumnExpression(tableExpr, colExpr);
@@ -169,7 +170,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			log.debug("getName={}", dataModel2.getEntity().getName());
 
 			for (Attribute attribute : dataModel2.getAttributes()) {
-				log.debug("getAttributes={}", attribute.getName());
+				log.debug("getName={}", attribute.getName());
+				log.debug("getRemarks={}", attribute.getRemarks());
 			}
 
 			List<Attribute> pkAttributes = new ArrayList<>();
@@ -206,6 +208,39 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			log.debug("");
 		}
 
+		while (tables.next()) {
+			String tableCat = tables.getString("TABLE_CAT");
+			String tableSchem = tables.getString("TABLE_SCHEM");
+			String tableName = tables.getString("TABLE_NAME");
+			String tableType = tables.getString("TABLE_TYPE");
+			String remarks = tables.getString("REMARKS");
+
+			log.debug("tableCat={}", tableCat);
+			log.debug("tableSchem={}", tableSchem);
+			log.debug("tableName={}", tableName);
+			log.debug("tableType={}", tableType);
+			log.debug("remarks={}", remarks);
+
+			if ("MySQL".equals(databaseProductName)) {
+				String typeCat = tables.getString("TYPE_CAT");
+				String typeSchem = tables.getString("TYPE_SCHEM");
+				String typeName = tables.getString("TYPE_NAME");
+				String selfReferencingColName = tables.getString("SELF_REFERENCING_COL_NAME");
+
+				log.debug("typeCat={}", typeCat);
+				log.debug("typeSchem={}", typeSchem);
+				log.debug("typeName={}", typeName);
+				log.debug("selfReferencingColName={}", selfReferencingColName);
+			}
+
+			for (DataModelContext dataModel2 : dataModels) {
+				if (dataModel2.getEntity().getTableName().equals(tableName)) {
+					dataModel2.getEntity().setRemarks(remarks);
+					break;
+				}
+			}
+		}
+
 		CrudCodeGen crudCodeGen = new CrudCodeGen();
 
 		String createDate = EgovDateUtil.toString(new Date(), null, null);
@@ -224,6 +259,9 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 //				log.debug("getPrimaryKeys={}", attribute.getName());
 //			}
 //			log.debug("");
+
+			log.debug("getTableName={}", dataModel2.getEntity().getTableName());
+			log.debug("getRemarks={}", dataModel2.getEntity().getRemarks());
 
 			WizardModel wizardModel = new CrudCodeGen.WizardModel();
 			wizardModel.setAuthor("공통개발팀 이백행");

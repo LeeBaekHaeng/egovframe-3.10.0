@@ -38,6 +38,7 @@ public class C2_GodResultSetMetaDataTest_getColumns {
 
 		StringBuffer sb = new StringBuffer("\n");
 		StringBuffer sb2 = new StringBuffer("\n");
+		StringBuffer sb3 = new StringBuffer("\n");
 
 		for (int column = 1; column < columnCount; column++) {
 			String columnLabel = rsmd.getColumnLabel(column);
@@ -55,15 +56,22 @@ public class C2_GodResultSetMetaDataTest_getColumns {
 
 			DbModelElement columnNameDbModelElement = new DbModelElement(columnName);
 
+			sb3.append("private ");
+
 			if ("java.lang.Integer".equals(columnClassName)) {
 				sb.append("int ");
 				sb.append(columnNameDbModelElement.getCcName());
 				sb.append(" = columns.getInt(\"");
+
+				sb3.append("int ");
 			} else {
 				sb.append(columnClassName.substring(columnClassName.lastIndexOf(".") + 1));
 				sb.append(" ");
 				sb.append(columnNameDbModelElement.getCcName());
 				sb.append(" = columns.getString(\"");
+
+				sb3.append(columnClassName.substring(columnClassName.lastIndexOf(".") + 1));
+				sb3.append(" ");
 			}
 
 			sb.append(columnName);
@@ -76,10 +84,14 @@ public class C2_GodResultSetMetaDataTest_getColumns {
 			sb2.append(columnNameDbModelElement.getCcName());
 			sb2.append(");");
 			sb2.append("\n");
+
+			sb3.append(columnNameDbModelElement.getCcName());
+			sb3.append(";\n");
 		}
 
 		log.debug("{}", sb);
 		log.debug("{}", sb2);
+		log.debug("{}", sb3);
 	}
 
 }

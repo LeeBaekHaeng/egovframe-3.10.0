@@ -40,6 +40,12 @@ public class Entity extends DbModelElement {
 	private String tableCat;
 	private String tableSchem;
 	private String tableName;
+	private String tableType;
+	private String remarks;
+	private String typeCat;
+	private String typeSchem;
+	private String typeName;
+	private String selfReferencingColName;
 
 	/**
 	 * 
@@ -73,6 +79,54 @@ public class Entity extends DbModelElement {
 
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	public String getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getTypeCat() {
+		return typeCat;
+	}
+
+	public void setTypeCat(String typeCat) {
+		this.typeCat = typeCat;
+	}
+
+	public String getTypeSchem() {
+		return typeSchem;
+	}
+
+	public void setTypeSchem(String typeSchem) {
+		this.typeSchem = typeSchem;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getSelfReferencingColName() {
+		return selfReferencingColName;
+	}
+
+	public void setSelfReferencingColName(String selfReferencingColName) {
+		this.selfReferencingColName = selfReferencingColName;
 	}
 
 }
