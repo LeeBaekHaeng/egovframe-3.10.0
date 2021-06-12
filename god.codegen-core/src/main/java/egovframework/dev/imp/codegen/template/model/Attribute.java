@@ -125,6 +125,41 @@ public class Attribute extends DbModelElement {
 		this.javaType = javaType;
 	}
 
+	public void setJavaType(String javaType, int nullable, String databaseProductName) {
+		if ("MySQL".equals(databaseProductName)) {
+			if ("DECIMAL".equals(javaType)) {
+				if (nullable == 1) {
+					this.javaType = "Integer";
+				} else {
+					this.javaType = "int";
+				}
+			} else if ("DATETIME".equals(javaType)) {
+				this.javaType = "Date";
+			} else if ("VARCHAR".equals(javaType)) {
+				this.javaType = "String";
+			} else {
+				this.javaType = javaType;
+			}
+		} else if ("Oracle".equals(databaseProductName)) {
+			if ("NUMBER".equals(javaType)) {
+				if (nullable == 1) {
+					this.javaType = "Integer";
+				} else {
+					this.javaType = "int";
+				}
+			} else if ("DATE".equals(javaType)) {
+				this.javaType = "Date";
+			} else if ("VARCHAR2".equals(javaType)) {
+				this.javaType = "String";
+			} else {
+				this.javaType = javaType;
+			}
+		} else {
+			this.javaType = javaType;
+		}
+
+	}
+
 	/**
 	 * 타입 가져오기
 	 * 

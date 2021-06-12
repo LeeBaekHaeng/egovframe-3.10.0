@@ -148,7 +148,7 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			} else if (tableName.equals(tableNameTemp)) {
 				Attribute attr = new Attribute(columnName);
 				attr.setType(typeName);
-//					attr.setJavaType(getJavaClassName(colExpr.getDataType().getName()));
+				attr.setJavaType(typeName, nullable, databaseProductName);
 				attr.setTableName(tableName);
 				attr.setRemarks(columnsRemarks);
 				attributes.add(attr);
@@ -285,8 +285,17 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			wizardModel.setControllerPackage(dataModel2.getEntity().getLcName());
 			wizardModel.setJspFolder(dataModel2.getEntity().getLcName() + "/jsp");
 
-			String templateFile = "eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER.vm";
-			String result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+			String templateFile = null;
+			String result = null;
+
+			templateFile = "eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/Sample2DefaultVO.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/Sample2VO.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
 
 			log.debug(result);
 		}
