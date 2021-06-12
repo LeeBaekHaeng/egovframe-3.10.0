@@ -135,7 +135,7 @@ public class Attribute extends DbModelElement {
 				}
 			} else if ("DATETIME".equals(javaType)) {
 				this.javaType = "Date";
-			} else if ("VARCHAR".equals(javaType)) {
+			} else if ("CHAR".equals(javaType) || "VARCHAR".equals(javaType)) {
 				this.javaType = "String";
 			} else {
 				this.javaType = javaType;

@@ -144,6 +144,13 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 				attributes = new ArrayList<Attribute>();
 //				pkAttributes = new ArrayList<Attribute>();
 
+				Attribute attr = new Attribute(columnName);
+				attr.setType(typeName);
+				attr.setJavaType(typeName, nullable, databaseProductName);
+				attr.setTableName(tableName);
+				attr.setRemarks(columnsRemarks);
+				attributes.add(attr);
+
 				dataModel.setAttributes(attributes);
 			} else if (tableName.equals(tableNameTemp)) {
 				Attribute attr = new Attribute(columnName);
@@ -195,6 +202,7 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 				for (Attribute attribute : dataModel2.getAttributes()) {
 					if (attribute.getTableName().equals(tableName) && attribute.getName().equals(columnName)) {
 						pkAttributes.add(attribute);
+						attribute.setPrimaryKey(true);
 					}
 				}
 			}
@@ -250,10 +258,11 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 //			log.debug("getName={}", dataModel2.getEntity().getName());
 //			log.debug("");
 //
-//			for (Attribute attribute : dataModel2.getAttributes()) {
-//				log.debug("getAttributes={}", attribute.getName());
-//			}
-//			log.debug("");
+			for (Attribute attribute : dataModel2.getAttributes()) {
+				log.debug("getAttributes={}", attribute.getName());
+				log.debug("getIsPrimaryKey={}", attribute.getIsPrimaryKey());
+			}
+			log.debug("");
 //
 //			for (Attribute attribute : dataModel2.getPrimaryKeys()) {
 //				log.debug("getPrimaryKeys={}", attribute.getName());
