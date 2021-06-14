@@ -306,6 +306,27 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			templateFile = "eGovFrameTemplates/crud/java/pkg/service/Sample2VO.vm";
 			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
 
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/impl/Sample2DAO.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/impl/Sample2Mapper.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/impl/EgovSample2ServiceImpl.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/service/EgovSample2Service.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/java/pkg/web/EgovSample2Controller.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/jsp/pkg/egovSample2List.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			templateFile = "eGovFrameTemplates/crud/jsp/pkg/egovSample2Register.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
 			log.debug(result);
 		}
 	}
