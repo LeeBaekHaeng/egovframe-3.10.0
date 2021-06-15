@@ -327,6 +327,9 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			templateFile = "eGovFrameTemplates/crud/jsp/pkg/egovSample2Register.vm";
 			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
 
+			templateFile = "god.test/eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER_sql.vm";
+			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
 			log.debug(result);
 		}
 	}
