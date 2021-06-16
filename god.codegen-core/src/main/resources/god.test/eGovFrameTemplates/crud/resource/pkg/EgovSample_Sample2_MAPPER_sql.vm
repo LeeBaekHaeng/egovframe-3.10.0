@@ -68,35 +68,33 @@ VALUES ( #{${attribute.ccName}}
 ;
 
 ## ##################################################################################################	
-	<update id="${updateQueryId}">
-		<![CDATA[
-			UPDATE ${model.entity.name}
+/* ${updateQueryId} */
+UPDATE ${model.entity.name}
 #set($i=0)	
 #foreach($attribute in $model.attributes)
 #if($i == 0)
-			SET ${attribute.name}=#{${attribute.ccName}}
+SET ${attribute.name}=#{${attribute.ccName}}
 #else
-				, ${attribute.name}=#{${attribute.ccName}}
+	, ${attribute.name}=#{${attribute.ccName}}
 #end
 #set($i=$i+1)
 #end	
 ##		
 #if(!${model.primaryKeys} == [])
-                WHERE ${model.attributes.get(0).name}=#{${model.attributes.get(0).ccName}}
+    WHERE ${model.attributes.get(0).name}=#{${model.attributes.get(0).ccName}}
 #else
 	#set($i=0)	
 	#foreach($attribute in $model.primaryKeys)
 	#if($i == 0)
-				WHERE ${attribute.name}=#{${attribute.ccName}}
+	WHERE ${attribute.name}=#{${attribute.ccName}}
 	#else
-					AND ${attribute.name}=#{${attribute.ccName}}
+		AND ${attribute.name}=#{${attribute.ccName}}
 	#end
 	#set($i=$i+1)
 	#end
 #end
-		]]>
-	</update>
-	
+;
+
 ## ##################################################################################################
 	<delete id="${deleteQueryId}">
 		<![CDATA[
