@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import egovframework.dev.imp.codegen.template.GodSql;
 import egovframework.dev.imp.codegen.template.model.Attribute;
 import egovframework.dev.imp.codegen.template.model.DataModelContext;
 import egovframework.dev.imp.codegen.template.model.Entity;
@@ -329,6 +330,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 
 			templateFile = "god.test/eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER_sql.vm";
 			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
+
+			result = GodSql.insert(dataModel);
 
 			log.debug(result);
 		}
