@@ -25,17 +25,8 @@ public class GodSql {
 			sb.append("\t");
 			sb.append(attr.getName());
 
-			if ("VARCHAR".equals(attr.getType())) {
-				sb2.append("\t'");
-				sb2.append(attr.getName());
-				sb2.append("'");
-			} else if ("DATETIME".equals(attr.getType())) {
-				sb2.append("\t'");
-				sb2.append(today);
-				sb2.append("'");
-			} else {
-				sb2.append("\t0");
-			}
+			sb2.append("\t");
+			sb2.append(getValue(attr, today));
 
 			if (i == size) {
 				sb.append("\n");
@@ -53,6 +44,59 @@ public class GodSql {
 		sb.append(sb2);
 
 		sb.append(")");
+
+		return sb.toString();
+	}
+
+	public static String update(DataModelContext dataModel) {
+		String today = EgovDateUtil.toString(new Date(), null, null);
+
+		StringBuffer sb = new StringBuffer();
+		StringBuffer set = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+
+		sb.append("update ");
+		sb.append(dataModel.getEntity().getTableName());
+		sb.append(" set\n");
+
+		for (Attribute attr : dataModel.getAttributes()) {
+			if (attr.getIsPrimaryKey()) {
+				where.append("\tand ");
+				where.append(attr.getName());
+				where.append(" = ");
+				where.append(getValue(attr, today));
+				where.append("\n");
+			} else {
+				set.append("\t");
+				set.append(attr.getName());
+				set.append(" = ");
+				set.append(getValue(attr, today));
+				set.append(",\n");
+			}
+		}
+
+		String setString = set.toString();
+		sb.append(setString.substring(0, setString.length() - 2));
+		sb.append("\nwhere 1 = 1\n");
+		sb.append(where);
+
+		return sb.toString();
+	}
+
+	private static String getValue(Attribute attr, String today) {
+		StringBuffer sb = new StringBuffer();
+
+		if ("VARCHAR".equals(attr.getType())) {
+			sb.append("'");
+			sb.append(attr.getName());
+			sb.append("'");
+		} else if ("DATETIME".equals(attr.getType())) {
+			sb.append("'");
+			sb.append(today);
+			sb.append("'");
+		} else {
+			sb.append("0");
+		}
 
 		return sb.toString();
 	}

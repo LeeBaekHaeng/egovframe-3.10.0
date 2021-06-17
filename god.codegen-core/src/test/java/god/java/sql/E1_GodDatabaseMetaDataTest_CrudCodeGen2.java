@@ -333,6 +333,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 
 			result = GodSql.insert(dataModel);
 
+			result = GodSql.update(dataModel);
+
 			log.debug(result);
 		}
 	}
