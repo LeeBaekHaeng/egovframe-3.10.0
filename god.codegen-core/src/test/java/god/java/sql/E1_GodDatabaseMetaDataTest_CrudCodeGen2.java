@@ -331,9 +331,12 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			templateFile = "god.test/eGovFrameTemplates/crud/resource/pkg/EgovSample_Sample2_MAPPER_sql.vm";
 			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
 
-			result = GodSql.insert(dataModel);
+			result = GodSql.insert(dataModel2);
 
-			result = GodSql.update(dataModel);
+			result = GodSql.select(dataModel2);
+			result = GodSql.selectList(dataModel2);
+
+			result = GodSql.update(dataModel2);
 
 			log.debug(result);
 		}

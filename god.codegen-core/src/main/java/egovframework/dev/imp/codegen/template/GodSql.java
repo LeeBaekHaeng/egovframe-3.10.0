@@ -48,6 +48,70 @@ public class GodSql {
 		return sb.toString();
 	}
 
+	public static String select(DataModelContext dataModel) {
+		String today = EgovDateUtil.toString(new Date(), null, null);
+
+		StringBuffer sb = new StringBuffer();
+		StringBuffer select = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+
+		sb.append("select\n");
+
+		for (Attribute attr : dataModel.getAttributes()) {
+			if (attr.getIsPrimaryKey()) {
+				where.append("\tand ");
+				where.append(attr.getName());
+				where.append(" = ");
+				where.append(getValue(attr, today));
+				where.append("\n");
+			} else {
+				select.append("\t");
+				select.append(attr.getName());
+				select.append(",\n");
+			}
+		}
+
+		String selectString = select.toString();
+		sb.append(selectString.substring(0, selectString.length() - 2));
+		sb.append("\nfrom\n\t");
+		sb.append(dataModel.getEntity().getTableName());
+		sb.append("\nwhere\n\t1 = 1\n");
+		sb.append(where);
+
+		return sb.toString();
+	}
+
+	public static String selectList(DataModelContext dataModel) {
+		String today = EgovDateUtil.toString(new Date(), null, null);
+
+		StringBuffer sb = new StringBuffer();
+		StringBuffer select = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+
+		sb.append("select\n");
+
+		for (Attribute attr : dataModel.getAttributes()) {
+			where.append("\tand ");
+			where.append(attr.getName());
+			where.append(" = ");
+			where.append(getValue(attr, today));
+			where.append("\n");
+
+			select.append("\t");
+			select.append(attr.getName());
+			select.append(",\n");
+		}
+
+		String selectString = select.toString();
+		sb.append(selectString.substring(0, selectString.length() - 2));
+		sb.append("\nfrom\n\t");
+		sb.append(dataModel.getEntity().getTableName());
+		sb.append("\nwhere\n\t1 = 1\n");
+		sb.append(where);
+
+		return sb.toString();
+	}
+
 	public static String update(DataModelContext dataModel) {
 		String today = EgovDateUtil.toString(new Date(), null, null);
 
