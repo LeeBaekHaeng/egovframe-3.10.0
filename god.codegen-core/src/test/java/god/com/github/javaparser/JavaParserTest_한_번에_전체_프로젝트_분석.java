@@ -1,11 +1,15 @@
 package god.com.github.javaparser;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
 import com.github.javaparser.ParseResult;
@@ -43,12 +47,21 @@ public class JavaParserTest_한_번에_전체_프로젝트_분석 {
 					cu.getPrimaryTypeName().ifPresent(primaryTypeName -> {
 						log.debug("primaryTypeName={}", primaryTypeName);
 
+						StringBuffer sb = new StringBuffer();
+
 						Optional<ClassOrInterfaceDeclaration> coidOptional = cu.getClassByName(primaryTypeName);
 						coidOptional.ifPresent(coid -> {
 							coid.getMethods().forEach(method -> {
 //								log.debug("method={}", method);
 
-								log.debug("getNameAsString={}", method.getNameAsString());
+//								log.debug("getNameAsString={}", method.getNameAsString());
+
+								String methodName = method.getNameAsString();
+
+								sb.append(primaryTypeName);
+								sb.append("Test_");
+								sb.append(methodName);
+								sb.append("\n");
 
 								method.getParameters().forEach(parameter -> {
 									log.debug("parameter={}", parameter);
@@ -61,6 +74,14 @@ public class JavaParserTest_한_번에_전체_프로젝트_분석 {
 								});
 							});
 						});
+
+						try {
+							FileUtils.writeStringToFile(
+									new File(SystemUtils.USER_HOME + "/Desktop/test/" + primaryTypeName + ".txt"),
+									sb.toString(), StandardCharsets.UTF_8);
+						} catch (IOException e) {
+							log.error(e.getMessage());
+						}
 					});
 				});
 
