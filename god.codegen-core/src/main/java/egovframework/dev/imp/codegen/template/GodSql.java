@@ -147,6 +147,31 @@ public class GodSql {
 		return sb.toString();
 	}
 
+	public static String delete(DataModelContext dataModel) {
+		String today = EgovDateUtil.toString(new Date(), null, null);
+
+		StringBuffer sb = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+
+		sb.append("delete\nfrom\n\t");
+		sb.append(dataModel.getEntity().getTableName());
+
+		for (Attribute attr : dataModel.getAttributes()) {
+			if (attr.getIsPrimaryKey()) {
+				where.append("\tand ");
+				where.append(attr.getName());
+				where.append(" = ");
+				where.append(getValue(attr, today));
+				where.append("\n");
+			}
+		}
+
+		sb.append("\nwhere\n\t1 = 1\n");
+		sb.append(where);
+
+		return sb.toString();
+	}
+
 	private static String getValue(Attribute attr, String today) {
 		StringBuffer sb = new StringBuffer();
 

@@ -338,6 +338,8 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 
 			result = GodSql.update(dataModel2);
 
+			result = GodSql.delete(dataModel2);
+
 			log.debug(result);
 		}
 	}
