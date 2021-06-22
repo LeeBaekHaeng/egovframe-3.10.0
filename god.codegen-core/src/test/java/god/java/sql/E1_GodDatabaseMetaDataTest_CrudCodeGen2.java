@@ -1,5 +1,7 @@
 package god.java.sql;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
 import egovframework.dev.imp.codegen.template.GodSql;
@@ -332,13 +336,29 @@ public class E1_GodDatabaseMetaDataTest_CrudCodeGen2 {
 			result = crudCodeGen.generate(dataModel2, templateFile, wizardModel);
 
 			result = GodSql.insert(dataModel2);
+			FileUtils.writeStringToFile(new File(
+					SystemUtils.USER_HOME + "/Desktop/test/" + dataModel2.getEntity().getName() + "_a1_insert.sql"),
+					result, StandardCharsets.UTF_8);
 
 			result = GodSql.select(dataModel2);
+			FileUtils.writeStringToFile(new File(
+					SystemUtils.USER_HOME + "/Desktop/test/" + dataModel2.getEntity().getName() + "_a2_select.sql"),
+					result, StandardCharsets.UTF_8);
+
 			result = GodSql.selectList(dataModel2);
+			FileUtils.writeStringToFile(new File(
+					SystemUtils.USER_HOME + "/Desktop/test/" + dataModel2.getEntity().getName() + "_a3_selectList.sql"),
+					result, StandardCharsets.UTF_8);
 
 			result = GodSql.update(dataModel2);
+			FileUtils.writeStringToFile(new File(
+					SystemUtils.USER_HOME + "/Desktop/test/" + dataModel2.getEntity().getName() + "_a4_update.sql"),
+					result, StandardCharsets.UTF_8);
 
 			result = GodSql.delete(dataModel2);
+			FileUtils.writeStringToFile(new File(
+					SystemUtils.USER_HOME + "/Desktop/test/" + dataModel2.getEntity().getName() + "_a5_delete.sql"),
+					result, StandardCharsets.UTF_8);
 
 			log.debug(result);
 		}
