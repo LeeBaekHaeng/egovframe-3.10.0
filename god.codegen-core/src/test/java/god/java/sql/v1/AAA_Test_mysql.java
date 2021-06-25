@@ -9,26 +9,42 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.OracleConnection;
 
 @Slf4j
 public class AAA_Test_mysql {
 
 	@Test
-	public void test() throws SQLException {
-		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "");
-//		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "com", "com01");
-//		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "system", "orcl");
+	public void test() {
+		try {
+//			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306?useInformationSchema=true",
+					"root", "");
+//			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/com", "com", "com01");
+//			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/com?useInformationSchema=true",
+//					"com", "com01");
 
-		if (con.isWrapperFor(OracleConnection.class)) {
-			OracleConnection ocon = con.unwrap(OracleConnection.class);
-			ocon.setRemarksReporting(true);
+			DatabaseMetaData dmd = con.getMetaData();
+
+			String catalog = "com";
+			String schemaPattern = null;
+			String tableNamePattern = "comtcadministcode";
+
+//		catalog = "COM";
+//		tableNamePattern = "COMTCADMINISTCODE";
+
+			catalog = null;
+			tableNamePattern = null;
+
+			getTables(dmd, catalog, schemaPattern, tableNamePattern);
+			getColumns(dmd, catalog, schemaPattern, tableNamePattern);
+		} catch (Exception e) {
+			e.getMessage();
 		}
+	}
 
-		DatabaseMetaData dmd = con.getMetaData();
-
-		ResultSet tables = dmd.getTables("com", null, "comtcadministcode", null);
-//		ResultSet tables = dmd.getTables("COM", null, "COMTCADMINISTCODE", null);
+	void getTables(DatabaseMetaData dmd, String catalog, String schemaPattern, String tableNamePattern)
+			throws SQLException {
+		ResultSet tables = dmd.getTables(catalog, schemaPattern, tableNamePattern, null);
 
 		int i = 1;
 
@@ -47,9 +63,11 @@ public class AAA_Test_mysql {
 
 			i++;
 		}
+	}
 
-		ResultSet columns = dmd.getColumns("com", null, "comtcadministcode", null);
-//		ResultSet columns = dmd.getColumns("COM", null, "COMTCADMINISTCODE", null);
+	void getColumns(DatabaseMetaData dmd, String catalog, String schemaPattern, String tableNamePattern)
+			throws SQLException {
+		ResultSet columns = dmd.getColumns(catalog, schemaPattern, tableNamePattern, null);
 
 		int j = 1;
 
