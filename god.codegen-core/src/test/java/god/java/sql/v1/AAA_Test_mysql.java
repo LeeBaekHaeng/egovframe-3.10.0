@@ -27,13 +27,14 @@ public class AAA_Test_mysql {
 
 			String catalog = "com";
 			String schemaPattern = null;
-			String tableNamePattern = "comtcadministcode";
+			String tableNamePattern = null;
+//			String tableNamePattern = "comtcadministcode";
 
 //		catalog = "COM";
 //		tableNamePattern = "COMTCADMINISTCODE";
 
-			catalog = null;
-			tableNamePattern = null;
+//			catalog = null;
+//			tableNamePattern = null;
 
 			getTables(dmd, catalog, schemaPattern, tableNamePattern);
 			getColumns(dmd, catalog, schemaPattern, tableNamePattern);
