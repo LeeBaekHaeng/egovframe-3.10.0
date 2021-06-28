@@ -9,6 +9,8 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.VariableDeclarator;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
+
 public class JavaParserTest_AAA_VO {
 
 	@Test
@@ -68,6 +70,69 @@ public class JavaParserTest_AAA_VO {
 		});
 
 		System.out.println(sb);
+	}
+
+	@Test
+	public void test2() throws IOException {
+		String first = "src/main/java/egovframework/com/cmm/ComDefaultCodeVO.java";
+
+		CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
+
+		StringBuffer sb = new StringBuffer();
+
+		cu.getPrimaryTypeName().ifPresent(className -> {
+
+			sb.append(className);
+			sb.append(" vo = new ");
+			sb.append(className);
+			sb.append("();");
+			sb.append("\n");
+
+			cu.getClassByName(className).ifPresent(coid -> {
+
+				coid.getFields().forEach(field -> {
+					VariableDeclarator variable = field.getVariable(0);
+					String fieldName = variable.getNameAsString();
+					String fieldNameUpper = fieldName.toUpperCase().substring(0, 1)
+							+ fieldName.substring(1, fieldName.length());
+
+					sb.append("vo.set");
+					sb.append(fieldNameUpper);
+					sb.append("(");
+					sb.append(fieldName);
+					sb.append(");");
+
+					field.getJavadoc().ifPresent(consumer -> {
+						sb.append(" // ");
+						sb.append(consumer.getDescription().toText());
+					});
+
+					sb.append("\n");
+				});
+
+			});
+		});
+
+		System.out.println(sb);
+	}
+
+	void testa() {
+		String codeId = ""; // 코드 ID
+		String code = ""; // 상세코드
+		String codeNm = ""; // 코드명
+		String codeDc = ""; // 코드설명
+		String tableNm = "";
+		String haveDetailCondition = ""; // 상세 조건 여부
+		String detailCondition = ""; // 상세 조건
+
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId(codeId); // 코드 ID
+		vo.setCode(code); // 상세코드
+		vo.setCodeNm(codeNm); // 코드명
+		vo.setCodeDc(codeDc); // 코드설명
+		vo.setTableNm(tableNm);
+		vo.setHaveDetailCondition(haveDetailCondition); // 상세 조건 여부
+		vo.setDetailCondition(detailCondition); // 상세 조건
 	}
 
 }
