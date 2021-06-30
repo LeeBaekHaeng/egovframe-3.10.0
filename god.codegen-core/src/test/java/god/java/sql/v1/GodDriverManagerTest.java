@@ -1,12 +1,15 @@
 package god.java.sql.v1;
 
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.OracleConnection;
 
 @Slf4j
 public class GodDriverManagerTest {
@@ -32,6 +35,29 @@ public class GodDriverManagerTest {
 		}
 
 		log.debug("sb={}", sb);
+	}
+
+	public static Connection getConnectionMysql() {
+		try {
+			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306?useInformationSchema=true", "root", "");
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
+	public static Connection getConnectionOracle() {
+		try {
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "com", "com01");
+
+			if (con.isWrapperFor(OracleConnection.class)) {
+				OracleConnection ocon = con.unwrap(OracleConnection.class);
+				ocon.setRemarksReporting(true);
+			}
+
+			return con;
+		} catch (SQLException e) {
+			return null;
+		}
 	}
 
 }
