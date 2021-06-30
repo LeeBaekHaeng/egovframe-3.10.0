@@ -10,7 +10,9 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.VariableDeclarator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JavaParserTest_AAA_VO {
 
 	@Test
@@ -183,7 +185,39 @@ public class JavaParserTest_AAA_VO {
 		System.out.println(sb);
 	}
 
-	void testa() {
+	@Test
+	public void test4() throws IOException {
+		String first = "src/main/java/egovframework/com/cmm/ComDefaultCodeVO.java";
+
+		CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
+
+		StringBuffer sb = new StringBuffer();
+
+		cu.getPrimaryTypeName().ifPresent(className -> {
+
+			cu.getClassByName(className).ifPresent(coid -> {
+
+				coid.getFields().forEach(field -> {
+					VariableDeclarator variable = field.getVariable(0);
+					String fieldName = variable.getNameAsString();
+
+					sb.append("log.debug(\"");
+					sb.append(fieldName);
+					sb.append("={}\", ");
+					sb.append(fieldName);
+					sb.append(");");
+
+					sb.append("\n");
+				});
+
+			});
+		});
+
+		System.out.println(sb);
+	}
+
+	@Test
+	public void testa() {
 		String codeId = ""; // 코드 ID
 		String code = ""; // 상세코드
 		String codeNm = ""; // 코드명
@@ -191,6 +225,14 @@ public class JavaParserTest_AAA_VO {
 		String tableNm = "";
 		String haveDetailCondition = ""; // 상세 조건 여부
 		String detailCondition = ""; // 상세 조건
+
+		log.debug("codeId={}", codeId);
+		log.debug("code={}", code);
+		log.debug("codeNm={}", codeNm);
+		log.debug("codeDc={}", codeDc);
+		log.debug("tableNm={}", tableNm);
+		log.debug("haveDetailCondition={}", haveDetailCondition);
+		log.debug("detailCondition={}", detailCondition);
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId(codeId); // 코드 ID
@@ -202,7 +244,8 @@ public class JavaParserTest_AAA_VO {
 		vo.setDetailCondition(detailCondition); // 상세 조건
 	}
 
-	void testb() {
+	@Test
+	public void testb() {
 		String codeId = "코드 ID"; // 코드 ID
 		String code = "상세코드"; // 상세코드
 		String codeNm = "코드명"; // 코드명
@@ -210,6 +253,14 @@ public class JavaParserTest_AAA_VO {
 		String tableNm = "";
 		String haveDetailCondition = "상세 조건 여부"; // 상세 조건 여부
 		String detailCondition = "상세 조건"; // 상세 조건
+
+		log.debug("codeId={}", codeId);
+		log.debug("code={}", code);
+		log.debug("codeNm={}", codeNm);
+		log.debug("codeDc={}", codeDc);
+		log.debug("tableNm={}", tableNm);
+		log.debug("haveDetailCondition={}", haveDetailCondition);
+		log.debug("detailCondition={}", detailCondition);
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId(codeId); // 코드 ID
