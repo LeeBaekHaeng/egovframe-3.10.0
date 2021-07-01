@@ -217,6 +217,44 @@ public class JavaParserTest_AAA_VO {
 	}
 
 	@Test
+	public void test5() throws IOException {
+		String first = "src/main/java/egovframework/com/cmm/ComDefaultCodeVO.java";
+
+		CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
+
+		StringBuffer sb = new StringBuffer();
+
+		cu.getPrimaryTypeName().ifPresent(className -> {
+
+			cu.getClassByName(className).ifPresent(coid -> {
+
+				sb.append("log.debug(\"");
+				sb.append(className);
+				sb.append("={}\", vo);");
+				sb.append("\n");
+
+				coid.getFields().forEach(field -> {
+					VariableDeclarator variable = field.getVariable(0);
+					String fieldName = variable.getNameAsString();
+					String fieldNameUpper = fieldName.toUpperCase().substring(0, 1)
+							+ fieldName.substring(1, fieldName.length());
+
+					sb.append("log.debug(\"");
+					sb.append(fieldName);
+					sb.append("={}\", vo.get");
+					sb.append(fieldNameUpper);
+					sb.append("());");
+
+					sb.append("\n");
+				});
+
+			});
+		});
+
+		System.out.println(sb);
+	}
+
+	@Test
 	public void testa() {
 		String codeId = ""; // 코드 ID
 		String code = ""; // 상세코드
@@ -242,6 +280,8 @@ public class JavaParserTest_AAA_VO {
 		vo.setTableNm(tableNm);
 		vo.setHaveDetailCondition(haveDetailCondition); // 상세 조건 여부
 		vo.setDetailCondition(detailCondition); // 상세 조건
+
+		debug(vo);
 	}
 
 	@Test
@@ -270,6 +310,19 @@ public class JavaParserTest_AAA_VO {
 		vo.setTableNm(tableNm);
 		vo.setHaveDetailCondition(haveDetailCondition); // 상세 조건 여부
 		vo.setDetailCondition(detailCondition); // 상세 조건
+
+		debug(vo);
+	}
+
+	private void debug(ComDefaultCodeVO vo) {
+		log.debug("ComDefaultCodeVO={}", vo);
+		log.debug("codeId={}", vo.getCodeId());
+		log.debug("code={}", vo.getCode());
+		log.debug("codeNm={}", vo.getCodeNm());
+		log.debug("codeDc={}", vo.getCodeDc());
+		log.debug("tableNm={}", vo.getTableNm());
+		log.debug("haveDetailCondition={}", vo.getHaveDetailCondition());
+		log.debug("detailCondition={}", vo.getDetailCondition());
 	}
 
 }
