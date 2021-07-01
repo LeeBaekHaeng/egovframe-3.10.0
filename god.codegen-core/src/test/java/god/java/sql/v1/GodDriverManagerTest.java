@@ -37,7 +37,7 @@ public class GodDriverManagerTest {
 		log.debug("sb={}", sb);
 	}
 
-	public static Connection getConnectionMysql() {
+	public static Connection getConnectionMySQL() {
 		try {
 			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306?useInformationSchema=true", "root", "");
 		} catch (SQLException e) {
