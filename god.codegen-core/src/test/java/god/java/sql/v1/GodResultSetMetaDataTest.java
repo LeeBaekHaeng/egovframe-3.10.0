@@ -10,17 +10,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GodResultSetMetaDataTest {
 
-	public static void debug(ResultSet attributes, boolean convertUnderscoreNameToCamelcase) {
+	public static void debug(ResultSet rs, boolean convertUnderscoreNameToCamelcase) {
 		StringBuffer sb = new StringBuffer("\n");
 		StringBuffer sb2 = new StringBuffer("\n");
 
 		try {
-			ResultSetMetaData rsmd = attributes.getMetaData();
+			ResultSetMetaData rsmd = rs.getMetaData();
 
 			int columnCount = rsmd.getColumnCount() + 1;
 
 			for (int column = 1; column < columnCount; column++) {
 				String columnLabel = rsmd.getColumnLabel(column);
+				String columnName = rsmd.getColumnName(column);
 				String columnClassName = rsmd.getColumnClassName(column);
 //				String columnTypeName = rsmd.getColumnTypeName(column);
 //				int columnType = rsmd.getColumnType(column);
@@ -38,14 +39,14 @@ public class GodResultSetMetaDataTest {
 				sb.append(columnClassName2);
 				sb.append(" ");
 				sb.append(columnLabel);
-				sb.append(" = attributes.get");
+				sb.append(" = rs.get");
 				if ("java.lang.Integer".equals(columnClassName)) {
 					sb.append("Int");
 				} else {
 					sb.append(columnClassName2);
 				}
 				sb.append("(\"");
-				sb.append(columnLabel);
+				sb.append(columnName);
 				sb.append("\");");
 
 				sb.append("\n");
