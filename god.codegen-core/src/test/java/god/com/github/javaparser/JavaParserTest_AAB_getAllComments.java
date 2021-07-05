@@ -22,13 +22,24 @@ public class JavaParserTest_AAB_getAllComments {
 		cu.getAllComments().forEach(comment -> {
 //			log.debug("comment={}", comment);
 
+			log.debug("getContent={}", comment.getContent());
+
+			log.debug("isLineComment={}", comment.isLineComment());
+
+//			log.debug("getCommentedNode={}", comment.getCommentedNode());
+
+			comment.getCommentedNode().ifPresent(commentedNode -> {
+				log.debug("commentedNode={}", commentedNode);
+			});
+
 			comment.toBlockComment().ifPresent(consumer -> {
 				log.debug("toBlockComment={}", consumer);
 			});
 
 			comment.toJavadocComment().ifPresent(consumer -> {
 //				log.debug("toJavadocComment={}", consumer);
-				log.debug("toText={}", consumer.parse().toText());
+//				log.debug("toText={}", consumer.parse().toText());
+				log.debug("getDescription={}", consumer.parse().getDescription().toText());
 			});
 		});
 	}
