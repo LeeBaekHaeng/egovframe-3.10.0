@@ -28,18 +28,38 @@ public class JavaParserTest_AAB_getAllComments {
 
 //			log.debug("getCommentedNode={}", comment.getCommentedNode());
 
+//			comment.asLineComment();
+
 			comment.getCommentedNode().ifPresent(commentedNode -> {
 				log.debug("commentedNode={}", commentedNode);
 			});
+
+			log.debug("isOrphan={}", comment.isOrphan());
+
+			log.debug("getMetaModel={}", comment.getMetaModel());
+
+			log.debug("isBlockComment={}", comment.isBlockComment());
+
+//			log.debug("asBlockComment={}", comment.asBlockComment());
+
+			boolean isJavadocComment = comment.isJavadocComment();
+			log.debug("isJavadocComment={}", isJavadocComment);
+			if (isJavadocComment) {
+				log.debug("asJavadocComment={}", comment.asJavadocComment());
+			}
 
 			comment.toBlockComment().ifPresent(consumer -> {
 				log.debug("toBlockComment={}", consumer);
 			});
 
 			comment.toJavadocComment().ifPresent(consumer -> {
-//				log.debug("toJavadocComment={}", consumer);
+				log.debug("toJavadocComment={}", consumer);
 //				log.debug("toText={}", consumer.parse().toText());
-				log.debug("getDescription={}", consumer.parse().getDescription().toText());
+//				log.debug("getDescription={}", consumer.parse().getDescription().toText());
+			});
+
+			comment.toLineComment().ifPresent(consumer -> {
+				log.debug("toLineComment={}", consumer);
 			});
 		});
 	}
