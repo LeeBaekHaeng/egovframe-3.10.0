@@ -11,11 +11,11 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AAA_GodDatabaseMetaDataTest_MySQL_getTables {
+public class AAA_GodDatabaseMetaDataTest_Oracle_getTables {
 
 	@Test
 	public void test() {
-		Connection conn = GodDriverManagerTest.getConnectionMySQL();
+		Connection conn = GodDriverManagerTest.getConnectionOracle();
 		ResultSet tables = null;
 		try {
 			DatabaseMetaData dmd = conn.getMetaData();
@@ -24,7 +24,7 @@ public class AAA_GodDatabaseMetaDataTest_MySQL_getTables {
 
 			log.debug("databaseProductName={}", databaseProductName);
 
-			tables = dmd.getTables("com", null, null, null);
+			tables = dmd.getTables(null, "COM", null, null);
 
 			while (tables.next()) {
 				String tableCat = tables.getString("TABLE_CAT");
@@ -33,23 +33,11 @@ public class AAA_GodDatabaseMetaDataTest_MySQL_getTables {
 				String tableType = tables.getString("TABLE_TYPE");
 				String remarks = tables.getString("REMARKS");
 
-				String typeCat = tables.getString("TYPE_CAT");
-				String typeSchem = tables.getString("TYPE_SCHEM");
-				String typeName = tables.getString("TYPE_NAME");
-				String selfReferencingColName = tables.getString("SELF_REFERENCING_COL_NAME");
-				String refGeneration = tables.getString("REF_GENERATION");
-
 				log.debug("tableCat={}", tableCat);
 				log.debug("tableSchem={}", tableSchem);
 				log.debug("tableName={}", tableName);
 				log.debug("tableType={}", tableType);
 				log.debug("remarks={}", remarks);
-
-				log.debug("typeCat={}", typeCat);
-				log.debug("typeSchem={}", typeSchem);
-				log.debug("typeName={}", typeName);
-				log.debug("selfReferencingColName={}", selfReferencingColName);
-				log.debug("refGeneration={}", refGeneration);
 
 				log.debug("");
 			}
