@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.javadoc.Javadoc;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,25 +42,25 @@ public class JavaParserTest_AAB_getAllComments {
 
 //			log.debug("asBlockComment={}", comment.asBlockComment());
 
-			boolean isJavadocComment = comment.isJavadocComment();
-//			log.debug("isJavadocComment={}", isJavadocComment);
-			if (isJavadocComment) {
-//				log.debug("asJavadocComment={}", comment.asJavadocComment());
-				Javadoc parse = comment.asJavadocComment().parse();
-//				log.debug("parse={}", parse);
-//				log.debug("toText={}", parse.toText());
-				log.debug("getDescription={}", parse.getDescription().toText());
-			}
+//			boolean isJavadocComment = comment.isJavadocComment();
+////			log.debug("isJavadocComment={}", isJavadocComment);
+//			if (isJavadocComment) {
+////				log.debug("asJavadocComment={}", comment.asJavadocComment());
+//				Javadoc parse = comment.asJavadocComment().parse();
+////				log.debug("parse={}", parse);
+////				log.debug("toText={}", parse.toText());
+//				log.debug("getDescription={}", parse.getDescription().toText());
+//			}
 
 //			comment.toBlockComment().ifPresent(consumer -> {
 //				log.debug("toBlockComment={}", consumer);
 //			});
 
-//			comment.toJavadocComment().ifPresent(consumer -> {
+			comment.toJavadocComment().ifPresent(consumer -> {
 //				log.debug("toJavadocComment={}", consumer);
-////				log.debug("toText={}", consumer.parse().toText());
-////				log.debug("getDescription={}", consumer.parse().getDescription().toText());
-//			});
+//				log.debug("toText={}", consumer.parse().toText());
+				log.debug("getDescription={}", consumer.parse().getDescription().toText());
+			});
 
 //			comment.toLineComment().ifPresent(consumer -> {
 //				log.debug("toLineComment={}", consumer);
