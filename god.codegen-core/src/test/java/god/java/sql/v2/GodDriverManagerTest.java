@@ -26,7 +26,8 @@ public class GodDriverManagerTest {
 		Connection conn = null;
 
 		try {
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "system", "orcl");
+//			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "system", "orcl");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.254:1521:orcl", "com", "com01");
 
 			if (conn.isWrapperFor(OracleConnection.class)) {
 				OracleConnection ocon = conn.unwrap(OracleConnection.class);
