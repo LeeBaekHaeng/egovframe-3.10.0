@@ -28,16 +28,33 @@ public class JavaParserTest_AAF_getTypes {
 		compilationUnit.getTypes().forEach(type -> {
 //			log.debug("type={}", type);
 			type.getMembers().forEach(member -> {
-//				log.debug("member={}", member);
-				member.getAnnotations().forEach(annotation -> {
-					log.debug("annotation={}", annotation);
-				});
+				log.debug("member={}", member);
+//				member.getAnnotations().forEach(annotation -> {
+//					log.debug("annotation={}", annotation);
+//				});
 
 //				log.debug("member.getMetaModel().getQualifiedClassName()={}",
 //						member.getMetaModel().getQualifiedClassName());
 //				log.debug("member.getMetaModel().getPackageName()={}", member.getMetaModel().getPackageName());
 
-				log.debug("member.isAnnotationDeclaration()={}", member.isAnnotationDeclaration());
+//				log.debug("member.isAnnotationDeclaration()={}", member.isAnnotationDeclaration());
+				if (member.isAnnotationDeclaration()) {
+					member.asAnnotationDeclaration();
+				}
+
+//				log.debug("member.isAnnotationMemberDeclaration()={}", member.isAnnotationMemberDeclaration());
+				if (member.isAnnotationMemberDeclaration()) {
+					member.asAnnotationMemberDeclaration();
+				}
+
+				log.debug("member.isCallableDeclaration()={}", member.isCallableDeclaration());
+				if (member.isCallableDeclaration()) {
+//					log.debug("member.asCallableDeclaration()={}", member.asCallableDeclaration());
+					log.debug("member.asCallableDeclaration().getModifiers()={}",
+							member.asCallableDeclaration().getModifiers());
+				}
+
+				log.debug("");
 			});
 		});
 	}
