@@ -52,6 +52,10 @@ public class JavaParserTest_AAF_getTypes {
 //					log.debug("member.asCallableDeclaration()={}", member.asCallableDeclaration());
 					log.debug("member.asCallableDeclaration().getModifiers()={}",
 							member.asCallableDeclaration().getModifiers());
+					log.debug("member.asCallableDeclaration().getName().getIdentifier()={}",
+							member.asCallableDeclaration().getName().getIdentifier());
+					log.debug("member.asCallableDeclaration().getName().asString()={}",
+							member.asCallableDeclaration().getName().asString());
 				}
 
 				log.debug("");
