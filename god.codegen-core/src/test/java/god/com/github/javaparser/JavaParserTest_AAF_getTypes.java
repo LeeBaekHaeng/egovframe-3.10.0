@@ -28,7 +28,7 @@ public class JavaParserTest_AAF_getTypes {
 		compilationUnit.getTypes().forEach(type -> {
 //			log.debug("type={}", type);
 			type.getMembers().forEach(member -> {
-				log.debug("member={}", member);
+//				log.debug("member={}", member);
 //				member.getAnnotations().forEach(annotation -> {
 //					log.debug("annotation={}", annotation);
 //				});
@@ -47,15 +47,25 @@ public class JavaParserTest_AAF_getTypes {
 					member.asAnnotationMemberDeclaration();
 				}
 
-				log.debug("member.isCallableDeclaration()={}", member.isCallableDeclaration());
-				if (member.isCallableDeclaration()) {
-//					log.debug("member.asCallableDeclaration()={}", member.asCallableDeclaration());
-					log.debug("member.asCallableDeclaration().getModifiers()={}",
-							member.asCallableDeclaration().getModifiers());
-					log.debug("member.asCallableDeclaration().getName().getIdentifier()={}",
-							member.asCallableDeclaration().getName().getIdentifier());
-					log.debug("member.asCallableDeclaration().getName().asString()={}",
-							member.asCallableDeclaration().getName().asString());
+//				log.debug("member.isCallableDeclaration()={}", member.isCallableDeclaration());
+//				if (member.isCallableDeclaration()) {
+////					log.debug("member.asCallableDeclaration()={}", member.asCallableDeclaration());
+//					log.debug("member.asCallableDeclaration().getModifiers()={}",
+//							member.asCallableDeclaration().getModifiers());
+//					log.debug("member.asCallableDeclaration().getName().getIdentifier()={}",
+//							member.asCallableDeclaration().getName().getIdentifier());
+//					log.debug("member.asCallableDeclaration().getName().asString()={}",
+//							member.asCallableDeclaration().getName().asString());
+//				}
+
+//				log.debug("member.isClassOrInterfaceDeclaration()={}", member.isClassOrInterfaceDeclaration());
+//				if (member.isClassOrInterfaceDeclaration()) {
+//					log.debug("member.asClassOrInterfaceDeclaration()={}", member.asClassOrInterfaceDeclaration());
+//				}
+
+				log.debug("member.isConstructorDeclaration()={}", member.isConstructorDeclaration());
+				if (member.isClassOrInterfaceDeclaration()) {
+					log.debug("member.asConstructorDeclaration()={}", member.asConstructorDeclaration());
 				}
 
 				log.debug("");
