@@ -7,22 +7,29 @@
 
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="viewResolvers">
-			<list>
-				<bean
-					class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-				<bean
-					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-					<property name="prefix" value="/WEB-INF/jsp/" />
-					<property name="suffix" value=".jsp" />
-				</bean>
-			</list>
-		</property>
+		<!-- <property name="viewResolvers"> <list> <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" 
+			/> <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+			<property name="prefix" value="/WEB-INF/jsp/" /> <property name="suffix" 
+			value=".jsp" /> </bean> </list> </property> -->
 		<property name="defaultViews">
 			<list>
 				<bean
 					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<bean
+					class="god.org.springframework.web.servlet.view.xml.GodMappingJackson2XmlView" />
 			</list>
+		</property>
+		<property name="contentNegotiationManager">
+			<bean id="contentNegotiationManager"
+				class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+				<property name="mediaTypes">
+					<value>
+						json=application/json
+						xml=application/xml
+					</value>
+				</property>
+				<property name="favorParameter" value="true"></property>
+			</bean>
 		</property>
 	</bean>
 

@@ -47,6 +47,10 @@
 					searchUseYn : "Y", // 검색사용여부
 					pageIndex : 1, // 현재페이지
 					pageUnit : 20, // 페이지갯수
+
+					// 					format : "json",
+					format : "xml",
+
 				},
 
 				// 				dataType : "xml",
@@ -61,10 +65,10 @@
 					console.log("errorThrown=", errorThrown);
 				},
 
-				headers : {
-					// 					Accept : "*/*",
-					Accept : "application/json",
-				},
+				// 				headers : {
+				// 					// 					Accept : "*/*",
+				// 					Accept : "application/json",
+				// 				},
 
 				// 				method : "GET",
 				method : "POST",
