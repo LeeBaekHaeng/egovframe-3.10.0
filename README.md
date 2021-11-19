@@ -1,5 +1,17 @@
 # egovframe-3.10.0
 
+전자정부 표준프레임워크 3.10.0 공구입니다.
+
+공구로 즐거운 코딩에 도움이 되길 희망합니다.
+
+## god.codegen
+
+## god.codegen-core
+
+## god.codegen-web
+
+## sql
+
 ## oracle 11g
 - ALL_TABLES
 - ALL_TAB_COLS
@@ -13,5 +25,3 @@ SELECT * FROM ALL_TAB_COLS A WHERE A.OWNER = 'COM' ORDER BY A.OWNER, A.TABLE_NAM
 
 SELECT * FROM ALL_COL_COMMENTS A WHERE A.OWNER = 'COM' ORDER BY A.OWNER, A.TABLE_NAME;
 ```
-
-## god.codegen
