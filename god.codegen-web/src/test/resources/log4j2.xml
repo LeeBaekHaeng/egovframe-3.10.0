@@ -6,26 +6,26 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Logger name="java.sql" level="ERROR " additivity="false">
+		<Logger name="java.sql" level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 
-		<Logger name="egovframework" level="ERROR " additivity="false">
+		<Logger name="egovframework" level="debug" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 		<Logger name="god" level="debug" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 
-		<!-- log SQL with timing ERROR rmation, post execution -->
-		<Logger name="jdbc.sqltiming" level="ERROR " additivity="false">
+		<!-- log SQL with timing ERRORrmation, post execution -->
+		<Logger name="jdbc.sqltiming" level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="org.springframework" level="ERROR "
+		<Logger name="org.springframework" level="ERROR"
 			additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Root level="ERROR ">
+		<Root level="ERROR">
 			<AppenderRef ref="console" />
 		</Root>
 	</Loggers>
