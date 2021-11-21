@@ -21,7 +21,7 @@
 		<Logger name="jdbc.sqltiming" level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="org.springframework" level="ERROR"
+		<Logger name="org.springframework" level="debug"
 			additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>

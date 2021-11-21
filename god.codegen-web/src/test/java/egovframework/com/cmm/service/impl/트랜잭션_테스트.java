@@ -18,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import egovframework.com.cmm.service.FileVO;
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 //@ActiveProfiles({ "oracle", "dummy" })
 
 @Configuration
-@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })
+@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml",
+		"/egovframework/spring/com/idgn/context-idgn-File.xml" })
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class }) })
 public class 트랜잭션_테스트 {
@@ -47,6 +50,9 @@ public class 트랜잭션_테스트 {
 	@Resource(name = "FileManageDAO")
 	private FileManageDAO fileManageDAO;
 
+	@Resource(name = "egovFileIdGnrService")
+	private EgovIdGnrService egovFileIdGnrService;
+
 	@Before
 	public void setUp() throws Exception {
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
@@ -57,17 +63,48 @@ public class 트랜잭션_테스트 {
 	}
 
 	@Test
-	public void test() throws Exception {
-		log.debug("test");
+//	@Transactional
+	public void test() {
+		try {
+			log.debug("test");
 
-		log.debug("txManager={}", txManager);
-		log.debug("isFailEarlyOnGlobalRollbackOnly={}", txManager.isFailEarlyOnGlobalRollbackOnly());
+			log.debug("txManager={}", txManager);
+			log.debug("isFailEarlyOnGlobalRollbackOnly={}", txManager.isFailEarlyOnGlobalRollbackOnly());
 
-		log.debug("transactionTemplate={}", transactionTemplate);
-		log.debug("getIsolationLevel={}", transactionTemplate.getIsolationLevel());
-		log.debug("getName={}", transactionTemplate.getName());
-		log.debug("getPropagationBehavior={}", transactionTemplate.getPropagationBehavior());
-		log.debug("getTransactionManager={}", transactionTemplate.getTransactionManager());
+			log.debug("transactionTemplate={}", transactionTemplate);
+			log.debug("getIsolationLevel={}", transactionTemplate.getIsolationLevel());
+			log.debug("getName={}", transactionTemplate.getName());
+			log.debug("getPropagationBehavior={}", transactionTemplate.getPropagationBehavior());
+			log.debug("getTransactionManager={}", transactionTemplate.getTransactionManager());
+
+			FileVO vo = new FileVO();
+			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+			vo.setFileSn("0");
+			vo.setFileMg("0");
+			fileManageDAO.insertFileInf(vo);
+
+			vo = new FileVO();
+			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+			vo.setFileSn("0");
+			vo.setFileMg("0");
+			fileManageDAO.insertFileInf(vo);
+
+			vo.getAtchFileId().substring(0, 1000);
+
+			vo = new FileVO();
+			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+			vo.setFileSn("0");
+			vo.setFileMg("0");
+			fileManageDAO.insertFileInf(vo);
+
+			vo = new FileVO();
+			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+			vo.setFileSn("0");
+			vo.setFileMg("0");
+			fileManageDAO.insertFileInf(vo);
+		} catch (Exception e) {
+			log.error("Exception");
+		}
 	}
 
 }
