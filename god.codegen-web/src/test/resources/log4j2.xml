@@ -18,7 +18,7 @@
 		</Logger>
 
 		<!-- log SQL with timing ERRORrmation, post execution -->
-		<Logger name="jdbc.sqltiming" level="ERROR" additivity="false">
+		<Logger name="jdbc.sqltiming" level="debug" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
 		<Logger name="org.springframework" level="debug"

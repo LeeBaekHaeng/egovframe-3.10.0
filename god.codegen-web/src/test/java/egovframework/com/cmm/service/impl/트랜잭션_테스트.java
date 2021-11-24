@@ -18,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import egovframework.com.cmm.service.FileVO;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml",
 		"/egovframework/spring/com/idgn/context-idgn-File.xml" })
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class }) })
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class, TestEgovFileMngServiceImpl.class,
+				Test2EgovFileMngServiceImpl.class, Test3EgovFileMngServiceImpl.class }) })
 public class 트랜잭션_테스트 {
 
 	@Autowired
@@ -52,6 +52,9 @@ public class 트랜잭션_테스트 {
 
 	@Resource(name = "egovFileIdGnrService")
 	private EgovIdGnrService egovFileIdGnrService;
+
+	@Resource
+	private TestEgovFileMngServiceImpl testEgovFileMngServiceImpl;
 
 	@Before
 	public void setUp() throws Exception {
@@ -77,31 +80,9 @@ public class 트랜잭션_테스트 {
 			log.debug("getPropagationBehavior={}", transactionTemplate.getPropagationBehavior());
 			log.debug("getTransactionManager={}", transactionTemplate.getTransactionManager());
 
-			FileVO vo = new FileVO();
-			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
-			vo.setFileSn("0");
-			vo.setFileMg("0");
-			fileManageDAO.insertFileInf(vo);
-
-			vo = new FileVO();
-			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
-			vo.setFileSn("0");
-			vo.setFileMg("0");
-			fileManageDAO.insertFileInf(vo);
-
-			vo.getAtchFileId().substring(0, 1000);
-
-			vo = new FileVO();
-			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
-			vo.setFileSn("0");
-			vo.setFileMg("0");
-			fileManageDAO.insertFileInf(vo);
-
-			vo = new FileVO();
-			vo.setAtchFileId(egovFileIdGnrService.getNextStringId());
-			vo.setFileSn("0");
-			vo.setFileMg("0");
-			fileManageDAO.insertFileInf(vo);
+			testEgovFileMngServiceImpl.insertFileInf("");
+//			testEgovFileMngServiceImpl.insertFileInf("0");
+//			testEgovFileMngServiceImpl.insertFileInf2();
 		} catch (Exception e) {
 			log.error("Exception");
 		}
