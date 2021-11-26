@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 //@ActiveProfiles({ "altibase", "dummy" })
 //@ActiveProfiles({ "cubrid", "dummy" })
 //@ActiveProfiles({ "maria", "dummy" })
-//@ActiveProfiles({ "mysql", "dummy" })
-@ActiveProfiles({ "oracle", "dummy" })
+@ActiveProfiles({ "mysql", "dummy" })
+//@ActiveProfiles({ "oracle", "dummy" })
 //@ActiveProfiles({ "postgres", "dummy" })
 //@ActiveProfiles({ "tibero", "dummy" })
 
